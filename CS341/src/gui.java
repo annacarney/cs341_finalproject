@@ -11,6 +11,8 @@ import java.awt.Label;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
 import javax.swing.*;	//using java swing for gui assistance
 import javax.swing.UIManager.*;
@@ -38,6 +40,12 @@ public class gui {
 		}
 		
 		JFrame f = new JFrame();
+		// Terminate the program when user clicks the red close button.
+		f.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent windowEvent){
+				System.exit(0);
+				}
+			});
 		
 		Color purple = new Color(202,185,241);
 		Color pale_grey = new Color(237,237,237);
