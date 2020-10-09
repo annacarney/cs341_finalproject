@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Label;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import javax.swing.*;	//using java swing for gui assistance
 import javax.swing.UIManager.*;
@@ -66,6 +68,13 @@ public class gui {
 		createAcct.setBounds(340,260,150,30);
 		createAcct.setBackground(purple);
 		createAcct.setForeground(Color.DARK_GRAY);
+		createAcct.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println("Creaete an Account button clicked");
+				// AddAcctGUI g = new AddAcctGUI();
+				}
+			});
 		f.add(createAcct);
 		
 		//Text area
@@ -103,6 +112,13 @@ public class gui {
 		signIn.setBounds(340,460,150,30);
 		signIn.setBackground(purple);
 		signIn.setForeground(Color.DARK_GRAY);
+		signIn.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println("Sign In button clicked");
+				// SignIn s = new SignInGUI();
+				}
+			});
 		f.add(signIn);
 		
 		//Text area
@@ -119,6 +135,13 @@ public class gui {
 		viewProg.setBounds(340,600,150,30);
 		viewProg.setBackground(purple);
 		viewProg.setForeground(Color.DARK_GRAY);
+		viewProg.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println("Available Programs button clicked");
+				// viewProg s = new viewProg();
+				}
+			});
 		f.add(viewProg);
 		
 		//styling for the window
