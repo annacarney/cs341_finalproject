@@ -11,7 +11,7 @@ Person
 	FirstName						String
 	LastName						String
 	PhoneNumber						String
-	Username (primary key)					String
+	Username (primary key)			String
 	Password						String
 	IsStaff							Boolean
 	IsAdmin							Boolean
@@ -32,7 +32,7 @@ Program
 	
 	Name							DataType
 	
-	ClassID (primary key)					Integer
+	ClassID (primary key)			Integer
 	ClassName						String
 	ClassDesc						String
 	ClassSize						Integer
@@ -49,5 +49,3 @@ Enrolled
 	
 	Username (foreign key)			String
 	ClassID (foreign key)			Integer
-	MemCount					Integer
-	NonMemCount					Integer
