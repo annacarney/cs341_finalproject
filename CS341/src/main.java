@@ -9,9 +9,6 @@ import java.util.ArrayList;
 
 public class main {
 
-    private static final Boolean TRUE = true;
-	private static final Boolean FALSE = false;
-
 	public static void main(String[] args) {
     	
     	//test db connection
@@ -38,9 +35,16 @@ public class main {
 		try {
 			
 			ArrayList<person> people = new ArrayList<>();
+			ArrayList<program> programs = new ArrayList<>();
 			
-			person newPerson = new person("Rick", "Sanchez", "1-800-rickandmorty", "rick", "morty", FALSE, FALSE);
+			//Create a new person object.
+			person newPerson = new person("Rick", "Sanchez", "1-800-rickandmorty", "rick", "morty", false, false);
 			db.insertEmployee(newPerson);
+			
+			//Create a new program object.
+			program newProgram = new program(1001, "Happy Feet", "This is a class for people who like to dance.", 15, "2020-10-22 08:00:00:000", "2020-10-22 09:00:00:000", 12.23, 34.23);
+			//System.out.println("Inserting program into db");
+			db.insertProgram(newProgram);
 			
 			ResultSet results = db.runQuery("SELECT firstName, lastName, phoneNumber, userName, password, isAdmin, isStaff FROM Person");
 
@@ -56,7 +60,29 @@ public class main {
 				person e = new person(firstName, lastName, phoneNumber, userName, password, isAdmin, isStaff);
 				people.add(e);
 				
+				
 				System.out.println(e);
+			}
+			
+			ResultSet pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee FROM Program");
+
+			int count = 0;
+			while(pResults.next()) {
+				int classID = pResults.getInt("classID");
+				String className = pResults.getString("className");
+				String classDesc = pResults.getString("classDesc");
+				int classSize = pResults.getInt("classSize");
+				String startTime = pResults.getString("startTime");
+				String endTime = pResults.getString("endTime");
+				Double memFee = pResults.getDouble("memFee");
+				Double nonMemFee = pResults.getDouble("nonMemFee");
+				
+				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee);
+				programs.add(p);
+				
+				System.out.println(p);
+				count++;
+				System.out.println(count);
 			}
 			
 		} catch (SQLException e1) {
@@ -69,6 +95,7 @@ public class main {
 			System.out.println("Disconnect failed...");
 			e.printStackTrace();
 		}
+		System.out.println("Disconnected from db.");
     }
 
 }

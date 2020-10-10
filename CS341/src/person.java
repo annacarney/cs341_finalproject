@@ -1,4 +1,8 @@
-
+/*
+ * person.java
+ * Person object class
+ * Created: 10/10/2020
+ */
 public class person {
 	
 	private String firstName;

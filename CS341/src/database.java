@@ -1,3 +1,9 @@
+/*
+ * database.java
+ * Database IO Class
+ * Created: 10/10/2020
+ */
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -6,22 +12,6 @@ import java.sql.SQLException;
 
 public class database {
 
-	/*
-	 * load SQL driver (JDBC)
-	 * - add to build path
-	 * 
-	 * set up our database (script)
-	 * 
-	 * connect to the database (Java)
-	 * 
-	 * modifications to the database (Java)
-	 * - insert/update/delete data
-	 * 
-	 * querying data (Java)
-	 * 
-	 * disconnect from the database (Java)
-	 * 
-	 */
 	
 	private String url = "jdbc:sqlite:YMCA_db.db";
 	
@@ -47,7 +37,7 @@ public class database {
 	
 	public ResultSet personLookup(String username) throws SQLException {
 		
-		String query = "SELECT FirstName, LastName, Username FROM Person WHERE SSN = ?";
+		String query = "SELECT FirstName, LastName, Username FROM Person WHERE userName = ?";
 		PreparedStatement stmt = connection.prepareStatement(query);
 		stmt.setString(1, username);
 		ResultSet results = stmt.executeQuery();
@@ -65,7 +55,19 @@ public class database {
 		stmt.setString(5, p.getPassword());
 		stmt.setBoolean(6, p.getIsStaff());
 		stmt.setBoolean(7, p.getIsAdmin());
-		//int numRowsAffected = stmt.executeUpdate();
+	}
+	
+	public void insertProgram(program p) throws SQLException {
+		String sql = "INSERT INTO Program (classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, p.getClassID());
+		stmt.setString(2, p.getClassName());
+		stmt.setString(3, p.getClassDesc());
+		stmt.setInt(4, p.getClassSize());
+		stmt.setString(5, p.getStartTime());
+		stmt.setString(6, p.getEndTime());
+		stmt.setDouble(7, p.getMemFee());
+		stmt.setDouble(8, p.getNonMemFee());
 	}
 	
 }

@@ -1,4 +1,8 @@
-
+/*
+ * program.java
+ * Program object class
+ * Created: 10/10/2020
+ */
 public class program {
 	
 	private int classID;
@@ -25,7 +29,7 @@ public class program {
 
 	@Override
 	public String toString() {
-		return "program [classID=" + classID + ", className=" + className + ", classDesc=" + classDesc + ", classSize="
+		return "Program [classID=" + classID + ", className=" + className + ", classDesc=" + classDesc + ", classSize="
 				+ classSize + ", startTime=" + startTime + ", endTime=" + endTime + ", memFee=" + memFee
 				+ ", nonMemFee=" + nonMemFee + "]";
 	}
