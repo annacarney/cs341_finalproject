@@ -36,8 +36,8 @@ Program
 	ClassName						String
 	ClassDesc						String
 	ClassSize						Integer
-	StartTime						Time
-	EndTime							Time
+	StartTime						Text
+	EndTime							Text
 	MemFee							Double
 	NonMemFee						Double
 
