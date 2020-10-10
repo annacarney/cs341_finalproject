@@ -9,7 +9,7 @@ public class main {
     	//generate welcome screen
     	gui g = new gui();	
     	System.out.println("Hi");
-    	System.out.println("SS");
+    	System.out.println("Testing out new branch");
     }
 
 
