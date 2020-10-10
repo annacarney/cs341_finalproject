@@ -61,7 +61,24 @@ public class gui {
 	
 	public void viewPrograms() {
 		
-		//implement me
+		JFrame f = new JFrame();
+		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		//styling for the window
+		f.setSize(800,800);  	
+		f.setLayout(null);
+		f.setVisible(true);
+		f.getContentPane().setBackground(new Color(229,255,204));
+		f.setTitle("YMCA | View Available Programs ");
+		ImageIcon icon = new ImageIcon("ymcalogo.JPG");
+		f.setIconImage(icon.getImage());
+		
+		JLabel title = new JLabel("Available Programs");
+		title.setBounds(0, 0, 780, 65);
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setFont(new Font("SansSerif", Font.BOLD, 35));
+		title.setForeground(new Color(51,102,0));
+		f.add(title, 0);
 		
 	}
 
