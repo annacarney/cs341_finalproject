@@ -143,7 +143,7 @@ public class gui {
 		
 		f.add(createAcct);
 		
-		//Text area
+		//Text area Space
 		JLabel t3 = new JLabel("Existing members and staff members sign in here!");
 		t3.setBounds(99, 295, 600, 150); //(x,y, width, height)
 		t3.setHorizontalAlignment(SwingConstants.CENTER);
