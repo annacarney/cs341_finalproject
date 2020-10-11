@@ -70,4 +70,12 @@ public class database {
 		stmt.setDouble(8, p.getNonMemFee());
 	}
 	
+	// returns the available programs 
+	public program[] getPrograms() {
+		program[] progs = null;
+		
+		
+		return progs;
+	}
+	
 }

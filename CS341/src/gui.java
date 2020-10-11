@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
+import java.util.Vector;
+
 import javax.swing.*;	
 import javax.swing.UIManager.*;
 
@@ -79,6 +81,60 @@ public class gui {
 		title.setFont(new Font("SansSerif", Font.BOLD, 35));
 		title.setForeground(new Color(51,102,0));
 		f.add(title, 0);
+		
+		String [] programs = {"Yoga, 12:00 - 7:00, a yoga class, Member $15, Non member$20", "Gym", "Swim"};	// getProgs();	//need to get programs
+		
+		//lists the available programs
+		JList<String> jListSelect = new JList<>();
+		JList<String> avail_progs = new JList<>(programs);
+		avail_progs.setFixedCellHeight(15);
+		avail_progs.setFixedCellWidth(100);
+		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		avail_progs.setVisibleRowCount(5);
+		avail_progs.setBounds(100, 250, 200, 200);
+		avail_progs.setVisible(true);
+		f.add(avail_progs,0);
+		f.repaint();
+		
+		//lists the programs selected by the user
+	    jListSelect.setFixedCellHeight(15);
+	    jListSelect.setFixedCellWidth(100);
+	    jListSelect.setVisibleRowCount(5);
+	    jListSelect.setBounds(500,250,200,200);
+	    jListSelect.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		jListSelect.setVisible(true);
+	    f.add(jListSelect,0);
+		
+	    //button for the user to select programs to register for 
+		JButton selectButton = new JButton("Select>>>");
+		 selectButton.addActionListener(new ActionListener() {
+	            
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	            	//FIX ME LATER --- ONLY SELECTS ONE ITEM!!!!!!!!!!!!!!!!!
+	                jListSelect.setListData(avail_progs.getSelectedValuesList().toArray(new String[0]));
+	            }
+	        });
+		 selectButton.setBounds(370,300,90,40);
+		 selectButton.setBackground(new Color(51,102,0));
+		 selectButton.setForeground(Color.white);
+		 f.add(selectButton);
+		 
+		 //button to register for selected programs
+		 JButton registerButton = new JButton("Register");
+		 registerButton.setBounds(370,560,90,40);
+		 registerButton.setForeground(Color.white);
+		 registerButton.setBackground(new Color(51,102,0));
+
+		 registerButton.addActionListener(new ActionListener() {
+			 @Override
+	            public void actionPerformed(ActionEvent e) {
+	               System.out.println("SELECTED PROGRAM");
+			 	}
+		 });
+		 
+		 f.add(registerButton);
+		 f.repaint();
 		
 	}
 
@@ -166,11 +222,11 @@ public class gui {
 		f.add(pw, 0);
 		
 		//text entry for username and pass (member and staff member login only)
-		JTextField username = new JTextField();
+		JTextField username = new JTextField(30);
 		username.setBounds(400,396,150,27);
 		f.add(username);
 
-		JTextField password = new JTextField();
+		JPasswordField password = new JPasswordField(30);
 		password.setBounds(400,426,150,27);
 		f.add(password);
 
@@ -223,7 +279,7 @@ public class gui {
 		f.setLayout(null);
 		f.setVisible(true);
 		f.getContentPane().setBackground(background_color);
-		f.setTitle("YMCA | Sign In ");
+		f.setTitle("YMCA | Welcome ");
 		ImageIcon icon = new ImageIcon("ymcalogo.JPG");
 		f.setIconImage(icon.getImage());
 		
