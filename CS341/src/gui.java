@@ -2,8 +2,10 @@
  * Team 1 - Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney\
  * This class sets up the graphical user interface.
  */
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -14,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.*;	
@@ -21,9 +24,12 @@ import javax.swing.UIManager.*;
 
 public class gui {
 	
+	private helper h;
+	
 	//constructor for gui class
 	public gui() {
 		start();
+		h = new helper();
 	}
 	
 	//signs a user in with login credentials (username, password)
@@ -82,7 +88,14 @@ public class gui {
 		title.setForeground(new Color(51,102,0));
 		f.add(title, 0);
 		
-		String [] programs = {"Yoga, 12:00 - 7:00, a yoga class, Member $15, Non member$20", "Gym", "Swim"};	// getProgs();	//need to get programs
+		String[] programs = null;
+		try {
+			programs = h.getProgramsList();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			//e1.printStackTrace();
+			System.out.print("Db query failed.");
+		}
 		
 		//lists the available programs
 		JList<String> jListSelect = new JList<>();
@@ -93,7 +106,14 @@ public class gui {
 		avail_progs.setVisibleRowCount(5);
 		avail_progs.setBounds(100, 250, 200, 200);
 		avail_progs.setVisible(true);
-		f.add(avail_progs,0);
+		
+        JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
+        scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
+        scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
+        scrollableTextArea.setMinimumSize(new Dimension(100,50));
+        scrollableTextArea.setBounds(100,250,220,200);
+        f.add(scrollableTextArea);
+        //f.add(avail_progs,0);
 		f.repaint();
 		
 		//lists the programs selected by the user
@@ -129,7 +149,7 @@ public class gui {
 		 registerButton.addActionListener(new ActionListener() {
 			 @Override
 	            public void actionPerformed(ActionEvent e) {
-	               System.out.println("SELECTED PROGRAM");
+	              h.registerNM(jListSelect.getModel());
 			 	}
 		 });
 		 
