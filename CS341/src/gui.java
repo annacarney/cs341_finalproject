@@ -104,14 +104,14 @@ public class gui {
 		avail_progs.setFixedCellWidth(100);
 		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		avail_progs.setVisibleRowCount(5);
-		avail_progs.setBounds(100, 250, 200, 200);
+		avail_progs.setBounds(100, 100, 200, 200);
 		avail_progs.setVisible(true);
 		
         JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
         scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
         scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
         scrollableTextArea.setMinimumSize(new Dimension(100,50));
-        scrollableTextArea.setBounds(100,250,220,200);
+        scrollableTextArea.setBounds(100,100,220,200);
         f.add(scrollableTextArea);
         //f.add(avail_progs,0);
 		f.repaint();
@@ -120,7 +120,7 @@ public class gui {
 	    jListSelect.setFixedCellHeight(15);
 	    jListSelect.setFixedCellWidth(100);
 	    jListSelect.setVisibleRowCount(5);
-	    jListSelect.setBounds(500,250,200,200);
+	    jListSelect.setBounds(500,100,200,200);
 	    jListSelect.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		jListSelect.setVisible(true);
 	    f.add(jListSelect,0);
@@ -135,21 +135,21 @@ public class gui {
 	                jListSelect.setListData(avail_progs.getSelectedValuesList().toArray(new String[0]));
 	            }
 	        });
-		 selectButton.setBounds(370,300,90,40);
+		 selectButton.setBounds(370,150,90,40);
 		 selectButton.setBackground(new Color(51,102,0));
 		 selectButton.setForeground(Color.white);
 		 f.add(selectButton);
 		 
 		 //button to register for selected programs
-		 JButton registerButton = new JButton("Register");
-		 registerButton.setBounds(370,560,90,40);
+		 JButton registerButton = new JButton("Show Program Details");
+		 registerButton.setBounds(500,310,200,40);
 		 registerButton.setForeground(Color.white);
 		 registerButton.setBackground(new Color(51,102,0));
 
 		 registerButton.addActionListener(new ActionListener() {
 			 @Override
 	            public void actionPerformed(ActionEvent e) {
-	              h.registerNM(jListSelect.getModel());
+	              h.registerNM(jListSelect.getModel(), f);
 			 	}
 		 });
 		 
