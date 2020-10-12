@@ -1,12 +1,14 @@
-
 /* CS 341 - Final Project
- * Team 1 - Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney\
+ * Team 1 - Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney
  * This class helps with database queries and overall functionalities implemented. 
  */
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -35,34 +37,45 @@ public class helper {
 			e.printStackTrace();
 		}
 	}
+	
+	//returns the program names for all programs whose start time is time
+	public String[] getProgramsFromTime(String time) {
+		ArrayList<program> p = program.find(db, "Program.startTime IN ('" + time + "')");
+		
+		String[] ret = new String[p.size()];
+		program prog = null;
+		String s = "";
+		for(int i = 0; i < p.size(); i++) {
+			prog = p.get(i);
+			s = prog.getClassName();
+			ret[i] = s;
+			s = "";
+		}
+		return ret;
+	}
+	
+	// returns all available program times 
+	public String[] getProgramTimes() {
+		DateTimeFormatter dt = DateTimeFormatter.ofPattern("d MMM y hh:mm a");
+		ArrayList<program> programs = program.findAll(db);
+		
+		String[] ret = new String[programs.size()];
+		program p = null;
+		String s = "";
+		for(int i = 0; i < programs.size(); i++) {
+			p = programs.get(i);
+			s = p.getStartTimeAsDateTime().format(dt);
+			//s = "Start: " + p.getStartTimeAsDateTime().format(dt) + " End: " + p.getEndTimeAsDateTime().format(dt);
+			ret[i] = s;
+			s = "";
+		}
+		return ret;
+	}
 
 	// returns the available programs (WITHOUT CLASSID) to a list of strings
 	// for printing out for the user to see
 	public String[] getProgramsList() throws SQLException {
-		
-		ResultSet pResults;
-		try {
-			pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee FROM Program");
-		} catch (SQLException e) {
-			System.out.println("DB Query failed in method getProgramsList()");
-			return null;
-		}
-		
-		ArrayList<program> programs = new ArrayList<>();
-	
-		while(pResults.next()) {
-			int classID = pResults.getInt("classID");
-			String className = pResults.getString("className");
-			String classDesc = pResults.getString("classDesc");
-			int classSize = pResults.getInt("classSize");
-			String startTime = pResults.getString("startTime");
-			String endTime = pResults.getString("endTime");
-			Double memFee = pResults.getDouble("memFee");
-			Double nonMemFee = pResults.getDouble("nonMemFee");
-			
-			program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee);
-			programs.add(p);
-		}
+		ArrayList<program> programs = program.findAll(db);
 		
 		String[] ret = new String[programs.size()];
 		program p = null;
@@ -77,12 +90,31 @@ public class helper {
 		return ret;
 	}
 	
+	//enters a new non-member person into the database and enrolls them in the class in which they registered for
+	// returns 1 on successful enrolling non-member, 0 if fails.
+	public int enrollNM(String fname, String lname, String phone, String className){
+		//fix me!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		//need to parse name!
+		
+		//person newPerson = new person("New", "Sanchez", "1-800-rickandmorty", "NM", "NM", false, false);
+//		try {
+//			db.insertEmployee(newPerson);
+//		} catch (SQLException e) {
+//			 TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+			
+		return 1;
+	}
+	
 	//registers a non member for a program they select
 	public void registerNM(ListModel m, JFrame f) {
 		String className = "";
+		JLabel title = null;
 		
 		if(m == null || m.getSize()==0) {	//no selection
-			JLabel title = new JLabel("No program selected. Please try again.");
+			title = new JLabel("No program selected. Please try again.");
 			title.setBounds(170, 380, 600, 65);
 			title.setHorizontalAlignment(SwingConstants.CENTER);
 			title.setFont(new Font("SansSerif", Font.BOLD, 18));
@@ -95,7 +127,7 @@ public class helper {
 		className = (String) m.getElementAt(0);
 		
 		//JLabel title = new JLabel("Register for " + className + "?");
-		JLabel title = new JLabel("Want to Register?");
+		title = new JLabel("Want to Register?");
 		title.setBounds(293, 500, 600, 65);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("SansSerif", Font.BOLD, 25));
@@ -123,8 +155,15 @@ public class helper {
 	    f.repaint();
 		
 		//get non member credentials - name and phone number 
-		// TO DO *************
-	    JLabel un = new JLabel("Name: ");
+	    JLabel fn = new JLabel("First Name: ");
+		fn.setBounds(440, 500, 100, 150); //(x,y, width, height)
+		fn.setHorizontalAlignment(SwingConstants.CENTER);
+		fn.setFont(new Font("SansSerif", Font.BOLD, 15));
+		fn.setForeground(Color.black);
+		f.add(fn, 0);
+		f.repaint();
+	    
+	    JLabel un = new JLabel("Last Name: ");
 		un.setBounds(440, 550, 100, 150); //(x,y, width, height)
 		un.setHorizontalAlignment(SwingConstants.CENTER);
 		un.setFont(new Font("SansSerif", Font.BOLD, 15));
@@ -133,33 +172,47 @@ public class helper {
 		f.repaint();
 		
 		JLabel pw = new JLabel("Phone Number: ");
-		pw.setBounds(420,600, 200, 150); //(x,y, width, height)
+		pw.setBounds(404,600, 200, 150); //(x,y, width, height)
 		pw.setHorizontalAlignment(SwingConstants.CENTER);
 		pw.setFont(new Font("SansSerif", Font.BOLD, 15));
 		pw.setForeground(Color.black);
 		f.add(pw, 0);
 		f.repaint();
 		
-		//text entry for username and pass (member and staff member login only)
 		JTextField name = new JTextField(50);
-		name.setBounds(600,580,150,50);
+		name.setBounds(600,560,150,40);
 		f.add(name);
 		f.repaint();
 		
+		JTextField lname = new JTextField(50);
+		lname.setBounds(600,605,150,40);
+		f.add(lname);
+		f.repaint();
+		
 		JTextField phone = new JTextField(30);
-		phone.setBounds(600,639,150,50);
+		phone.setBounds(600,649,150,40);
 		f.add(phone);
 		f.repaint();
 		
 		//register user for class. add to database
-	    // TO DO ***************************************
-		
 		JButton reg = new JButton("Register!");
 		reg.setBounds(550,700,150,30);
 		reg.setBackground(new Color(127,0,255));
 		reg.setForeground(Color.white);
 		f.add(reg);
 		f.repaint();
+		
+		// when button is clicked
+		reg.addActionListener((new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println(" " + name.getText() + phone.getText() + "Registering for " + m.getElementAt(0));
+				int s = enrollNM(name.getText(), lname.getText(), phone.getText(), (String)m.getElementAt(0));
+				if(s == 0) {	//failed to enroll user
+					
+				}
+				}
+			} ));
 	}
 	
 	
@@ -253,33 +306,19 @@ public class helper {
 	
 	//returns the details for a program based on className
 	private String[] program_details(String className) throws SQLException {
+		ArrayList<program> programs = program.find(db, "Program.className IN ('" + className + "')");
+		program p = programs.get(0);
+		DateTimeFormatter dt = DateTimeFormatter.ofPattern("d MMM y hh:mm a");
 		String[] ret = new String[8];
-		
-		ResultSet pResults;
-		try {
-			pResults = db.runQuery("SELECT className, classDesc, classSize, startTime, endTime, memFee, nonMemFee FROM Program WHERE Program.className IN ('" + className + "')");
-		} catch (SQLException e) {
-			System.out.println("DB Query failed in method program_details()");
-			return null;
-		}
 	
-		while(pResults.next()) {
-			ret[0] = "Program Details: ";
-			String name = pResults.getString("className");
-			ret[1] = name;
-			String classDesc = pResults.getString("classDesc");
-			ret[2] = classDesc;
-			String classSize = "" + pResults.getInt("classSize");
-			ret[3] = "Class Size: " + classSize;
-			String startTime = pResults.getString("startTime");
-			ret[4] = "Start Time: " + startTime;
-			String endTime = pResults.getString("endTime");
-			ret[5] = "End Time: " + endTime;
-			String memFee = "" + pResults.getDouble("memFee");
-			ret[6] = "Member Fee: $" + memFee;
-			String nonMemFee = "" + pResults.getDouble("nonMemFee");
-			ret[7] = "Non Member Fee (your price): $" + nonMemFee;
-		}
+		ret[0] = "Program Details: ";
+		ret[1] = p.getClassName();
+		ret[2] = p.getClassDesc();
+		ret[3] = "Class Size: " + p.getClassSize();
+		ret[4] = "Start Time: " + p.getStartTimeAsDateTime().format(dt);
+		ret[5] = "End Time: " + p.getEndTimeAsDateTime().format(dt);
+		ret[6] = "Member Fee: $" + p.getMemFee();
+		ret[7] = "Non Member Fee (your price): $" + p.getNonMemFee();
 		
 		return ret;
 	}

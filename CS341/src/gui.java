@@ -97,30 +97,83 @@ public class gui {
 			System.out.print("Db query failed.");
 		}
 		
+		
+		
+		DefaultListModel lister = new DefaultListModel();
+		for(int i = 0; i < programs.length; i++) {
+			lister.addElement(programs[i]);
+		}
+		JList<String> avail_progs = new JList<>(lister);
+		
+		
+		
 		//lists the available programs
 		JList<String> jListSelect = new JList<>();
-		JList<String> avail_progs = new JList<>(programs);
+		//JList<String> avail_progs = new JList<>(programs);
 		avail_progs.setFixedCellHeight(15);
 		avail_progs.setFixedCellWidth(100);
 		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		avail_progs.setVisibleRowCount(5);
-		avail_progs.setBounds(100, 100, 200, 200);
+		avail_progs.setBounds(100, 200, 200, 200);
 		avail_progs.setVisible(true);
 		
         JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
         scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
         scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
         scrollableTextArea.setMinimumSize(new Dimension(100,50));
-        scrollableTextArea.setBounds(100,100,220,200);
+        scrollableTextArea.setBounds(100,200,220,200);
         f.add(scrollableTextArea);
         //f.add(avail_progs,0);
 		f.repaint();
+		
+		//get all available program times
+		String[] progTimes = h.getProgramTimes();
+		
+		//need to search for programs at a time ** add here
+		JComboBox<String> searchTimes = new JComboBox(progTimes);
+		searchTimes.setBounds(100,100,380,30);
+		f.add(searchTimes);
+		
+		JButton searchB = new JButton("Search Programs from Time");
+		searchB.setBounds(500, 100, 200, 30);
+		searchB.setBackground(new Color(127,0,255));
+		searchB.setForeground(Color.white);
+		f.add(searchB);
+		f.repaint();
+		
+		//find programs at the selected time
+		searchB.addActionListener(new ActionListener() { 
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+//	            	String selected = (String)searchTimes.getSelectedItem();
+//	            	String [] p = h.getProgramsFromTime(selected);
+//	            	
+//	            	for(int i = 0; i < p.length; i++) {
+//	        			lister.addElement(p[i]);
+//	        		}
+//	            	JList<String> avail_progs = new JList<>(lister);
+//	            	avail_progs.setFixedCellHeight(15);
+//	        		avail_progs.setFixedCellWidth(100);
+//	        		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+//	        		avail_progs.setVisibleRowCount(5);
+//	        		avail_progs.setBounds(100, 200, 200, 200);
+//	        		avail_progs.setVisible(true);
+//	                JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
+//	                scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
+//	                scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
+//	                scrollableTextArea.setMinimumSize(new Dimension(100,50));
+//	                scrollableTextArea.setBounds(100,200,220,200);
+//	                f.add(scrollableTextArea);
+//	            	f.repaint();
+	            }
+	        });
+	
 		
 		//lists the programs selected by the user
 	    jListSelect.setFixedCellHeight(15);
 	    jListSelect.setFixedCellWidth(100);
 	    jListSelect.setVisibleRowCount(5);
-	    jListSelect.setBounds(500,100,200,200);
+	    jListSelect.setBounds(500,200,200,200);
 	    jListSelect.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		jListSelect.setVisible(true);
 	    f.add(jListSelect,0);
@@ -135,16 +188,18 @@ public class gui {
 	                jListSelect.setListData(avail_progs.getSelectedValuesList().toArray(new String[0]));
 	            }
 	        });
-		 selectButton.setBounds(370,150,90,40);
+		 selectButton.setBounds(370,300,90,40);
 		 selectButton.setBackground(new Color(51,102,0));
 		 selectButton.setForeground(Color.white);
 		 f.add(selectButton);
 		 
 		 //button to register for selected programs
 		 JButton registerButton = new JButton("Show Program Details");
-		 registerButton.setBounds(500,310,200,40);
+		 registerButton.setBounds(500,410,200,40);
 		 registerButton.setForeground(Color.white);
 		 registerButton.setBackground(new Color(51,102,0));
+		 
+		 JLabel title1 = new JLabel();
 
 		 registerButton.addActionListener(new ActionListener() {
 			 @Override
@@ -261,7 +316,7 @@ public class gui {
 			public void actionPerformed(ActionEvent e)
 			{
 				System.out.println("Sign In button clicked");
-				signIn(username.getText(), password.getText());
+				signIn(username.getText(), password.getText());		//getPassword() return char[] ****** 
 				}
 			} ));
 		

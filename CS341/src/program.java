@@ -1,16 +1,22 @@
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
 /*
  * program.java
  * Program object class
  * Created: 10/10/2020
  */
 public class program {
-	
+	private final DateTimeFormatter SQL_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd[-][ ]HH:mm:ss:SSS");
 	private int classID;
 	private String className;
 	private String classDesc;
 	private int classSize;
-	private String startTime;			//Format: YYYY-MM-DD HH:MM:SS:SSS
-	private String endTime;				//Format: YYYY-MM-DD HH:MM:SS:SSS
+	private LocalDateTime startTime;			//Format: YYYY-MM-DD HH:MM:SS:SSS
+	private LocalDateTime endTime;				//Format: YYYY-MM-DD HH:MM:SS:SSS
 	private Double memFee;
 	private Double nonMemFee;
 	
@@ -21,10 +27,42 @@ public class program {
 		this.className = className;
 		this.classDesc = classDesc;
 		this.classSize = classSize;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.startTime = LocalDateTime.parse(startTime, SQL_FORMAT);
+		this.endTime = LocalDateTime.parse(endTime, SQL_FORMAT);
 		this.memFee = memFee;
 		this.nonMemFee = nonMemFee;
+	}
+	
+	//query helper
+	public static ArrayList<program> find(database db, String where) {
+		ResultSet pResults;
+		try {
+			pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee FROM Program " + (where != null ? "WHERE " + where : ""));
+			ArrayList<program> programs = new ArrayList<>();
+			
+			while(pResults.next()) {
+				int classID = pResults.getInt("classID");
+				String className = pResults.getString("className");
+				String classDesc = pResults.getString("classDesc");
+				int classSize = pResults.getInt("classSize");
+				String startTime = pResults.getString("startTime");
+				String endTime = pResults.getString("endTime");
+				Double memFee = pResults.getDouble("memFee");
+				Double nonMemFee = pResults.getDouble("nonMemFee");
+				
+				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee);
+				programs.add(p);
+			}
+			
+			return programs;
+		} catch (SQLException e) {
+			System.out.println("DB Query failed in method getProgramsList()");
+			return new ArrayList<>();
+		}
+	}
+	
+	public static ArrayList<program> findAll(database db) {
+		return find(db, null);
 	}
 
 	@Override
@@ -67,19 +105,27 @@ public class program {
 	}
 
 	public String getStartTime() {
+		return startTime.format(SQL_FORMAT);
+	}
+	
+	public LocalDateTime getStartTimeAsDateTime() {
 		return startTime;
 	}
 
 	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+		this.startTime = LocalDateTime.parse(startTime, SQL_FORMAT);
 	}
 
 	public String getEndTime() {
+		return endTime.format(SQL_FORMAT);
+	}
+	
+	public LocalDateTime getEndTimeAsDateTime() {
 		return endTime;
 	}
 
 	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+		this.endTime = LocalDateTime.parse(endTime, SQL_FORMAT);
 	}
 
 	public Double getMemFee() {
