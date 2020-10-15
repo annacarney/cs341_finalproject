@@ -47,7 +47,6 @@ public class person {
 					person p = new person(firstName, lastName, phoneNumber, userName, password, isStaff, isAdmin);
 					persons.add(p);
 				}
-				
 				return persons;
 			} catch (SQLException e) {
 				System.out.println("DB Query failed");

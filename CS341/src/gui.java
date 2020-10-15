@@ -87,7 +87,7 @@ public class gui {
 		JLabel title = new JLabel("Create an Account");
 		title.setBounds(0, 0, 780, 65);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setFont(new Font("SystemBold", Font.BOLD, 35));
+		title.setFont(new Font("SansSerif", Font.BOLD, 35));
 		title.setForeground(new Color(0,76,153));
 		f.add(title, 0);	
 		
@@ -123,15 +123,12 @@ public class gui {
 			System.out.print("Db query failed.");
 		}
 		
-		
-		
 		DefaultListModel lister = new DefaultListModel();
+		int avail_progsSize = programs.length;
 		for(int i = 0; i < programs.length; i++) {
 			lister.addElement(programs[i]);
 		}
 		JList<String> avail_progs = new JList<>(lister);
-		
-		
 		
 		//lists the available programs
 		JList<String> jListSelect = new JList<>();
@@ -149,7 +146,6 @@ public class gui {
         scrollableTextArea.setMinimumSize(new Dimension(100,50));
         scrollableTextArea.setBounds(100,200,220,200);
         f.add(scrollableTextArea);
-        //f.add(avail_progs,0);
 		f.repaint();
 		
 		//get all available program times
@@ -171,27 +167,18 @@ public class gui {
 		searchB.addActionListener(new ActionListener() { 
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
+	            	
 	            	String selected = (String)searchTimes.getSelectedItem();
 	            	String [] p = h.getProgramsFromTime(selected);
 	            	
+	            	//delete current programs from JList
+	            	lister.clear();
+	            	
+	            	//add selected programs
 	            	for(int i = 0; i < p.length; i++) {
-	        			lister.addElement(p[i]);
-	        			System.out.println(p[i]);
-	        		}
-	            	JList<String> avail_progs = new JList<>(lister);
-	            	avail_progs.setFixedCellHeight(15);
-	        		avail_progs.setFixedCellWidth(100);
-	        		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-	        		avail_progs.setVisibleRowCount(5);
-	        		avail_progs.setBounds(100, 200, 200, 200);
-	        		avail_progs.setVisible(true);
-	                JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
-	                scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
-	                scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
-	                scrollableTextArea.setMinimumSize(new Dimension(100,50));
-	                scrollableTextArea.setBounds(100,200,220,200);
-	                f.add(scrollableTextArea);
-	            	f.repaint();
+	            		lister.add(i, p[i]);
+	            	}
+	            
 	            }
 	        });
 	
@@ -324,11 +311,11 @@ public class gui {
 		
 		//text entry for username and pass (member and staff member login only)
 		JTextField username = new JTextField(30);
-		username.setBounds(400,396,150,27);
+		username.setBounds(400,396,200,27);
 		f.add(username);
 
 		JPasswordField password = new JPasswordField(30);
-		password.setBounds(400,426,150,27);
+		password.setBounds(400,426,200,27);
 		f.add(password);
 
 		//submit button to enter username and password 
@@ -342,9 +329,13 @@ public class gui {
 			public void actionPerformed(ActionEvent e)
 			{
 				System.out.println("Sign In button clicked");
-				int ret = signIn(username.getText(), password.getText());		//getPassword() return char[] ******
+				int ret = signIn(username.getText(), password.getText());		//getPassword() return char[] **
 				if(ret == 0) {	//login failed - credentials not recognized
 					username.setText("Invalid username/password" );
+					password.setText("");
+				}else {
+					//close window
+					f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
 				}
 				
 				}
@@ -373,7 +364,6 @@ public class gui {
 			{
 				viewPrograms();
 				System.out.println("Available Programs button clicked");
-				// viewProg s = new viewProg();
 				}
 			});
 		
