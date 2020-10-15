@@ -17,6 +17,8 @@ public class program {
 	private int classSize;
 	private LocalDateTime startTime;			//Format: YYYY-MM-DD HH:MM:SS:SSS
 	private LocalDateTime endTime;				//Format: YYYY-MM-DD HH:MM:SS:SSS
+	private String startTime_inDB;			//Format: YYYY-MM-DD HH:MM:SS:SSS
+	private String endTime_inDB;		
 	private Double memFee;
 	private Double nonMemFee;
 	
@@ -28,9 +30,12 @@ public class program {
 		this.classDesc = classDesc;
 		this.classSize = classSize;
 		this.startTime = LocalDateTime.parse(startTime, SQL_FORMAT);
-		this.endTime = LocalDateTime.parse(endTime, SQL_FORMAT);
+		this.endTime = LocalDateTime.parse(endTime, SQL_FORMAT);		
 		this.memFee = memFee;
 		this.nonMemFee = nonMemFee;
+		
+		startTime_inDB = startTime;
+		endTime_inDB = endTime; 
 	}
 	
 	//query helper
@@ -69,7 +74,7 @@ public class program {
 	public String toString() {
 		return "Program [classID=" + classID + ", className=" + className + ", classDesc=" + classDesc + ", classSize="
 				+ classSize + ", startTime=" + startTime + ", endTime=" + endTime + ", memFee=" + memFee
-				+ ", nonMemFee=" + nonMemFee + "]";
+				+ ", nonMemFee=" + nonMemFee + "startTime_inDB= " + startTime_inDB + "endTime_inDB= " + endTime_inDB + "]";
 	}
 
 	public int getClassID() {

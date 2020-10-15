@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -38,9 +39,31 @@ public class helper {
 		}
 	}
 	
+	// "signs in" a user from the database
+	// verifies the username/password is valid for staffmember/member
+	public person signInUser(String username, String password) {
+		
+		//need to write
+		ArrayList<person> p = person.find(db, "Person.userName LIKE ('" + username + "')" + "AND Person.password LIKE ('" + password + "')" );
+		person user = null;
+		for(int i = 0; i < p.size(); i++) {
+			user = p.get(i);
+		}
+		
+		
+		return user;
+	}
+	
 	//returns the program names for all programs whose start time is time
 	public String[] getProgramsFromTime(String time) {
-		ArrayList<program> p = program.find(db, "Program.startTime IN ('" + time + "')");
+		DateTimeFormatter sqlForm = DateTimeFormatter.ofPattern("yyyy-MM-dd[ ][]HH");		//want it in this form to query
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM y hh:mm a"); 			//currently in this form
+		LocalDateTime sqlTime = LocalDateTime.parse(time, formatter);
+		String t = sqlTime.format(sqlForm);
+		System.out.println(t);
+		
+		ArrayList<program> p = program.find(db, "Program.startTime LIKE ('" + t + "%')");
 		
 		String[] ret = new String[p.size()];
 		program prog = null;
@@ -48,14 +71,15 @@ public class helper {
 		for(int i = 0; i < p.size(); i++) {
 			prog = p.get(i);
 			s = prog.getClassName();
+			System.out.println(s);
 			ret[i] = s;
 			s = "";
 		}
 		return ret;
 	}
-	
-	// returns all available program times 
-	public String[] getProgramTimes() {
+		
+	// returns all available program times in a formatted way 
+	public String[] getProgramTimesFormatted() {
 		DateTimeFormatter dt = DateTimeFormatter.ofPattern("d MMM y hh:mm a");
 		ArrayList<program> programs = program.findAll(db);
 		
@@ -213,95 +237,6 @@ public class helper {
 				}
 				}
 			} ));
-	}
-	
-	
-	//NOT USED! -- [creates a pop up window to register a user for a program]
-	public void registerNM(ListModel m) {
-		String className = "";
-		
-		JFrame f = new JFrame();
-		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		f.setSize(800,300);  	
-		f.setLayout(null);
-		f.setVisible(true);
-		f.getContentPane().setBackground(new Color(204,203,255));
-		f.setTitle("YMCA | Register for a Program ");
-		ImageIcon icon = new ImageIcon("ymcalogo.JPG");
-		f.setIconImage(icon.getImage());
-		
-		if(m == null || m.getSize()==0) {	//no selection
-			JLabel title = new JLabel("ERROR! - No class selected. Please close this window.");
-			title.setBounds(0, 0, 600, 65);
-			title.setHorizontalAlignment(SwingConstants.CENTER);
-			title.setFont(new Font("SansSerif", Font.BOLD, 18));
-			title.setForeground(new Color(0,76,153));
-			f.add(title, 0);
-			
-			return;
-		}
-		
-		className = (String) m.getElementAt(0);
-		
-		JLabel title = new JLabel("Register for " + className + "?");
-		title.setBounds(0, 0, 600, 65);
-		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setFont(new Font("SansSerif", Font.BOLD, 25));
-		title.setForeground(new Color(0,76,153));
-		f.add(title, 0);
-		
-		//print class details
-		String[] classinfo = null;
-		try {
-			classinfo = program_details(className);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return;
-		}
-		JList<String> l = new JList(classinfo);
-		l.setFixedCellHeight(15);
-	    l.setFixedCellWidth(100);
-	    l.setVisibleRowCount(5);
-	    l.setBounds(0,50,400,400);
-	    l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		l.setVisible(true);
-	    f.add(l,0);
-		
-		//get non member credentials - name and phone number 
-		// TO DO *************
-	    JLabel un = new JLabel("Name: ");
-		un.setBounds(440, 50, 100, 150); //(x,y, width, height)
-		un.setHorizontalAlignment(SwingConstants.CENTER);
-		un.setFont(new Font("SansSerif", Font.BOLD, 15));
-		un.setForeground(Color.black);
-		f.add(un, 0);
-		
-		JLabel pw = new JLabel("Phone Number: ");
-		pw.setBounds(420, 100, 200, 150); //(x,y, width, height)
-		pw.setHorizontalAlignment(SwingConstants.CENTER);
-		pw.setFont(new Font("SansSerif", Font.BOLD, 15));
-		pw.setForeground(Color.black);
-		f.add(pw, 0);
-		
-		//text entry for username and pass (member and staff member login only)
-		JTextField name = new JTextField(50);
-		name.setBounds(600,90,150,50);
-		f.add(name);
-
-		JTextField phone = new JTextField(30);
-		phone.setBounds(600,150,150,50);
-		f.add(phone);
-	    
-		//register user for class. add to database
-	    // TO DO ***************************************
-		
-		JButton reg = new JButton("Register!");
-		reg.setBounds(550,200,150,30);
-		reg.setBackground(new Color(127,0,255));
-		reg.setForeground(Color.white);
-		f.add(reg);
-		
 	}
 	
 	//returns the details for a program based on className

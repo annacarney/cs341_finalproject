@@ -17,6 +17,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Vector;
 
 import javax.swing.*;	
@@ -33,15 +35,39 @@ public class gui {
 	}
 	
 	//signs a user in with login credentials (username, password)
-	public void signIn(String username, String password) {
+	//returns 1 on succesful login, 0 otherwise
+	public int signIn(String username, String password) {
 		
 		System.out.println(username);
 		System.out.println(password);
 		
-		//implement me
+		//sign in the user
+		person p = h.signInUser(username, password);
 		
+		if(p == null) {
+			//wrong sign in credentials
+			System.out.print("Sign in failed");
+			return 0; 
+		}
+		
+		//create the sign in page based on if user is 
+		if(p.getIsStaff() == true) {
+			//user is a staff member
+			System.out.print("Sign in worked = is a staff member");
+			staffGUI sg = new staffGUI(p);
+			
+		} else if(p.getIsAdmin() == true ){
+			//user is an admin
+			System.out.print("Sign in worked = is an admin");
+			
+		} else {
+			//user is a member
+			System.out.print("Sign in worked = is a member");
+			memberGUI mg = new memberGUI(p);
+		}
+		
+		return 1;
 	}
-	
 	
 	// creates an account for a user (staff-member/member/non-member)
 	public void createAccount() {
@@ -61,7 +87,7 @@ public class gui {
 		JLabel title = new JLabel("Create an Account");
 		title.setBounds(0, 0, 780, 65);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setFont(new Font("SansSerif", Font.BOLD, 35));
+		title.setFont(new Font("SystemBold", Font.BOLD, 35));
 		title.setForeground(new Color(0,76,153));
 		f.add(title, 0);	
 		
@@ -127,7 +153,7 @@ public class gui {
 		f.repaint();
 		
 		//get all available program times
-		String[] progTimes = h.getProgramTimes();
+		String[] progTimes = h.getProgramTimesFormatted();
 		
 		//need to search for programs at a time ** add here
 		JComboBox<String> searchTimes = new JComboBox(progTimes);
@@ -145,26 +171,27 @@ public class gui {
 		searchB.addActionListener(new ActionListener() { 
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-//	            	String selected = (String)searchTimes.getSelectedItem();
-//	            	String [] p = h.getProgramsFromTime(selected);
-//	            	
-//	            	for(int i = 0; i < p.length; i++) {
-//	        			lister.addElement(p[i]);
-//	        		}
-//	            	JList<String> avail_progs = new JList<>(lister);
-//	            	avail_progs.setFixedCellHeight(15);
-//	        		avail_progs.setFixedCellWidth(100);
-//	        		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-//	        		avail_progs.setVisibleRowCount(5);
-//	        		avail_progs.setBounds(100, 200, 200, 200);
-//	        		avail_progs.setVisible(true);
-//	                JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
-//	                scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
-//	                scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
-//	                scrollableTextArea.setMinimumSize(new Dimension(100,50));
-//	                scrollableTextArea.setBounds(100,200,220,200);
-//	                f.add(scrollableTextArea);
-//	            	f.repaint();
+	            	String selected = (String)searchTimes.getSelectedItem();
+	            	String [] p = h.getProgramsFromTime(selected);
+	            	
+	            	for(int i = 0; i < p.length; i++) {
+	        			lister.addElement(p[i]);
+	        			System.out.println(p[i]);
+	        		}
+	            	JList<String> avail_progs = new JList<>(lister);
+	            	avail_progs.setFixedCellHeight(15);
+	        		avail_progs.setFixedCellWidth(100);
+	        		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+	        		avail_progs.setVisibleRowCount(5);
+	        		avail_progs.setBounds(100, 200, 200, 200);
+	        		avail_progs.setVisible(true);
+	                JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
+	                scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
+	                scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
+	                scrollableTextArea.setMinimumSize(new Dimension(100,50));
+	                scrollableTextArea.setBounds(100,200,220,200);
+	                f.add(scrollableTextArea);
+	            	f.repaint();
 	            }
 	        });
 	
@@ -268,7 +295,6 @@ public class gui {
 			{
 				createAccount();
 				System.out.println("Create an Account button clicked");
-				// AddAcctGUI g = new AddAcctGUI();
 				}
 			});
 		
@@ -316,7 +342,11 @@ public class gui {
 			public void actionPerformed(ActionEvent e)
 			{
 				System.out.println("Sign In button clicked");
-				signIn(username.getText(), password.getText());		//getPassword() return char[] ****** 
+				int ret = signIn(username.getText(), password.getText());		//getPassword() return char[] ******
+				if(ret == 0) {	//login failed - credentials not recognized
+					username.setText("Invalid username/password" );
+				}
+				
 				}
 			} ));
 		
