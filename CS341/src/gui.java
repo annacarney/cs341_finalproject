@@ -335,7 +335,8 @@ public class gui {
 					password.setText("");
 				}else {
 					//close window
-					f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
+					
+					//f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));		//going to leave this open for now -- would be nice to have a back button or something
 				}
 				
 				}
