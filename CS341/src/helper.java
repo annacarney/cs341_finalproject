@@ -39,6 +39,40 @@ public class helper {
 		}
 	}
 	
+	//adds a new program to the database
+	//returns 1 on success, 0 on fail
+	public int addProgram(String classID, String className, String classDesc, String classSize, String startTime, String endTime, String memFee, String nonMemFee) {
+		//classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee
+		
+		//add error handling **************************
+		int id;
+		int size;
+		double mfee;
+		double nmfee;
+		
+		try { 
+            id = Integer.parseInt(classID); 
+            size = Integer.parseInt(classSize);
+            mfee = Double.parseDouble(memFee);
+            nmfee = Double.parseDouble(nonMemFee);
+        } 
+        catch (NumberFormatException e) { 
+        	return 1;
+        } 
+		
+		program newProgram = new program(id, className, classDesc, size, startTime, endTime, mfee, nmfee);
+		//program newProgram = new program(1121, "Karate", "Learn the art of karate", 25, "2020-10-25 08:30:00:000", "2020-10-25 09:30:00:000", 13.00, 23.23);
+		try {
+			db.insertProgram(newProgram);			//is this working? :/
+			System.out.print("new program added to db");
+		} catch (SQLException e) {
+			System.out.print("db failed to add program");
+			return 0;
+		}
+		
+		return 1;
+	}
+	
 	// "signs in" a user from the database
 	// verifies the username/password is valid for staffmember/member
 	public person signInUser(String username, String password) {
