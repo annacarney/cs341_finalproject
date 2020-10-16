@@ -57,12 +57,14 @@ public class helper {
             nmfee = Double.parseDouble(nonMemFee);
         } 
         catch (NumberFormatException e) { 
+        	System.out.println("Number exception - not added");
         	return 1;
         } 
 		
 		program newProgram = new program(id, className, classDesc, size, startTime, endTime, mfee, nmfee);
 		//program newProgram = new program(1121, "Karate", "Learn the art of karate", 25, "2020-10-25 08:30:00:000", "2020-10-25 09:30:00:000", 13.00, 23.23);
 		try {
+			//db.connect();
 			db.insertProgram(newProgram);			//is this working? :/
 			System.out.print("new program added to db");
 		} catch (SQLException e) {

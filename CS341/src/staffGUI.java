@@ -102,7 +102,7 @@ public class staffGUI {
 	            		classID.setText("Enter ID! ");
 	            	} else {
 	            		int result = h.addProgram(classID.getText(), className.getText(), classDesc.getText(), classSize.getText(), startTime.getText(), endTime.getText(), memFee.getText(), nonmemFee.getText());
-	            			
+	            			//System.out.println("calling addprogram");
 	            		//print out to make sure program was added
 	            		try {
 							String[] progs = h.getProgramsList();

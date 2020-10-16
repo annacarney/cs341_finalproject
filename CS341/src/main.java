@@ -38,12 +38,12 @@ public class main {
 			ArrayList<program> programs = new ArrayList<>();
 			
 			//Create a new person object.
-			person newPerson = new person("Rick", "Sanchez", "1-800-rickandmorty", "rick", "morty", false, false);
-			db.insertEmployee(newPerson);
+			//person newPerson = new person("Rick", "Sanchez", "1-800-rickandmorty", "rick", "morty", false, false);
+			//db.insertEmployee(newPerson);
 			
 			//Create a new program object.
-			program newProgram = new program(1001, "Happy Feet", "This is a class for people who like to dance.", 15, "2020-10-22 08:00:00:000", "2020-10-22 09:00:00:000", 12.23, 34.23);
-			db.insertProgram(newProgram);
+			//program newProgram = new program(1001, "Happy Feet", "This is a class for people who like to dance.", 15, "2020-10-22 08:00:00:000", "2020-10-22 09:00:00:000", 12.23, 34.23);
+			//db.insertProgram(newProgram);
 			
 			ResultSet results = db.runQuery("SELECT firstName, lastName, phoneNumber, userName, password, isAdmin, isStaff FROM Person");
 

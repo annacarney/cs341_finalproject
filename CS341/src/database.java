@@ -68,6 +68,8 @@ public class database {
 		stmt.setString(6, p.getEndTime());
 		stmt.setDouble(7, p.getMemFee());
 		stmt.setDouble(8, p.getNonMemFee());
+		
+		stmt.execute();
 	}
 	
 	
