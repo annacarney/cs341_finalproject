@@ -55,6 +55,18 @@ public class database {
 		stmt.setString(5, p.getPassword());
 		stmt.setBoolean(6, p.getIsStaff());
 		stmt.setBoolean(7, p.getIsAdmin());
+		
+		stmt.execute();
+	}
+	
+	public void insertNonMember(nonMember nm) throws SQLException {
+		String sql = "INSERT INTO Program (firstName, lastName, phoneNumber) VALUES (?, ?, ?)";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setString(1, nm.getFirstName());
+		stmt.setString(2, nm.getLastName());
+		stmt.setString(3, nm.getPhoneNumber());
+		
+		stmt.execute();
 	}
 	
 	public void insertProgram(program p) throws SQLException {
