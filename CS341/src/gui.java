@@ -87,7 +87,7 @@ public class gui {
 		JLabel title = new JLabel("Create an Account");
 		title.setBounds(0, 0, 780, 65);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setFont(new Font("SansSerif", Font.PLAIN, 35));
+		title.setFont(new Font("SansSerif", Font.BOLD, 35));
 		title.setForeground(new Color(0,76,153));
 		f.add(title, 0);	
 		

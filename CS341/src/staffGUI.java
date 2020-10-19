@@ -31,7 +31,7 @@ public class staffGUI {
 	//time is in the format YYYY-MM-DD HH:MM:SS:SSS
 	private void registerDisplay() {
 		
-		JLabel text = new JLabel("Register a new Program:");
+		JLabel text = new JLabel("Add a new Program:");
 		text.setBounds(0, 120, 450, 50);
 		text.setHorizontalAlignment(SwingConstants.CENTER);
 		text.setFont(new Font("SansSerif", Font.BOLD, 20));
@@ -102,8 +102,7 @@ public class staffGUI {
 	            		classID.setText("Enter ID! ");
 	            	} else {
 	            		int result = h.addProgram(classID.getText(), className.getText(), classDesc.getText(), classSize.getText(), startTime.getText(), endTime.getText(), memFee.getText(), nonmemFee.getText());
-	            			//System.out.println("calling addprogram");
-	            		//print out to make sure program was added
+	            	
 	            		try {
 							String[] progs = h.getProgramsList();
 							for(int i = 0; i < progs.length; i++) {
@@ -116,6 +115,30 @@ public class staffGUI {
 	            		
 	            			if(result == 0) {
 	            				classDesc.setText("Unable to add program. Please try again.");
+	            			} else {
+	            				
+	            				JFrame popup = new JFrame();
+	            				popup.setSize(350,250);
+	            				popup.setLayout(null);
+	            				popup.setVisible(true);
+	            				popup.getContentPane().setBackground(Color.white);
+	            				popup.setTitle("Success!");
+	            				ImageIcon icon = new ImageIcon("ymcalogo.JPG");
+	            				popup.setIconImage(icon.getImage());
+	            				
+	            				ImageIcon banner = new ImageIcon("smallsmiley.PNG");
+	            				JLabel b = new JLabel(banner);
+	            				b.setBounds(120, 20, 300, 200); //(x,y, width, height)
+	            				popup.add(b);
+	            				
+	            				JLabel title = new JLabel("Added " + className.getText() + "!");
+	            				title.setBounds(0, 0, 200, 90);
+	            				title.setHorizontalAlignment(SwingConstants.CENTER);
+	            				title.setFont(new Font("SansSerif", Font.BOLD, 15));
+	            				title.setForeground(Color.black);
+	            				popup.add(title, 0);
+	            				popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	            				
 	            			}
 	            	}
 	            	

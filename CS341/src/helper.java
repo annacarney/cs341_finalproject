@@ -200,7 +200,7 @@ public class helper {
 		l.setFixedCellHeight(15);
 		l.setFixedCellWidth(100);
 		l.setVisibleRowCount(5);
-		l.setBounds(450, 200, 220, 200);
+		l.setBounds(350, 200, 400, 200);
 		l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		l.setVisible(true);
 		f.add(l, 0);
@@ -252,7 +252,7 @@ public class helper {
 		l.setFixedCellHeight(15);
 		l.setFixedCellWidth(100);
 		l.setVisibleRowCount(5);
-		l.setBounds(450, 200, 220, 200);
+		l.setBounds(350, 200, 400, 200);
 		l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		l.setVisible(true);
 		f.add(l, 0);
