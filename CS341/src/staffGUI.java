@@ -61,7 +61,7 @@ public class staffGUI {
 		JLabel nmtext = new JLabel("Non-Member Fee:");
 		nmtext.setBounds(425, 165, 200, 50);
 		nmtext.setHorizontalAlignment(SwingConstants.CENTER);
-		nmtext.setFont(new Font("SansSerif", Font.BOLD, 15));
+		nmtext.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		nmtext.setForeground(new Color(128,128,0));
 		m.add(nmtext, 0);
 		JTextField nonmemFee = new JTextField(30);
@@ -86,7 +86,7 @@ public class staffGUI {
 		m.add(classDesc);	
 		
 		JButton regB = new JButton("Add Program");
-		regB.setBounds(150, 570, 100, 30);
+		regB.setBounds(150, 570, 200, 40);
 		regB.setBackground(new Color(51,102,0));
 		regB.setForeground(Color.white);
 		m.add(regB);
@@ -129,7 +129,7 @@ public class staffGUI {
 		JLabel text = new JLabel(t);
 		text.setBounds(x, y, w, h);
 		text.setHorizontalAlignment(SwingConstants.CENTER);
-		text.setFont(new Font("SansSerif", Font.BOLD, 15));
+		text.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		text.setForeground(new Color(128,128,0));
 		m.add(text, 0);
 	}

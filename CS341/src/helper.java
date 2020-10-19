@@ -128,8 +128,6 @@ public class helper {
 		for (int i = 0; i < programs.size(); i++) {
 			p = programs.get(i);
 			s = p.getStartTimeAsDateTime().format(dt);
-			// s = "Start: " + p.getStartTimeAsDateTime().format(dt) + " End: " +
-			// p.getEndTimeAsDateTime().format(dt);
 			ret[i] = s;
 			s = "";
 		}
@@ -175,17 +173,21 @@ public class helper {
 	}
 
 	// registers a member for a program they select
-	public void registerM(ListModel m, JFrame f, person p) {
+	public void registerM(String m, JFrame f, person p) {
+		
+		if (m == null || m.equals("")) { // no selection
+			return;
+		}
 
 		// register user for class. add to database
 		JButton reg = new JButton("Register!");
-		reg.setBounds(550, 700, 150, 30);
+		reg.setBounds(457, 410, 200, 40);
 		reg.setBackground(new Color(127, 0, 255));
 		reg.setForeground(Color.white);
 		f.add(reg);
 		f.repaint();
 		
-		String className = (String) m.getElementAt(0);
+		String className = m;
 		String[] classinfo = null;
 		try {
 			classinfo = program_details(className, true);
@@ -198,7 +200,7 @@ public class helper {
 		l.setFixedCellHeight(15);
 		l.setFixedCellWidth(100);
 		l.setVisibleRowCount(5);
-		l.setBounds(0, 550, 400, 400);
+		l.setBounds(450, 200, 220, 200);
 		l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		l.setVisible(true);
 		f.add(l, 0);
@@ -207,7 +209,7 @@ public class helper {
 		// when button is clicked
 		reg.addActionListener((new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(" " + p.getFirstName() + " " + p.getLastName() + "Registering for " + m.getElementAt(0));
+				System.out.println(" " + p.getFirstName() + " " + p.getLastName() + "Registering for " + m);
 				
 				//add to database
 				//implement me***********************************************************************************************
@@ -218,29 +220,22 @@ public class helper {
 	}
 
 	// registers a non member for a program they select
-	public void registerNM(ListModel m, JFrame f) {
+	public void registerNM(String m, JFrame f) {
 		String className = "";
 		JLabel title = null;
 
-		if (m == null || m.getSize() == 0) { // no selection
-			title = new JLabel("No program selected. Please try again.");
-			title.setBounds(170, 380, 600, 65);
-			title.setHorizontalAlignment(SwingConstants.CENTER);
-			title.setFont(new Font("SansSerif", Font.BOLD, 18));
-			title.setForeground(new Color(0, 76, 153));
-			f.add(title, 0);
-			f.repaint();
+		if (m == null || m.equals("")) { // no selection
+
 			return;
 		}
 
-		className = (String) m.getElementAt(0);
+		className = m;
 
-		// JLabel title = new JLabel("Register for " + className + "?");
 		title = new JLabel("Want to Register?");
-		title.setBounds(293, 500, 600, 65);
+		title.setBounds(500, 410, 200, 40);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setFont(new Font("SansSerif", Font.BOLD, 25));
-		title.setForeground(new Color(0, 76, 153));
+		title.setFont(new Font("SansSerif", Font.PLAIN, 25));
+		title.setForeground(new Color(51,102,0));
 		f.add(title, 0);
 		f.repaint();
 
@@ -257,7 +252,7 @@ public class helper {
 		l.setFixedCellHeight(15);
 		l.setFixedCellWidth(100);
 		l.setVisibleRowCount(5);
-		l.setBounds(0, 550, 400, 400);
+		l.setBounds(450, 200, 220, 200);
 		l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		l.setVisible(true);
 		f.add(l, 0);
@@ -265,47 +260,47 @@ public class helper {
 
 		// get non member credentials - name and phone number
 		JLabel fn = new JLabel("First Name: ");
-		fn.setBounds(440, 500, 100, 150); // (x,y, width, height)
+		fn.setBounds(440, 390, 100, 150); // (x,y, width, height)
 		fn.setHorizontalAlignment(SwingConstants.CENTER);
-		fn.setFont(new Font("SansSerif", Font.BOLD, 15));
+		fn.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		fn.setForeground(Color.black);
 		f.add(fn, 0);
 		f.repaint();
 
 		JLabel un = new JLabel("Last Name: ");
-		un.setBounds(440, 550, 100, 150); // (x,y, width, height)
+		un.setBounds(440, 440, 100, 150); // (x,y, width, height)
 		un.setHorizontalAlignment(SwingConstants.CENTER);
-		un.setFont(new Font("SansSerif", Font.BOLD, 15));
+		un.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		un.setForeground(Color.black);
 		f.add(un, 0);
 		f.repaint();
 
 		JLabel pw = new JLabel("Phone Number: ");
-		pw.setBounds(404, 600, 200, 150); // (x,y, width, height)
+		pw.setBounds(404, 490, 200, 150); // (x,y, width, height)
 		pw.setHorizontalAlignment(SwingConstants.CENTER);
-		pw.setFont(new Font("SansSerif", Font.BOLD, 15));
+		pw.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		pw.setForeground(Color.black);
 		f.add(pw, 0);
 		f.repaint();
 
 		JTextField name = new JTextField(50);
-		name.setBounds(600, 560, 150, 40);
+		name.setBounds(600, 450, 150, 40);
 		f.add(name);
 		f.repaint();
 
 		JTextField lname = new JTextField(50);
-		lname.setBounds(600, 605, 150, 40);
+		lname.setBounds(600, 498, 150, 40);
 		f.add(lname);
 		f.repaint();
 
 		JTextField phone = new JTextField(30);
-		phone.setBounds(600, 649, 150, 40);
+		phone.setBounds(600, 542, 150, 40);
 		f.add(phone);
 		f.repaint();
 
 		// register user for class. add to database
 		JButton reg = new JButton("Register!");
-		reg.setBounds(550, 700, 150, 30);
+		reg.setBounds(500, 600, 200, 40);
 		reg.setBackground(new Color(127, 0, 255));
 		reg.setForeground(Color.white);
 		f.add(reg);
@@ -314,8 +309,8 @@ public class helper {
 		// when button is clicked
 		reg.addActionListener((new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(" " + name.getText() + phone.getText() + "Registering for " + m.getElementAt(0));
-				int s = enrollNM(name.getText(), lname.getText(), phone.getText(), (String) m.getElementAt(0));
+				System.out.println(" " + name.getText() + phone.getText() + "Registering for " + m);
+				int s = enrollNM(name.getText(), lname.getText(), phone.getText(), m);
 				if (s == 0) { // failed to enroll user
 
 				}

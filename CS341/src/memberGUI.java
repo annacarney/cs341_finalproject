@@ -59,7 +59,7 @@ public class memberGUI {
 	//lets a member view/register for available programs 
 	private void displayPrograms(JFrame f) {
 		
-		JLabel title = new JLabel("Available Programs");
+		JLabel title = new JLabel("Welcome back, " + u.getFirstName() + "!");
 		title.setBounds(0, 0, 780, 65);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("SansSerif", Font.BOLD, 35));
@@ -70,8 +70,6 @@ public class memberGUI {
 		try {
 			programs = h.getProgramsList();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			//e1.printStackTrace();
 			System.out.print("Db query failed.");
 		}
 		
@@ -110,7 +108,7 @@ public class memberGUI {
 		
 		JButton searchB = new JButton("Search Programs from Time");
 		searchB.setBounds(500, 100, 200, 30);
-		searchB.setBackground(new Color(127,0,255));
+		searchB.setBackground(new Color(51,102,0));
 		searchB.setForeground(Color.white);
 		f.add(searchB);
 		f.repaint();
@@ -133,35 +131,10 @@ public class memberGUI {
 	            
 	            }
 	        });
-	
-		
-		//lists the programs selected by the user
-	    jListSelect.setFixedCellHeight(15);
-	    jListSelect.setFixedCellWidth(100);
-	    jListSelect.setVisibleRowCount(5);
-	    jListSelect.setBounds(500,200,200,200);
-	    jListSelect.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		jListSelect.setVisible(true);
-	    f.add(jListSelect,0);
-		
-	    //button for the user to select programs to register for 
-		JButton selectButton = new JButton("Select>>>");
-		 selectButton.addActionListener(new ActionListener() {
-	            
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	            	//FIX ME LATER --- ONLY SELECTS ONE ITEM!!!!!!!!!!!!!!!!!
-	                jListSelect.setListData(avail_progs.getSelectedValuesList().toArray(new String[0]));
-	            }
-	        });
-		 selectButton.setBounds(370,300,90,40);
-		 selectButton.setBackground(new Color(51,102,0));
-		 selectButton.setForeground(Color.white);
-		 f.add(selectButton);
 		 
 		 //button to register for selected programs
 		 JButton registerButton = new JButton("Show Program Details");
-		 registerButton.setBounds(500,410,200,40);
+		 registerButton.setBounds(110,410,200,40);
 		 registerButton.setForeground(Color.white);
 		 registerButton.setBackground(new Color(51,102,0));
 		 
@@ -170,7 +143,7 @@ public class memberGUI {
 		 registerButton.addActionListener(new ActionListener() {
 			 @Override
 	            public void actionPerformed(ActionEvent e) {
-	              h.registerM(jListSelect.getModel(), f, u);
+	              h.registerM(avail_progs.getSelectedValue(), f, u);
 			 	}
 		 });
 		 

@@ -87,7 +87,7 @@ public class gui {
 		JLabel title = new JLabel("Create an Account");
 		title.setBounds(0, 0, 780, 65);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setFont(new Font("SansSerif", Font.BOLD, 35));
+		title.setFont(new Font("SansSerif", Font.PLAIN, 35));
 		title.setForeground(new Color(0,76,153));
 		f.add(title, 0);	
 		
@@ -98,11 +98,14 @@ public class gui {
 		JFrame f = new JFrame();
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
+		//JScrollPane pane=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        //f.getContentPane().add(pane);
+		
 		//styling for the window
 		f.setSize(800,800);  	
 		f.setLayout(null);
 		f.setVisible(true);
-		f.getContentPane().setBackground(new Color(229,255,204));
+		f.getContentPane().setBackground(new Color(219, 232, 220)); //(229,255,204));
 		f.setTitle("YMCA | View Available Programs ");
 		ImageIcon icon = new ImageIcon("ymcalogo.JPG");
 		f.setIconImage(icon.getImage());
@@ -132,12 +135,11 @@ public class gui {
 		
 		//lists the available programs
 		JList<String> jListSelect = new JList<>();
-		//JList<String> avail_progs = new JList<>(programs);
 		avail_progs.setFixedCellHeight(15);
 		avail_progs.setFixedCellWidth(100);
 		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		avail_progs.setVisibleRowCount(5);
-		avail_progs.setBounds(100, 200, 200, 200);
+		avail_progs.setBounds(100,200,220,200);
 		avail_progs.setVisible(true);
 		
         JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
@@ -158,7 +160,7 @@ public class gui {
 		
 		JButton searchB = new JButton("Search Programs from Time");
 		searchB.setBounds(500, 100, 200, 30);
-		searchB.setBackground(new Color(127,0,255));
+		searchB.setBackground(new Color(51,102,0));
 		searchB.setForeground(Color.white);
 		f.add(searchB);
 		f.repaint();
@@ -181,35 +183,10 @@ public class gui {
 	            
 	            }
 	        });
-	
-		
-		//lists the programs selected by the user
-	    jListSelect.setFixedCellHeight(15);
-	    jListSelect.setFixedCellWidth(100);
-	    jListSelect.setVisibleRowCount(5);
-	    jListSelect.setBounds(500,200,200,200);
-	    jListSelect.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		jListSelect.setVisible(true);
-	    f.add(jListSelect,0);
-		
-	    //button for the user to select programs to register for 
-		JButton selectButton = new JButton("Select>>>");
-		 selectButton.addActionListener(new ActionListener() {
-	            
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	            	//FIX ME LATER --- ONLY SELECTS ONE ITEM!!!!!!!!!!!!!!!!!
-	                jListSelect.setListData(avail_progs.getSelectedValuesList().toArray(new String[0]));
-	            }
-	        });
-		 selectButton.setBounds(370,300,90,40);
-		 selectButton.setBackground(new Color(51,102,0));
-		 selectButton.setForeground(Color.white);
-		 f.add(selectButton);
 		 
 		 //button to register for selected programs
 		 JButton registerButton = new JButton("Show Program Details");
-		 registerButton.setBounds(500,410,200,40);
+		 registerButton.setBounds(110,410,200,40);
 		 registerButton.setForeground(Color.white);
 		 registerButton.setBackground(new Color(51,102,0));
 		 
@@ -218,7 +195,8 @@ public class gui {
 		 registerButton.addActionListener(new ActionListener() {
 			 @Override
 	            public void actionPerformed(ActionEvent e) {
-	              h.registerNM(jListSelect.getModel(), f);
+				 h.registerNM(avail_progs.getSelectedValue(), f);
+				// System.out.print(" " + avail_progs.getSelectedValue());
 			 	}
 		 });
 		 
@@ -255,7 +233,7 @@ public class gui {
 		f.add(b);
 		
 		//Text area
-		JLabel title = new JLabel("Welcome to the YMCA!");
+		JLabel title = new JLabel("Welcome to the YMCA");
 		title.setBounds(0, 0, 780, 65);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("SansSerif", Font.BOLD, 35));
@@ -266,7 +244,7 @@ public class gui {
 		JLabel t2 = new JLabel("New? Click below to create an account!");
 		t2.setBounds(150, 180, 500, 120); //(x,y, width, height)
 		t2.setHorizontalAlignment(SwingConstants.CENTER);
-		t2.setFont(new Font("SansSerif", Font.BOLD, 20));
+		t2.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		t2.setForeground(purple);
 		f.add(t2, 0);
 		
@@ -291,21 +269,21 @@ public class gui {
 		JLabel t3 = new JLabel("Existing members and staff members sign in here!");
 		t3.setBounds(99, 295, 600, 150); //(x,y, width, height)
 		t3.setHorizontalAlignment(SwingConstants.CENTER);
-		t3.setFont(new Font("SansSerif", Font.BOLD, 20));
+		t3.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		t3.setForeground(purple);
 		f.add(t3, 0);
 		
 		JLabel un = new JLabel("Username: ");
 		un.setBounds(301, 330, 100, 150); //(x,y, width, height)
 		un.setHorizontalAlignment(SwingConstants.CENTER);
-		un.setFont(new Font("SansSerif", Font.BOLD, 15));
+		un.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		un.setForeground(purple);
 		f.add(un, 0);
 		
 		JLabel pw = new JLabel("Password: ");
 		pw.setBounds(301, 360, 100, 150); //(x,y, width, height)
 		pw.setHorizontalAlignment(SwingConstants.CENTER);
-		pw.setFont(new Font("SansSerif", Font.BOLD, 15));
+		pw.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		pw.setForeground(purple);
 		f.add(pw, 0);
 		
@@ -348,7 +326,7 @@ public class gui {
 		JLabel t4 = new JLabel("Non-members, click below to view programs!");
 		t4.setBounds(99, 509, 600, 150); //(x,y, width, height)
 		t4.setHorizontalAlignment(SwingConstants.CENTER);
-		t4.setFont(new Font("SansSerif", Font.BOLD, 20));
+		t4.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		t4.setForeground(purple);
 		f.add(t4, 0);
 		
@@ -374,7 +352,7 @@ public class gui {
 		f.setSize(800,800);  	//800 width, 800 height
 		f.setLayout(null);
 		f.setVisible(true);
-		f.getContentPane().setBackground(background_color);
+		f.getContentPane().setBackground(Color.white);		//background_color);
 		f.setTitle("YMCA | Welcome ");
 		ImageIcon icon = new ImageIcon("ymcalogo.JPG");
 		f.setIconImage(icon.getImage());
