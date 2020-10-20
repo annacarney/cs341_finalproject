@@ -87,6 +87,25 @@ public class program {
 		}
 	}
 	
+	public static ArrayList<String> findDistinctTimes(database db) {
+		ResultSet pResults;
+		try {
+			pResults = db.runQuery("SELECT DISTINCT startTime FROM Program ");
+			ArrayList<String> programs = new ArrayList<>();
+			
+			while(pResults.next()) {
+				String startTime = pResults.getString("startTime");
+				//System.out.print(startTime);
+				programs.add(startTime);
+			}
+			
+			return programs;
+		} catch (SQLException e) {
+			System.out.println("DB Query failed");
+			return new ArrayList<>();
+		}	
+	}
+	
 	public static ArrayList<program> findAll(database db) {
 		return find(db, null);
 	}

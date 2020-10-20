@@ -101,7 +101,7 @@ public class memberGUI {
 		//get all available program times
 		String[] progTimes = h.getProgramTimes();
 		
-		//need to search for programs at a time ** add here
+		//need to search for programs at a time *
 		JComboBox<String> searchTimes = new JComboBox(progTimes);
 		searchTimes.setBounds(100,100,380,30);
 		f.add(searchTimes);

@@ -95,14 +95,14 @@ public class helper {
 
 	// returns the program names for all programs whose start time is time
 	public String[] getProgramsFromTime(String time) {
-		DateTimeFormatter sqlForm = DateTimeFormatter.ofPattern("yyyy-MM-dd[ ][]HH"); // want it in this form to query
+		//DateTimeFormatter sqlForm = DateTimeFormatter.ofPattern("yyyy-MM-dd[ ][]HH"); // want it in this form to query
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM y hh:mm a"); // currently in this form
-		LocalDateTime sqlTime = LocalDateTime.parse(time, formatter);
-		String t = sqlTime.format(sqlForm);
-		System.out.println(t);
+		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM y hh:mm a"); // currently in this form
+		//LocalDateTime sqlTime = LocalDateTime.parse(time, formatter);
+		//String t = sqlTime.format(sqlForm);
+		//System.out.println(t);
 
-		ArrayList<program> p = program.find(db, "Program.startTime LIKE ('" + t + "%')");
+		ArrayList<program> p = program.find(db, "Program.startTime LIKE ('" + time + "%')");
 
 		String[] ret = new String[p.size()];
 		program prog = null;
@@ -119,17 +119,17 @@ public class helper {
 
 	// returns all available program times in a formatted way
 	public String[] getProgramTimes() {
-	//	DateTimeFormatter dt = DateTimeFormatter.ofPattern("d MMM y hh:mm a");
-		ArrayList<program> programs = program.findAll(db);
+
+		ArrayList<String> programs = program.findDistinctTimes(db);			
 
 		String[] ret = new String[programs.size()];
-		program p = null;
-		String s = "";
+		String p = null;
+		//String s = "";
 		for (int i = 0; i < programs.size(); i++) {
 			p = programs.get(i);
-			s = p.getStartTime();
-			ret[i] = s;
-			s = "";
+			//s = p.getStartTime();
+			ret[i] = p;
+			//s = "";
 		}
 		return ret;
 	}
