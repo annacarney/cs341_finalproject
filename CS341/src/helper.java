@@ -127,9 +127,7 @@ public class helper {
 		//String s = "";
 		for (int i = 0; i < programs.size(); i++) {
 			p = programs.get(i);
-			//s = p.getStartTime();
 			ret[i] = p;
-			//s = "";
 		}
 		return ret;
 	}
@@ -182,7 +180,7 @@ public class helper {
 		// register user for class. add to database
 		JButton reg = new JButton("Register!");
 		reg.setBounds(457, 410, 200, 40);
-		reg.setBackground(new Color(127, 0, 255));
+		reg.setBackground(new Color(22,65,45));
 		reg.setForeground(Color.white);
 		f.add(reg);
 		f.repaint();
@@ -232,7 +230,7 @@ public class helper {
 		className = m;
 
 		title = new JLabel("Want to Register?");
-		title.setBounds(500, 410, 200, 40);
+		title.setBounds(460, 410, 200, 40);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("SansSerif", Font.PLAIN, 25));
 		title.setForeground(new Color(51,102,0));
@@ -260,7 +258,7 @@ public class helper {
 
 		// get non member credentials - name and phone number
 		JLabel fn = new JLabel("First Name: ");
-		fn.setBounds(440, 390, 100, 150); // (x,y, width, height)
+		fn.setBounds(400, 390, 100, 150); // (x,y, width, height)
 		fn.setHorizontalAlignment(SwingConstants.CENTER);
 		fn.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		fn.setForeground(Color.black);
@@ -268,7 +266,7 @@ public class helper {
 		f.repaint();
 
 		JLabel un = new JLabel("Last Name: ");
-		un.setBounds(440, 440, 100, 150); // (x,y, width, height)
+		un.setBounds(400, 440, 100, 150); // (x,y, width, height)
 		un.setHorizontalAlignment(SwingConstants.CENTER);
 		un.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		un.setForeground(Color.black);
@@ -276,7 +274,7 @@ public class helper {
 		f.repaint();
 
 		JLabel pw = new JLabel("Phone Number: ");
-		pw.setBounds(404, 490, 200, 150); // (x,y, width, height)
+		pw.setBounds(335, 490, 200, 150); // (x,y, width, height)
 		pw.setHorizontalAlignment(SwingConstants.CENTER);
 		pw.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		pw.setForeground(Color.black);
@@ -284,24 +282,24 @@ public class helper {
 		f.repaint();
 
 		JTextField name = new JTextField(50);
-		name.setBounds(600, 450, 150, 40);
+		name.setBounds(560, 450, 150, 40);
 		f.add(name);
 		f.repaint();
 
 		JTextField lname = new JTextField(50);
-		lname.setBounds(600, 498, 150, 40);
+		lname.setBounds(560, 498, 150, 40);
 		f.add(lname);
 		f.repaint();
 
 		JTextField phone = new JTextField(30);
-		phone.setBounds(600, 542, 150, 40);
+		phone.setBounds(560, 542, 150, 40);
 		f.add(phone);
 		f.repaint();
 
 		// register user for class. add to database
 		JButton reg = new JButton("Register!");
-		reg.setBounds(500, 600, 200, 40);
-		reg.setBackground(new Color(127, 0, 255));
+		reg.setBounds(460, 600, 200, 40);
+		reg.setBackground(new Color(22,65,45));		//(127, 0, 255));
 		reg.setForeground(Color.white);
 		f.add(reg);
 		f.repaint();

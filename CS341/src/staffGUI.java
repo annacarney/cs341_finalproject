@@ -209,7 +209,7 @@ public class staffGUI {
 		m.repaint();
 		
 		JLabel title = new JLabel("Welcome to the YMCA Staff Member Page, " + u.getFirstName() + "!");
-		title.setBounds(0, 0, 900, 50);
+		title.setBounds(280, 0, 900, 50);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("SansSerif", Font.BOLD, 35));
 		title.setForeground(new Color(128,128,0));

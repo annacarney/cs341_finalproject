@@ -41,15 +41,22 @@ public class memberGUI {
 		JFrame f = new JFrame();
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	    f.setSize(screenSize.width, screenSize.height);
+		//Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    //f.setSize(screenSize.width, screenSize.height);
+		f.setSize(800,800);
 		
 		f.setLayout(null);
 		f.setVisible(true);
-		f.getContentPane().setBackground(new Color(212,233,196));
-		f.setTitle("Welcome Returning Member! | YMCA ");
+		f.getContentPane().setBackground(new Color(221,229,193));
+		f.setTitle("Member Page | YMCA ");
 		ImageIcon icon = new ImageIcon("ymcalogo.JPG");
 		f.setIconImage(icon.getImage());
+		f.repaint();
+		
+		ImageIcon banner = new ImageIcon("colors.png");
+		JLabel b = new JLabel(banner);
+		b.setBounds(0, 700, 800, 100); //(x,y, width, height)
+		f.add(b);
 		f.repaint();
 		
 		displayPrograms(f);

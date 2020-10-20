@@ -105,10 +105,15 @@ public class gui {
 		f.setSize(800,800);  	
 		f.setLayout(null);
 		f.setVisible(true);
-		f.getContentPane().setBackground(new Color(219, 232, 220)); //(229,255,204));
+		f.getContentPane().setBackground(new Color(221,229,193)); 
 		f.setTitle("YMCA | View Available Programs ");
 		ImageIcon icon = new ImageIcon("ymcalogo.JPG");
 		f.setIconImage(icon.getImage());
+		
+		ImageIcon banner = new ImageIcon("colors.png");
+		JLabel b = new JLabel(banner);
+		b.setBounds(0, 700, 800, 100); //(x,y, width, height)
+		f.add(b);
 		
 		JLabel title = new JLabel("Available Programs");
 		title.setBounds(0, 0, 780, 65);
@@ -121,8 +126,6 @@ public class gui {
 		try {
 			programs = h.getProgramsList();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			//e1.printStackTrace();
 			System.out.print("Db query failed.");
 		}
 		
@@ -196,7 +199,6 @@ public class gui {
 			 @Override
 	            public void actionPerformed(ActionEvent e) {
 				 h.registerNM(avail_progs.getSelectedValue(), f);
-				// System.out.print(" " + avail_progs.getSelectedValue());
 			 	}
 		 });
 		 
