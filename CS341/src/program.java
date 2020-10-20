@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -10,39 +11,54 @@ import java.util.ArrayList;
  * Created: 10/10/2020
  */
 public class program {
-	private final DateTimeFormatter SQL_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd[-][ ]HH:mm:ss:SSS");
+//	private final DateTimeFormatter SQL_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd[-][ ]HH:mm:ss:SSS");
 	private int classID;
 	private String className;
 	private String classDesc;
 	private int classSize;
-	private LocalDateTime startTime;			//Format: YYYY-MM-DD HH:MM:SS:SSS
-	private LocalDateTime endTime;				//Format: YYYY-MM-DD HH:MM:SS:SSS
-	private String startTime_inDB;			//Format: YYYY-MM-DD HH:MM:SS:SSS
-	private String endTime_inDB;		
+//	private LocalDateTime startTime;			//Format: YYYY-MM-DD HH:MM:SS:SSS
+//	private LocalDateTime endTime;				//Format: YYYY-MM-DD HH:MM:SS:SSS
+//	private String startTime_inDB;			
+//	private String endTime_inDB;			
+	private String startTime;					//Format: HH:MM
+	private String endTime;					//Format: HH:MM
 	private Double memFee;
 	private Double nonMemFee;
 	
+	private String startDate;				//	Format: YYYY-MM-DD
+	private String endDate;				//	Format: YYYY-MM-DD
+	private String days;				// Mon, Tues, Wed, Thurs, Fri, Sat, Sun
+	private String location;
+	
 	//Constructor
-	public program(int classID, String className, String classDesc, int classSize, String startTime, String endTime, Double memFee, Double nonMemFee) {
+	public program(int classID, String className, String classDesc, int classSize, String startTime, String endTime, Double memFee, Double nonMemFee, String startDate, String endDate, String days, String location) {
 		super();
 		this.classID = classID;
 		this.className = className;
 		this.classDesc = classDesc;
 		this.classSize = classSize;
-		this.startTime = LocalDateTime.parse(startTime, SQL_FORMAT);
-		this.endTime = LocalDateTime.parse(endTime, SQL_FORMAT);		
+		//this.startTime = LocalDateTime.parse(startTime, SQL_FORMAT);
+		//this.endTime = LocalDateTime.parse(endTime, SQL_FORMAT);		
 		this.memFee = memFee;
 		this.nonMemFee = nonMemFee;
 		
-		startTime_inDB = startTime;
-		endTime_inDB = endTime; 
+		//startTime_inDB = startTime;
+		//endTime_inDB = endTime; 
+		
+		this.startTime = startTime;
+		this.endTime = endTime;
+		
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.days = days;
+		this.location = location;
 	}
 	
 	//query helper
 	public static ArrayList<program> find(database db, String where) {
 		ResultSet pResults;
 		try {
-			pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee FROM Program " + (where != null ? "WHERE " + where : ""));
+			pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location FROM Program " + (where != null ? "WHERE " + where : ""));
 			ArrayList<program> programs = new ArrayList<>();
 			
 			while(pResults.next()) {
@@ -55,7 +71,12 @@ public class program {
 				Double memFee = pResults.getDouble("memFee");
 				Double nonMemFee = pResults.getDouble("nonMemFee");
 				
-				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee);
+				String startDate = pResults.getString("startDate");
+				String endDate = pResults.getString("endDate");
+				String days = pResults.getString("days");
+				String location = pResults.getString("location");
+				
+				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location);
 				programs.add(p);
 			}
 			
@@ -74,7 +95,7 @@ public class program {
 	public String toString() {
 		return "Program [classID=" + classID + ", className=" + className + ", classDesc=" + classDesc + ", classSize="
 				+ classSize + ", startTime=" + startTime + ", endTime=" + endTime + ", memFee=" + memFee
-				+ ", nonMemFee=" + nonMemFee + "startTime_inDB= " + startTime_inDB + "endTime_inDB= " + endTime_inDB + "]";
+				+ ", nonMemFee=" + nonMemFee + "startTime= " + startTime + "endTime= " + endTime + "startDate" + startDate + "endDate= " + endDate + "days= " + days + "location= " + location + "]";
 	}
 
 	public int getClassID() {
@@ -110,27 +131,30 @@ public class program {
 	}
 
 	public String getStartTime() {
-		return startTime.format(SQL_FORMAT);
+		return startTime;
+		//return startTime.format(SQL_FORMAT);
 	}
 	
-	public LocalDateTime getStartTimeAsDateTime() {
-		return startTime;
-	}
+//	public LocalDateTime getStartTimeAsDateTime() {
+//		return startTime;
+//	}
 
 	public void setStartTime(String startTime) {
-		this.startTime = LocalDateTime.parse(startTime, SQL_FORMAT);
+		this.startTime = startTime;
 	}
 
 	public String getEndTime() {
-		return endTime.format(SQL_FORMAT);
+		return endTime;
+		//return endTime.format(SQL_FORMAT);
 	}
 	
-	public LocalDateTime getEndTimeAsDateTime() {
-		return endTime;
-	}
+//	public LocalDateTime getEndTimeAsDateTime() {
+//		return endTime;
+//	}
 
 	public void setEndTime(String endTime) {
-		this.endTime = LocalDateTime.parse(endTime, SQL_FORMAT);
+		this.endTime = endTime;
+		//this.endTime = LocalDateTime.parse(endTime, SQL_FORMAT);
 	}
 
 	public Double getMemFee() {
@@ -147,6 +171,38 @@ public class program {
 
 	public void setNonMemFee(Double nonMemFee) {
 		this.nonMemFee = nonMemFee;
+	}
+	
+	public String getStartDate() {
+		return startDate;
+	}
+	
+	public void setStartDate(String s) {
+		this.startDate = s;
+	}
+	
+	public String getEndDate() {
+		return endDate;
+	}
+	
+	public void setEndDate(String e) {
+		this.endDate = e;
+	}
+	
+	public String getDays() {
+		return days;
+	}
+	
+	public void setDays(String d) {
+		this.days = d;
+	}
+	
+	public String getLocation() {
+		return location;
+	}
+	
+	public void setLocation(String l) {
+		this.location = l;
 	}
 
 }

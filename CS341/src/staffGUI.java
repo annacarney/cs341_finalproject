@@ -68,17 +68,40 @@ public class staffGUI {
 		nonmemFee.setBounds(455,200,100,27);
 		m.add(nonmemFee);
 		
-		addText("Start Time: ", 45, 275, 100, 50);
+		addText("Start Date: ", 15, 275, 100, 50);
+		JTextField startDate = new JTextField(30);
+		startDate.setBounds(15,310,100,27);
+		startDate.setText("MM-DD-YYYY");
+		m.add(startDate);
+		
+		addText("End Date: ", 125, 275, 100, 50);
+		JTextField endDate = new JTextField(30);
+		endDate.setBounds(125,310,100,27);
+		endDate.setText("MM-DD-YYYY");
+		m.add(endDate);
+		
+		addText("Start Time: ", 235, 275, 100, 50);
 		JTextField startTime = new JTextField(30);
-		startTime.setBounds(45,310,200,27);
-		startTime.setText("YYYY-MM-DD HH:MM:SS:SSS");
+		startTime.setBounds(235,310,100,27);
+		startTime.setText("HH:MM");
 		m.add(startTime);
 		
-		addText("End Time: ", 265, 275, 100, 50);
+		addText("End Time: ", 345, 275, 100, 50);
 		JTextField endTime = new JTextField(30);
-		endTime.setBounds(265,310,200,27);
-		endTime.setText("YYYY-MM-DD HH:MM:SS:SSS");
+		endTime.setBounds(345,310,100,27);
+		endTime.setText("HH:MM");
 		m.add(endTime);
+		
+		addText("Days: ", 455, 275, 100, 50);
+		JTextField days = new JTextField(30);
+		days.setBounds(455,310,235,27);
+		days.setText("Ex. Mon Tues Wed Thurs Fri");
+		m.add(days);
+		
+		addText("Location: ", 585, 165, 100, 50);
+		JTextField loc = new JTextField(30);
+		loc.setBounds(585,200,100,27);
+		m.add(loc);
 		
 		addText("Description: ", 15, 375, 100, 50);
 		JTextField classDesc = new JTextField(30);
@@ -101,7 +124,7 @@ public class staffGUI {
 	            	if(classID.getText().equals("") || classID.getText() == null) {
 	            		classID.setText("Enter ID! ");
 	            	} else {
-	            		int result = h.addProgram(classID.getText(), className.getText(), classDesc.getText(), classSize.getText(), startTime.getText(), endTime.getText(), memFee.getText(), nonmemFee.getText());
+	            		int result = h.addProgram(classID.getText(), className.getText(), classDesc.getText(), classSize.getText(), startTime.getText(), endTime.getText(), memFee.getText(), nonmemFee.getText(), startDate.getText(), endDate.getText(), days.getText(), loc.getText());
 	            	
 	            		try {
 							String[] progs = h.getProgramsList();

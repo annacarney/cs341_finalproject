@@ -43,7 +43,7 @@ public class helper {
 	// adds a new program to the database
 	// returns 1 on success, 0 on fail
 	public int addProgram(String classID, String className, String classDesc, String classSize, String startTime,
-			String endTime, String memFee, String nonMemFee) {
+			String endTime, String memFee, String nonMemFee, String startDate, String endDate, String days, String loc) {
 		// classID, className, classDesc, classSize, startTime, endTime, memFee,
 		// nonMemFee
 
@@ -63,12 +63,12 @@ public class helper {
 			return 1;
 		}
 
-		program newProgram = new program(id, className, classDesc, size, startTime, endTime, mfee, nmfee);
+		program newProgram = new program(id, className, classDesc, size, startTime, endTime, mfee, nmfee, startDate, endDate, days, loc);		
 		// program newProgram = new program(1121, "Karate", "Learn the art of karate",
 		// 25, "2020-10-25 08:30:00:000", "2020-10-25 09:30:00:000", 13.00, 23.23);
 		try {
 			// db.connect();
-			db.insertProgram(newProgram); // is this working? :/
+			db.insertProgram(newProgram); 
 			System.out.print("new program added to db");
 		} catch (SQLException e) {
 			System.out.print("db failed to add program");
@@ -118,8 +118,8 @@ public class helper {
 	}
 
 	// returns all available program times in a formatted way
-	public String[] getProgramTimesFormatted() {
-		DateTimeFormatter dt = DateTimeFormatter.ofPattern("d MMM y hh:mm a");
+	public String[] getProgramTimes() {
+	//	DateTimeFormatter dt = DateTimeFormatter.ofPattern("d MMM y hh:mm a");
 		ArrayList<program> programs = program.findAll(db);
 
 		String[] ret = new String[programs.size()];
@@ -127,7 +127,7 @@ public class helper {
 		String s = "";
 		for (int i = 0; i < programs.size(); i++) {
 			p = programs.get(i);
-			s = p.getStartTimeAsDateTime().format(dt);
+			s = p.getStartTime();
 			ret[i] = s;
 			s = "";
 		}
@@ -322,23 +322,25 @@ public class helper {
 	private String[] program_details(String className, Boolean isMember ) throws SQLException {
 		ArrayList<program> programs = program.find(db, "Program.className IN ('" + className + "')");
 		program p = programs.get(0);
-		DateTimeFormatter dt = DateTimeFormatter.ofPattern("d MMM y hh:mm a");
-		String[] ret = new String[8];
+		String[] ret = new String[10];
 
 		ret[0] = "Program Details: ";
 		ret[1] = p.getClassName();
 		ret[2] = p.getClassDesc();
 		ret[3] = "Class Size: " + p.getClassSize();
-		ret[4] = "Start Time: " + p.getStartTimeAsDateTime().format(dt);
-		ret[5] = "End Time: " + p.getEndTimeAsDateTime().format(dt);
 		
 		if(isMember) {
-			ret[6] = "Member Fee (your price): $" + p.getMemFee();
-			ret[7] = "Non Member Fee: $" + p.getNonMemFee();
+			ret[4] = "Member Fee (your price): $" + p.getMemFee();
+			ret[5] = "Non Member Fee: $" + p.getNonMemFee();
 		} else {
-			ret[6] = "Member Fee: $" + p.getMemFee();
-			ret[7] = "Non Member Fee (your price): $" + p.getNonMemFee();
+			ret[4] = "Member Fee: $" + p.getMemFee();
+			ret[5] = "Non Member Fee (your price): $" + p.getNonMemFee();
 		}
+		
+		ret[6] = "Dates: " + p.getStartDate() + " through " + p.getEndDate();
+		ret[7] = "Time: " + p.getStartTime() + " - " + p.getEndTime();
+		ret[8] = "Days: " + p.getDays();
+		ret[9] = "Location: " + p.getLocation();
 
 		return ret;
 	}

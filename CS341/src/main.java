@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class main {
 				System.out.println(e);
 			}
 			
-			ResultSet pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee FROM Program");
+			ResultSet pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location FROM Program");
 
 			while(pResults.next()) {
 				int classID = pResults.getInt("classID");
@@ -75,7 +76,12 @@ public class main {
 				Double memFee = pResults.getDouble("memFee");
 				Double nonMemFee = pResults.getDouble("nonMemFee");
 				
-				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee);
+				String startDate = pResults.getString("startDate");
+				String endDate = pResults.getString("endDate");
+				String days = pResults.getString("days");
+				String location = pResults.getString("location");
+				
+				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location);
 				programs.add(p);
 				
 				System.out.println(p);

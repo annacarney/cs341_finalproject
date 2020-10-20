@@ -70,7 +70,7 @@ public class database {
 	}
 	
 	public void insertProgram(program p) throws SQLException {
-		String sql = "INSERT INTO Program (classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO Program (classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, p.getClassID());
 		stmt.setString(2, p.getClassName());
@@ -80,6 +80,11 @@ public class database {
 		stmt.setString(6, p.getEndTime());
 		stmt.setDouble(7, p.getMemFee());
 		stmt.setDouble(8, p.getNonMemFee());
+		
+		stmt.setString(9, p.getStartDate());
+		stmt.setString(10, p.getEndDate());
+		stmt.setString(11, p.getDays());
+		stmt.setString(12, p.getLocation());
 		
 		stmt.execute();
 	}

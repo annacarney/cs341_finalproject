@@ -151,7 +151,7 @@ public class gui {
 		f.repaint();
 		
 		//get all available program times
-		String[] progTimes = h.getProgramTimesFormatted();
+		String[] progTimes = h.getProgramTimes();
 		
 		//need to search for programs at a time ** add here
 		JComboBox<String> searchTimes = new JComboBox(progTimes);
