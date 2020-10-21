@@ -89,7 +89,7 @@ public class staffGUI {
 		addText("End Time: ", 345, 275, 100, 50);
 		JTextField endTime = new JTextField(30);
 		endTime.setBounds(345,310,100,27);
-		endTime.setText("HH:MM");
+		endTime.setText("HH:MM am/pm");
 		m.add(endTime);
 		
 		addText("Days: ", 455, 275, 100, 50);
