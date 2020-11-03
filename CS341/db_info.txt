@@ -1,0 +1,51 @@
+CS 341 YMCA Final Project 
+
+The database is structured as follows:
+
+Person
+
+	//This is a structure to hold person information
+	
+	Name							DataType
+	
+	FirstName						String
+	LastName						String
+	PhoneNumber						String
+	Username (primary key)			String
+	Password						String
+	IsStaff							Boolean
+	IsAdmin							Boolean
+
+NonMember
+	
+	//This is an Entity to store non-member information
+
+	Name							DataType
+	
+	FirstName						String
+	LastName						String
+	PhoneNumber						String
+	
+Program
+
+	//This is a structure to hold program information
+	
+	Name							DataType
+	
+	ClassID (primary key)			Integer
+	ClassName						String
+	ClassDesc						String
+	ClassSize						Integer
+	StartTime						Text
+	EndTime							Text
+	MemFee							Double
+	NonMemFee						Double
+
+Enrolled
+
+	//This is a relational database that stores which person is enrolled in which program.
+	
+	Name							DataType
+	
+	Username (foreign key)			String
+	ClassID (foreign key)			Integer
