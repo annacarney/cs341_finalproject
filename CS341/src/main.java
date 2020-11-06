@@ -20,9 +20,6 @@ public class main {
     	System.out.println("Hi");
     	System.out.println("SS");
     	System.out.println("Test to push to ZeJia-Branch");
-    	gui g = new gui();
-    	
-    	
     }
 	
     public static void testdb() {
