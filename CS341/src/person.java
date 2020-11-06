@@ -1,3 +1,7 @@
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /*
  * person.java
  * Person object class
@@ -23,6 +27,32 @@ public class person {
 		this.isStaff = isStaff;
 		this.isAdmin = isAdmin;
 	}
+	
+	//query helper
+		public static ArrayList<person> find(database db, String where) {
+			ResultSet pResults;
+			try {
+				pResults = db.runQuery("SELECT firstName, lastName, phoneNumber, userName, password, isStaff, isAdmin FROM Person " + (where != null ? "WHERE " + where : ""));
+				ArrayList<person> persons = new ArrayList<>();
+				
+				while(pResults.next()) {
+					String firstName = pResults.getString("firstName");
+					String lastName = pResults.getString("lastName");
+					String phoneNumber = pResults.getString("phoneNumber");
+					String userName = pResults.getString("userName");
+					String password = pResults.getString("password");
+					Boolean isStaff = pResults.getBoolean("isStaff");
+					Boolean isAdmin = pResults.getBoolean("isAdmin");
+					
+					person p = new person(firstName, lastName, phoneNumber, userName, password, isStaff, isAdmin);
+					persons.add(p);
+				}
+				return persons;
+			} catch (SQLException e) {
+				System.out.println("DB Query failed");
+				return new ArrayList<>();
+			}
+		}
 
 	public String getFirstName() {
 		return firstName;

@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class main {
     	
     	
     }
-
+	
     public static void testdb() {
     	database db = new database();
 		
@@ -38,12 +39,12 @@ public class main {
 			ArrayList<program> programs = new ArrayList<>();
 			
 			//Create a new person object.
-			person newPerson = new person("Rick", "Sanchez", "1-800-rickandmorty", "rick", "morty", false, false);
-			db.insertEmployee(newPerson);
+			//person newPerson = new person("Rick", "Sanchez", "1-800-rickandmorty", "rick", "morty", false, false);
+			//db.insertEmployee(newPerson);
 			
 			//Create a new program object.
-			program newProgram = new program(1001, "Happy Feet", "This is a class for people who like to dance.", 15, "2020-10-22 08:00:00:000", "2020-10-22 09:00:00:000", 12.23, 34.23);
-			db.insertProgram(newProgram);
+			//program newProgram = new program(1001, "Happy Feet", "This is a class for people who like to dance.", 15, "2020-10-22 08:00:00:000", "2020-10-22 09:00:00:000", 12.23, 34.23);
+			//db.insertProgram(newProgram);
 			
 			ResultSet results = db.runQuery("SELECT firstName, lastName, phoneNumber, userName, password, isAdmin, isStaff FROM Person");
 
@@ -63,7 +64,7 @@ public class main {
 				System.out.println(e);
 			}
 			
-			ResultSet pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee FROM Program");
+			ResultSet pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location FROM Program");
 
 			while(pResults.next()) {
 				int classID = pResults.getInt("classID");
@@ -75,7 +76,12 @@ public class main {
 				Double memFee = pResults.getDouble("memFee");
 				Double nonMemFee = pResults.getDouble("nonMemFee");
 				
-				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee);
+				String startDate = pResults.getString("startDate");
+				String endDate = pResults.getString("endDate");
+				String days = pResults.getString("days");
+				String location = pResults.getString("location");
+				
+				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location);
 				programs.add(p);
 				
 				System.out.println(p);

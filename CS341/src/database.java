@@ -55,10 +55,22 @@ public class database {
 		stmt.setString(5, p.getPassword());
 		stmt.setBoolean(6, p.getIsStaff());
 		stmt.setBoolean(7, p.getIsAdmin());
+		
+		stmt.execute();
+	}
+	
+	public void insertNonMember(nonMember nm) throws SQLException {
+		String sql = "INSERT INTO Program (firstName, lastName, phoneNumber) VALUES (?, ?, ?)";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setString(1, nm.getFirstName());
+		stmt.setString(2, nm.getLastName());
+		stmt.setString(3, nm.getPhoneNumber());
+		
+		stmt.execute();
 	}
 	
 	public void insertProgram(program p) throws SQLException {
-		String sql = "INSERT INTO Program (classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO Program (classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, p.getClassID());
 		stmt.setString(2, p.getClassName());
@@ -68,6 +80,14 @@ public class database {
 		stmt.setString(6, p.getEndTime());
 		stmt.setDouble(7, p.getMemFee());
 		stmt.setDouble(8, p.getNonMemFee());
+		
+		stmt.setString(9, p.getStartDate());
+		stmt.setString(10, p.getEndDate());
+		stmt.setString(11, p.getDays());
+		stmt.setString(12, p.getLocation());
+		
+		stmt.execute();
 	}
+	
 	
 }
