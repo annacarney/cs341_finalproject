@@ -16,15 +16,9 @@ public class main {
     	testdb();
     	
     	//generate welcome screen
-
-    	gui g = new gui();	
-    	System.out.println("Hi");
-    	System.out.println("Testing out new branch");
-
     	gui g = new gui();
     	
     	
-
     }
 	
     public static void testdb() {
@@ -43,6 +37,7 @@ public class main {
 			
 			ArrayList<person> people = new ArrayList<>();
 			ArrayList<program> programs = new ArrayList<>();
+			ArrayList<enrolled> enro = new ArrayList<>();
 			
 			//Create a new person object.
 			//person newPerson = new person("Rick", "Sanchez", "1-800-rickandmorty", "rick", "morty", false, false);
@@ -51,6 +46,44 @@ public class main {
 			//Create a new program object.
 			//program newProgram = new program(1001, "Happy Feet", "This is a class for people who like to dance.", 15, "2020-10-22 08:00:00:000", "2020-10-22 09:00:00:000", 12.23, 34.23);
 			//db.insertProgram(newProgram);
+			
+			//Create a new nonMember object.
+			nonMember newNon = new nonMember("Morty", "Sanchez", "608-790-3666");
+			db.insertNonMember(newNon);
+			
+			//Insert nonMember '608-790-3666' into classID 1
+			ResultSet nonM, progg;
+			String usname = "";
+			int ii = 0;
+			nonM = db.nonMemLookup("608-790-3666");
+			progg = db.programLookup(1);
+			while (nonM.next()) {
+				usname = nonM.getString("phoneNumber");
+			}
+			while (progg.next()) {
+				ii = progg.getInt("classID");
+			}
+			
+			System.out.println("Adding username = " + usname + " ClassID = " + ii + " to the db");
+			enrolled en = new enrolled(usname, ii);
+			db.insertEnrolled(en);
+			
+			//Insert member 'rick' into classID 2
+			ResultSet per, pp;
+			String uname = "";
+			int i = 0;
+			per = db.personLookup("rick");
+			pp = db.programLookup(2);
+			while(per.next()) {
+				uname = per.getString("userName");
+			}
+			while (pp.next()) {
+				i = pp.getInt("classID");
+			}
+			
+			System.out.println("Adding username = " + uname + " ClassID = " + i + " to the db");
+			enrolled en1 = new enrolled(uname, i);
+			db.insertEnrolled(en1);
 			
 			ResultSet results = db.runQuery("SELECT firstName, lastName, phoneNumber, userName, password, isAdmin, isStaff FROM Person");
 
@@ -92,6 +125,18 @@ public class main {
 				
 				System.out.println(p);
 
+			}
+			
+			ResultSet enresults = db.runQuery("SELECT userName, classID FROM Enrolled");
+
+			while(enresults.next()) {
+				String userName = enresults.getString("userName");
+				int clID = enresults.getInt("classID");
+				
+				enrolled enr = new enrolled(userName, clID);
+				enro.add(enr);
+				
+				System.out.println(enr);
 			}
 			
 		} catch (SQLException e1) {
