@@ -180,6 +180,58 @@ public class helper {
 		return 1;
 	}
 
+	public boolean validation (String m, person p, int classID) {
+		ArrayList<program> prog = program.find(db, "Program.className LIKE ('"+m+"%')");
+		program progToEnroll=null;
+		for(int i=0; i<prog.size(); i++) {
+			if(classID==prog.get(i).getClassID()) {
+				progToEnroll=prog.get(i);
+			}
+		}
+		
+		//Check for capacity and if the person is already enrolled in the current program.
+		if(progToEnroll.getEnrolledHP().size()<progToEnroll.getClassSize() && progToEnroll.getEnrolledHP().contains(p.getPhoneNumber())==false) {
+			//If the person is not enrolled in any of the program, the person can enroll in the current program.
+			if(p.getEnrolledID().size()==0) {
+				return true;
+			}
+			else {
+				//Loop through the programs that the person is enrolled in to validate if the person can enroll in the current program.
+				for(int i=0; i<p.getEnrolledID().size(); i++) {
+					int temp=p.getEnrolledID().get(i);
+					String strID=Integer.toString(temp);
+					ArrayList<program> tempProg = program.find(db, "Program.className LIKE ('"+strID+"%')");
+					program checkProg = tempProg.get(0);
+					
+					//Check if there are same days between the program
+					if(progToEnroll.getDays().contains(checkProg.getDays()) || checkProg.getDays().contains(progToEnroll.getDays())) {
+						//If so, check for the time
+						String enrollStart=progToEnroll.getStartTime();
+						String checkStart=checkProg.getStartTime();
+						
+						//Check if they have the exact same start time. If so, return false.
+						if(enrollStart.equalsIgnoreCase(checkStart)) {
+							return false;
+						}
+						
+						String[] hoursEnrollStart=enrollStart.split(":");
+						String[] hoursCheckStart=checkStart.split(":");
+						
+						/*Check to see which of the program has the smaller starting time. Then, compare the end time of that program to the start time
+						 *of the other program. If it is >, then return false.*/
+						
+						/*Check to see which of the program has the smaller starting date. Then, compare the end date of that program to the start date
+						 *of the other program. If it is >, then return false.*/ 
+					}
+				}
+			}
+		}
+		else {
+			return false;
+		}
+		return true;
+	}
+	
 	// registers a member for a program they select
 	public void registerM(String m, JFrame f, person p) {
 		final String classId; 

@@ -16,6 +16,7 @@ public class person {
 	private String password;
 	private Boolean isStaff;
 	private Boolean isAdmin;
+	private ArrayList<Integer> enrolledID;
 	
 	public person(String firstName, String lastName, String phoneNumber, String userName, String password, Boolean isStaff, Boolean isAdmin) {
 		super();
@@ -26,6 +27,7 @@ public class person {
 		this.password = password;
 		this.isStaff = isStaff;
 		this.isAdmin = isAdmin;
+		this.enrolledID=new ArrayList<>();
 	}
 	
 	//query helper
@@ -115,4 +117,7 @@ public class person {
 		return "Person [firstName=" + firstName + " " + "lastName=" + lastName + " " + "Phone Number=" + phoneNumber + " " + "Username=" + userName + " " + "Password=" + password + " " + "isAdmin=" + isAdmin + " " + "isStaff=" + isStaff + "]";
 	}
 
+	public ArrayList<Integer> getEnrolledID(){
+		return this.enrolledID;
+	}
 }

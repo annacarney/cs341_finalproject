@@ -29,6 +29,7 @@ public class program {
 	private String endDate;				//	Format: YYYY-MM-DD
 	private String days;				// Mon, Tues, Wed, Thurs, Fri, Sat, Sun
 	private String location;
+	private ArrayList<String> enrolledHP;
 	
 	//Constructor
 	public program(int classID, String className, String classDesc, int classSize, String startTime, String endTime, Double memFee, Double nonMemFee, String startDate, String endDate, String days, String location) {
@@ -52,6 +53,7 @@ public class program {
 		this.endDate = endDate;
 		this.days = days;
 		this.location = location;
+		this.enrolledHP=new ArrayList<>();
 	}
 	
 	//query helper
@@ -224,4 +226,7 @@ public class program {
 		this.location = l;
 	}
 
+	public ArrayList<String> getEnrolledHP(){
+		return this.enrolledHP;
+	}
 }
