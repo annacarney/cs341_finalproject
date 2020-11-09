@@ -155,23 +155,34 @@ public class helper {
 	// enters a new non-member person into the database and enrolls them in the
 	// class in which they registered for
 	// returns 1 on successful enrolling non-member, 0 if fails.
-	public int enrollNM(String fname, String lname, String phone, String className) {
+	public int enrollNM(String fname, String lname, String phone, String className, int classID) {
 		// fix me!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-		// need to first check if the
+		// validate here 
 
+		//check first if they are already in the db ************************************ NEED TO DO THIS !!!
+		
 		nonMember newPerson = new nonMember(fname, lname, phone);
-//		try {
-//			db.insertNonMember(newPerson);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			db.insertNonMember(newPerson);
+		} catch (SQLException e) {
+			System.out.print("Failed to add non mem to db");
+		}
+		
+		//add to database
+		enrolled en = new enrolled(phone, classID);
+		try {
+			db.insertEnrolled(en);
+		} catch (SQLException e1) {
+			System.out.print("db failed to enroll user in program");
+		}
 
 		return 1;
 	}
 
 	// registers a member for a program they select
 	public void registerM(String m, JFrame f, person p) {
+		final String classId; 
 		
 		if (m == null || m.equals("")) { // no selection
 			return;
@@ -189,6 +200,7 @@ public class helper {
 		String[] classinfo = null;
 		try {
 			classinfo = program_details(className, true);
+			classId = classinfo[10];			//keeps track of the classID * 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -207,18 +219,30 @@ public class helper {
 		// when button is clicked
 		reg.addActionListener((new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(" " + p.getFirstName() + " " + p.getLastName() + "Registering for " + m);
+				int classID_int = Integer.parseInt(classId);
+				System.out.println("ClassId" + classID_int + " " + p.getFirstName() + " " + p.getLastName() + "Registering for " + m);
+				//implement me***********************************************************************************************
+				
+				//validate here
+				
 				
 				//add to database
-				//implement me***********************************************************************************************
+				enrolled en = new enrolled(p.getUserName(), classID_int);
+				try {
+					db.insertEnrolled(en);
+				} catch (SQLException e1) {
+					System.out.print("db failed to enroll user in program");
+				}
 				
 			}
 		}));
-
+		
+		
 	}
 
 	// registers a non member for a program they select
 	public void registerNM(String m, JFrame f) {
+		final String classId;
 		String className = "";
 		JLabel title = null;
 
@@ -241,6 +265,7 @@ public class helper {
 		String[] classinfo = null;
 		try {
 			classinfo = program_details(className, false);
+			classId = classinfo[10];
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -307,8 +332,11 @@ public class helper {
 		// when button is clicked
 		reg.addActionListener((new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(" " + name.getText() + phone.getText() + "Registering for " + m);
-				int s = enrollNM(name.getText(), lname.getText(), phone.getText(), m);
+				System.out.println("Class ID " + classId + " " + name.getText() + phone.getText() + "Registering for " + m);
+				int classID_int = Integer.parseInt(classId);
+				
+				int s = enrollNM(name.getText(), lname.getText(), phone.getText(), m, classID_int);
+				
 				if (s == 0) { // failed to enroll user
 
 				}
@@ -320,7 +348,7 @@ public class helper {
 	private String[] program_details(String className, Boolean isMember ) throws SQLException {
 		ArrayList<program> programs = program.find(db, "Program.className IN ('" + className + "')");
 		program p = programs.get(0);
-		String[] ret = new String[10];
+		String[] ret = new String[11];
 
 		ret[0] = "Program Details: ";
 		ret[1] = p.getClassName();
@@ -339,6 +367,8 @@ public class helper {
 		ret[7] = "Time: " + p.getStartTime() + " - " + p.getEndTime();
 		ret[8] = "Days: " + p.getDays();
 		ret[9] = "Location: " + p.getLocation();
+		
+		ret[10] = "" + p.getClassID();
 
 		return ret;
 	}
