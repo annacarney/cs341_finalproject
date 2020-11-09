@@ -180,6 +180,234 @@ public class helper {
 		return 1;
 	}
 
+	public boolean validation (String m, person p, int classID) {
+		ArrayList<program> tempProg = program.find(db, "Program.classID LIKE ('"+classID+"%')");
+		program progToEnroll = tempProg.get(0);
+		String[] progStart = progToEnroll.getStartTime().split(":");
+		String[] progEnd = progToEnroll.getEndTime().split(":");
+		String[] progStartDate = progToEnroll.getStartDate().split("-");
+		String[] progEndDate = progToEnroll.getEndDate().split("-");
+		String[] progDay = progToEnroll.getDays().split(", ");
+		ResultSet enrollResults;
+		
+		//check capacity
+		
+		try {
+			enrollResults = db.runQuery("SELECT * FROM Enrolled WHERE userName = 'username'");
+			//return true if there is nothing in the enroll results set
+			while(enrollResults.next()) {
+				int classEnrollID = enrollResults.getInt("classid");
+				if(progToEnroll.getClassID() == classEnrollID) {
+					System.out.println("Person already enrolled in this program!");
+					return false;
+				}
+				ArrayList<program> tempProg2 = program.find(db, "Program.classID LIKE ('"+classEnrollID+"%')");
+				program progCheck = tempProg2.get(0);
+				
+				boolean check=false;
+				
+				//check if there are any day that could have conflict
+				for(int i=0;i<progDay.length;i++) {
+					if(progCheck.getDays().contains(progDay[i])) {
+						check = true;
+					}
+				}
+				
+				if(check=true) {
+					String[] progCheckStart = progCheck.getStartTime().split(":");
+					String[] progCheckEnd = progCheck.getEndTime().split(":");
+					// check the time
+					if(Integer.parseInt(progStart[0])< Integer.parseInt(progCheckStart[0])) {
+						if(Integer.parseInt(progEnd[0])<=Integer.parseInt(progCheckStart[0])) {
+							if(Integer.parseInt(progEnd[0])==Integer.parseInt(progCheckStart[0])) {
+								if(Integer.parseInt(progEnd[1])>Integer.parseInt(progCheckStart[1])) {
+									System.out.println("There is a clash because checking the minutes!");
+									return false;
+								}
+							}
+						}
+						else {
+							System.out.println("There is a clash when checking the hour!");
+							return false;
+						}
+					}
+					//check time
+					else if(Integer.parseInt(progStart[0])> Integer.parseInt(progCheckStart[0])){
+						if(Integer.parseInt(progCheckEnd[0])<=Integer.parseInt(progStart[0])) {
+							if(Integer.parseInt(progCheckEnd[0])==Integer.parseInt(progStart[0])) {
+								if(Integer.parseInt(progCheckEnd[1])>Integer.parseInt(progStart[1])) {
+									System.out.println("There is a clash because checking the minutes!");
+									return false;
+								}
+							}
+						}
+						else {
+							System.out.println("There is a clash when checking the hour!");
+							return false;
+						}
+					}
+					// if same hour but different minutes
+					else if(Integer.parseInt(progStart[0]) == Integer.parseInt(progCheckStart[0]) && Integer.parseInt(progStart[1]) != Integer.parseInt(progCheckStart[1])) {
+						if(Integer.parseInt(progStart[1])< Integer.parseInt(progCheckStart[1])){
+							if(Integer.parseInt(progEnd[0]) > Integer.parseInt(progCheckStart[0])) {
+								System.out.println("Same hour but overlapping hour");
+								return false;
+							}
+							if(Integer.parseInt(progEnd[0]) == Integer.parseInt(progCheckStart[0])) {
+								if(Integer.parseInt(progEnd[1]) > Integer.parseInt(progCheckStart[1])) {
+									System.out.println("Same hour but overlapping minutes");
+									return false;
+								}
+							}
+						}
+					}
+					//if the time is exactly the same
+					else if(progToEnroll.getStartTime().equalsIgnoreCase(progCheck.getStartTime())){
+						if(progToEnroll.getStartDate().equalsIgnoreCase(progCheck.getStartDate())) {
+							System.out.println("There is a clash because both program start at the same time and date!");
+							return false;
+						}
+						String[] progCheckStartDate = progCheck.getStartTime().split("-");
+						String[] progCheckEndDate = progCheck.getEndTime().split("-");
+						// check year
+						if(Integer.parseInt(progStartDate[0]) < Integer.parseInt(progCheckStartDate[0])) {
+							if(Integer.parseInt(progEndDate[0])>Integer.parseInt(progCheckStartDate[0])) {
+								System.out.println("End date overlap with other start year!");
+								return false;
+							}
+							else if(Integer.parseInt(progEndDate[0])==Integer.parseInt(progCheckStartDate[0])) {
+								if(Integer.parseInt(progEndDate[1])>Integer.parseInt(progCheckStartDate[1])) {
+									System.out.println("Same year but end date overlap with other start month!");
+									return false;
+								}
+								else if(Integer.parseInt(progEndDate[1])==Integer.parseInt(progCheckStartDate[1])){
+									if(Integer.parseInt(progEndDate[2])>Integer.parseInt(progCheckStartDate[2])) {
+										System.out.println("Same year , same month but end date overlap with other start day!");
+										return false;
+									}
+								}
+							}
+						}
+						// check year
+						else if(Integer.parseInt(progStartDate[0]) > Integer.parseInt(progCheckStartDate[0])) {
+							if(Integer.parseInt(progCheckEndDate[0])>Integer.parseInt(progStartDate[0])) {
+								System.out.println("End date overlap with other start year!");
+								return false;
+							}
+							else if(Integer.parseInt(progCheckEndDate[0])==Integer.parseInt(progStartDate[0])) {
+								if(Integer.parseInt(progCheckEndDate[1])>Integer.parseInt(progStartDate[1])) {
+									System.out.println("Same year but end date overlap with other start month!");
+									return false;
+								}
+								else if(Integer.parseInt(progCheckEndDate[1])==Integer.parseInt(progStartDate[1])){
+									if(Integer.parseInt(progCheckEndDate[2])>Integer.parseInt(progStartDate[2])) {
+										System.out.println("Same year , same month but end date overlap with other start day!");
+										return false;
+									}
+								}
+							}
+						}
+						// if the year is the same
+						else {
+							if(Integer.parseInt(progStartDate[1]) < Integer.parseInt(progCheckStartDate[1])) {
+								if(Integer.parseInt(progEndDate[1])> Integer.parseInt(progCheckStartDate[1])) {
+									System.out.println("same year but end month overlap with other start month!");
+									return false;
+								}
+								else if(Integer.parseInt(progEndDate[1])== Integer.parseInt(progCheckStartDate[1])) {
+									if(Integer.parseInt(progEndDate[2])> Integer.parseInt(progCheckStartDate[2])) {
+										System.out.println("same year, same month but end date overlap with other start date!");
+										return false;
+									}
+								}
+							}
+							else if(Integer.parseInt(progStartDate[1]) > Integer.parseInt(progCheckStartDate[1])) {
+								if(Integer.parseInt(progCheckEndDate[1])> Integer.parseInt(progStartDate[1])) {
+									System.out.println("same year but end month overlap with other start month!");
+									return false;
+								}
+								else if(Integer.parseInt(progCheckEndDate[1])== Integer.parseInt(progStartDate[1])) {
+									if(Integer.parseInt(progCheckEndDate[2])> Integer.parseInt(progStartDate[2])) {
+										System.out.println("same year, same month but end date overlap with other start date!");
+										return false;
+									}
+								}
+							}
+							else if(Integer.parseInt(progStartDate[1]) == Integer.parseInt(progCheckStartDate[1])){
+								if(Integer.parseInt(progStartDate[2]) < Integer.parseInt(progCheckStartDate[2])) {
+									if(Integer.parseInt(progEndDate[2]) > Integer.parseInt(progCheckStartDate[2])) {
+										System.out.println("same year, same month but day overlap other start date!");
+										return false;
+									}
+								}
+								else if(Integer.parseInt(progStartDate[2]) > Integer.parseInt(progCheckStartDate[2])) {
+									if(Integer.parseInt(progCheckEndDate[2]) > Integer.parseInt(progStartDate[2])) {
+										System.out.println("same year, same month but day overlap other start date!");
+										return false;
+									}
+								}
+								else {
+									System.out.println("same start date and time!");
+									return false;
+								}
+							}
+						}
+					}
+				}
+				else{
+					return true;
+				}
+				
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("DB Query failed in method validation()");
+			return false;
+		}
+		/*ResultSet progToEnroll;
+		ResultSet enrollResults;
+		ResultSet progCheck;
+		
+		try {
+			progToEnroll = db.programLookup(classID);
+			enrollResults = db.runQuery("SELECT * FROM Enrolled WHERE userName = 'username'");
+			int progToEnrollID = progToEnroll.getInt("classid");
+			String start = progToEnroll.getString("startTime");
+			String[] progStart = start.split(":");
+			String end = progToEnroll.getString("endTime");
+			String[] progEnd = end.split(":");
+			String startDate = progToEnroll.getString("startDate");
+			String[] progStartDate = startDate.split("-");
+			String endDate = progToEnroll.getString("endDate");
+			String[] progEndDate = endDate.split("-");
+			String day = progToEnroll.getString("days");
+			String[] progDays = day.split(", ");
+			//check for capacity and return true if enrollResults is empty
+			
+			while(enrollResults.next()) {
+				int classEnrollID = enrollResults.getInt("classid");
+				if(progToEnrollID == classEnrollID) {
+					System.out.println("Person already enrolled in this program!");
+					return false;
+				}
+				progCheck = db.programLookup(classEnrollID);
+				
+				
+				
+				if() {
+					
+				}
+				
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("DB Query failed in method getProgramsList()");
+			return false;
+		}*/
+		
+		return true;
+	}
+	
 	// registers a member for a program they select
 	public void registerM(String m, JFrame f, person p) {
 		final String classId; 
