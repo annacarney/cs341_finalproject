@@ -200,7 +200,7 @@ public class helper {
 				for(int i=0; i<p.getEnrolledID().size(); i++) {
 					int temp=p.getEnrolledID().get(i);
 					String strID=Integer.toString(temp);
-					ArrayList<program> tempProg = program.find(db, "Program.className LIKE ('"+strID+"%')");
+					ArrayList<program> tempProg = program.find(db, "Program.classID LIKE ('"+strID+"%')");
 					program checkProg = tempProg.get(0);
 					
 					//Check if there are same days between the program
@@ -211,6 +211,7 @@ public class helper {
 						
 						//Check if they have the exact same start time. If so, return false.
 						if(enrollStart.equalsIgnoreCase(checkStart)) {
+							//Need to check date before return false.
 							return false;
 						}
 						
