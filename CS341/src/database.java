@@ -45,6 +45,26 @@ public class database {
 		
 	}
 	
+	public ResultSet nonMemLookup(String phoneNumber) throws SQLException {
+		
+		String query = "SELECT FirstName, LastName, PhoneNumber FROM NonMember WHERE phoneNumber = ?";
+		PreparedStatement stmt = connection.prepareStatement(query);
+		stmt.setString(1, phoneNumber);
+		ResultSet results = stmt.executeQuery();
+		return results;
+		
+	}
+	
+	public ResultSet programLookup(int classid) throws SQLException {
+		
+		String query = "SELECT classID FROM Program WHERE classID = ?";
+		PreparedStatement stmt = connection.prepareStatement(query);
+		stmt.setInt(1, classid);
+		ResultSet results = stmt.executeQuery();
+		return results;
+		
+	}
+	
 	public void insertEmployee(person p) throws SQLException {
 		String sql = "INSERT INTO Person (firstName, lastName, phoneNumber, userName, password, isStaff, isAdmin) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -59,8 +79,18 @@ public class database {
 		stmt.execute();
 	}
 	
+	//members will use username for p, nonMembers will use phone number.
+	public void insertEnrolled(enrolled en) throws SQLException {
+		String sql = "INSERT INTO Enrolled (userName, classID) VALUES (?, ?)";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setString(1, en.getUsername());
+		stmt.setInt(2, en.getClassid());
+		
+		stmt.execute();
+	}
+	
 	public void insertNonMember(nonMember nm) throws SQLException {
-		String sql = "INSERT INTO Program (firstName, lastName, phoneNumber) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO NonMember (firstName, lastName, phoneNumber) VALUES (?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, nm.getFirstName());
 		stmt.setString(2, nm.getLastName());
