@@ -158,14 +158,17 @@ public class helper {
 	public int enrollNM(String fname, String lname, String phone, String className) {
 		// fix me!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-		// need to first check if the
+		// need to first check if the person is already in the db
 
 		nonMember newPerson = new nonMember(fname, lname, phone);
-//		try {
-//			db.insertNonMember(newPerson);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			db.insertNonMember(newPerson);
+			
+			//enroll in class!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		return 1;
 	}

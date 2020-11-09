@@ -1,8 +1,4 @@
-/*
- * database.java
- * Database IO Class
- * Created: 10/10/2020
- */
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -60,7 +56,7 @@ public class database {
 	}
 	
 	public void insertNonMember(nonMember nm) throws SQLException {
-		String sql = "INSERT INTO Program (firstName, lastName, phoneNumber) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO NonMember (firstName, lastName, phoneNumber) VALUES (?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, nm.getFirstName());
 		stmt.setString(2, nm.getLastName());
