@@ -151,6 +151,197 @@ public class helper {
 		}
 		return ret;
 	}
+	
+	//shyue shi's validation method
+	public boolean validation (String m, person p, int classID) {
+		ArrayList<program> tempProg = program.find(db, "Program.classID LIKE ('"+classID+"')");
+		program progToEnroll = tempProg.get(0);
+		
+		String[] progStart = progToEnroll.getStartTime().split(":");	
+		String[] progEnd = progToEnroll.getEndTime().split(":");	
+		String[] progStartDate = progToEnroll.getStartDate().split("-");
+		String[] progEndDate = progToEnroll.getEndDate().split("-");
+		String[] progDay = progToEnroll.getDays().split(", ");
+		
+		ResultSet enrollResults;
+		
+		//check capacity ? ****************************************
+		
+		try {
+			enrollResults = db.runQuery("SELECT * FROM Enrolled WHERE userName LIKE ('" + p.getUserName() + "')");
+			//return true if there is nothing in the enroll results set
+			while(enrollResults.next()) {
+				int classEnrollID = enrollResults.getInt("classID");
+				if(progToEnroll.getClassID() == classEnrollID) {
+					System.out.println("Person already enrolled in this program!");
+					return false;
+				}
+				ArrayList<program> tempProg2 = program.find(db, "Program.classID LIKE ('"+classEnrollID+"')");
+				program progCheck = tempProg2.get(0);
+				
+				boolean check=false;
+				
+				//check if there are any day that could have conflict
+				for(int i=0;i<progDay.length;i++) {
+					if(progCheck.getDays().contains(progDay[i])) {
+						check = true;
+					}
+				}
+				
+				if(check=true) {
+					String[] progCheckStart = progCheck.getStartTime().split(":");
+					String[] progCheckEnd = progCheck.getEndTime().split(":");
+					// check the time
+					if(Integer.parseInt(progStart[0])< Integer.parseInt(progCheckStart[0])) {
+						if(Integer.parseInt(progEnd[0])<=Integer.parseInt(progCheckStart[0])) {
+							if(Integer.parseInt(progEnd[0])==Integer.parseInt(progCheckStart[0])) {
+								if(Integer.parseInt(progEnd[1])>Integer.parseInt(progCheckStart[1])) {
+									System.out.println("There is a clash because checking the minutes!");
+									return false;
+								}
+							}
+						}
+						else {
+							System.out.println("There is a clash when checking the hour!");
+							return false;
+						}
+					}
+					//check time
+					else if(Integer.parseInt(progStart[0])> Integer.parseInt(progCheckStart[0])){
+						if(Integer.parseInt(progCheckEnd[0])<=Integer.parseInt(progStart[0])) {
+							if(Integer.parseInt(progCheckEnd[0])==Integer.parseInt(progStart[0])) {
+								if(Integer.parseInt(progCheckEnd[1])>Integer.parseInt(progStart[1])) {
+									System.out.println("There is a clash because checking the minutes!");
+									return false;
+								}
+							}
+						}
+						else {
+							System.out.println("There is a clash when checking the hour!");
+							return false;
+						}
+					}
+					// if same hour but different minutes
+					else if(Integer.parseInt(progStart[0]) == Integer.parseInt(progCheckStart[0]) && Integer.parseInt(progStart[1]) != Integer.parseInt(progCheckStart[1])) {
+						if(Integer.parseInt(progStart[1])< Integer.parseInt(progCheckStart[1])){
+							if(Integer.parseInt(progEnd[0]) > Integer.parseInt(progCheckStart[0])) {
+								System.out.println("Same hour but overlapping hour");
+								return false;
+							}
+							if(Integer.parseInt(progEnd[0]) == Integer.parseInt(progCheckStart[0])) {
+								if(Integer.parseInt(progEnd[1]) > Integer.parseInt(progCheckStart[1])) {
+									System.out.println("Same hour but overlapping minutes");
+									return false;
+								}
+							}
+						}
+					}
+					//if the time is exactly the same
+					else if(progToEnroll.getStartTime().equalsIgnoreCase(progCheck.getStartTime())){
+						if(progToEnroll.getStartDate().equalsIgnoreCase(progCheck.getStartDate())) {
+							System.out.println("There is a clash because both program start at the same time and date!");
+							return false;
+						}
+						String[] progCheckStartDate = progCheck.getStartDate().split("-");		//progCheck.getStartTime().split("-");
+						String[] progCheckEndDate = progCheck.getEndDate().split("-");			//progCheck.getEndTime().split("-");
+						// check year
+						if(Integer.parseInt(progStartDate[0]) < Integer.parseInt(progCheckStartDate[0])) {
+							if(Integer.parseInt(progEndDate[0])>Integer.parseInt(progCheckStartDate[0])) {
+								System.out.println("End date overlap with other start year!");
+								return false;
+							}
+							else if(Integer.parseInt(progEndDate[0])==Integer.parseInt(progCheckStartDate[0])) {
+								if(Integer.parseInt(progEndDate[1])>Integer.parseInt(progCheckStartDate[1])) {
+									System.out.println("Same year but end date overlap with other start month!");
+									return false;
+								}
+								else if(Integer.parseInt(progEndDate[1])==Integer.parseInt(progCheckStartDate[1])){
+									if(Integer.parseInt(progEndDate[2])>Integer.parseInt(progCheckStartDate[2])) {
+										System.out.println("Same year , same month but end date overlap with other start day!");
+										return false;
+									}
+								}
+							}
+						}
+						// check year
+						else if(Integer.parseInt(progStartDate[0]) > Integer.parseInt(progCheckStartDate[0])) {
+							if(Integer.parseInt(progCheckEndDate[0])>Integer.parseInt(progStartDate[0])) {
+								System.out.println("End date overlap with other start year!");
+								return false;
+							}
+							else if(Integer.parseInt(progCheckEndDate[0])==Integer.parseInt(progStartDate[0])) {
+								if(Integer.parseInt(progCheckEndDate[1])>Integer.parseInt(progStartDate[1])) {
+									System.out.println("Same year but end date overlap with other start month!");
+									return false;
+								}
+								else if(Integer.parseInt(progCheckEndDate[1])==Integer.parseInt(progStartDate[1])){
+									if(Integer.parseInt(progCheckEndDate[2])>Integer.parseInt(progStartDate[2])) {
+										System.out.println("Same year , same month but end date overlap with other start day!");
+										return false;
+									}
+								}
+							}
+						}
+						// if the year is the same
+						else {
+							if(Integer.parseInt(progStartDate[1]) < Integer.parseInt(progCheckStartDate[1])) {
+								if(Integer.parseInt(progEndDate[1])> Integer.parseInt(progCheckStartDate[1])) {
+									System.out.println("same year but end month overlap with other start month!");
+									return false;
+								}
+								else if(Integer.parseInt(progEndDate[1])== Integer.parseInt(progCheckStartDate[1])) {
+									if(Integer.parseInt(progEndDate[2])> Integer.parseInt(progCheckStartDate[2])) {
+										System.out.println("same year, same month but end date overlap with other start date!");
+										return false;
+									}
+								}
+							}
+							else if(Integer.parseInt(progStartDate[1]) > Integer.parseInt(progCheckStartDate[1])) {
+								if(Integer.parseInt(progCheckEndDate[1])> Integer.parseInt(progStartDate[1])) {
+									System.out.println("same year but end month overlap with other start month!");
+									return false;
+								}
+								else if(Integer.parseInt(progCheckEndDate[1])== Integer.parseInt(progStartDate[1])) {
+									if(Integer.parseInt(progCheckEndDate[2])> Integer.parseInt(progStartDate[2])) {
+										System.out.println("same year, same month but end date overlap with other start date!");
+										return false;
+									}
+								}
+							}
+							else if(Integer.parseInt(progStartDate[1]) == Integer.parseInt(progCheckStartDate[1])){
+								if(Integer.parseInt(progStartDate[2]) < Integer.parseInt(progCheckStartDate[2])) {
+									if(Integer.parseInt(progEndDate[2]) > Integer.parseInt(progCheckStartDate[2])) {
+										System.out.println("same year, same month but day overlap other start date!");
+										return false;
+									}
+								}
+								else if(Integer.parseInt(progStartDate[2]) > Integer.parseInt(progCheckStartDate[2])) {
+									if(Integer.parseInt(progCheckEndDate[2]) > Integer.parseInt(progStartDate[2])) {
+										System.out.println("same year, same month but day overlap other start date!");
+										return false;
+									}
+								}
+								else {
+									System.out.println("same start date and time!");
+									return false;
+								}
+							}
+						}
+					}
+				}
+				else{
+					return true;
+				}
+				
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("DB Query failed in method validation()");
+			return false;
+		}
+		
+		return true;
+	}
 
 	// enters a new non-member person into the database and enrolls them in the
 	// class in which they registered for
@@ -163,6 +354,9 @@ public class helper {
 		//check first if they are already in the db ************************************ NEED TO DO THIS !!!
 		
 		nonMember newPerson = new nonMember(fname, lname, phone);
+		
+		//boolean b = validation(className, newPerson, classID);
+		
 		try {
 			db.insertNonMember(newPerson);
 		} catch (SQLException e) {
@@ -181,63 +375,37 @@ public class helper {
 	}
 
 	// registers a member for a program they select
-	public void registerM(String m, JFrame f, person p) {
-		final String classId; 
+	public void registerM(String className, String classId, JFrame f, person p) { 
 		
-		if (m == null || m.equals("")) { // no selection
+		if (className == null || className.equals("")) { // no selection
 			return;
 		}
-
-		// register user for class. add to database
-		JButton reg = new JButton("Register!");
-		reg.setBounds(457, 410, 200, 40);
-		reg.setBackground(new Color(22,65,45));
-		reg.setForeground(Color.white);
-		f.add(reg);
-		f.repaint();
 		
-		String className = m;
-		String[] classinfo = null;
-		try {
-			classinfo = program_details(className, true);
-			classId = classinfo[10];			//keeps track of the classID * 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return;
-		}
-		JList<String> l = new JList(classinfo);
-		l.setFixedCellHeight(15);
-		l.setFixedCellWidth(100);
-		l.setVisibleRowCount(5);
-		l.setBounds(350, 200, 400, 200);
-		l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		l.setVisible(true);
-		f.add(l, 0);
-		f.repaint();
-
 		// when button is clicked
-		reg.addActionListener((new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		
 				int classID_int = Integer.parseInt(classId);
-				System.out.println("ClassId" + classID_int + " " + p.getFirstName() + " " + p.getLastName() + "Registering for " + m);
+				System.out.println("ClassId" + classID_int + " " + p.getFirstName() + " " + p.getLastName() + "Registering for " + className);
+				
 				//implement me***********************************************************************************************
 				
 				//validate here
+				boolean b = validation(className, p, classID_int);
+				System.out.println("Validation bool is : " + b);
 				
+				//add to database if true, error if false
 				
-				//add to database
+				if(b == false) {
+					//fix *********************** add popup here or something
+					System.out.println("Error in enrolling member in program");
+				} else {
+			
 				enrolled en = new enrolled(p.getUserName(), classID_int);
 				try {
 					db.insertEnrolled(en);
 				} catch (SQLException e1) {
 					System.out.print("db failed to enroll user in program");
-				}
-				
-			}
-		}));
-		
-		
+				}		
+				}					
 	}
 
 	// registers a non member for a program they select
@@ -345,7 +513,7 @@ public class helper {
 	}
 
 	// returns the details for a program based on className
-	private String[] program_details(String className, Boolean isMember ) throws SQLException {
+	public String[] program_details(String className, Boolean isMember ) throws SQLException {
 		ArrayList<program> programs = program.find(db, "Program.className IN ('" + className + "')");
 		program p = programs.get(0);
 		String[] ret = new String[11];

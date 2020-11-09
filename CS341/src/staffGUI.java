@@ -18,18 +18,28 @@ public class staffGUI {
 	private person u;
 	private helper h;
 	private JFrame m;		//the window for this page
+	private boolean pressedAddB;
+	private boolean pressedviewprogB;
 
 	// constructor
 	public staffGUI(person p) {
 		u = p;
+		pressedAddB = false;
+		pressedviewprogB = false;
 		h = new helper();
 		start();
+	}
+	
+	//displays all available programs
+	private void viewPrograms() {
+
 	}
 	
 	//displays the register for a program portion 
 	//program format is classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee
 	//time is in the format YYYY-MM-DD HH:MM:SS:SSS
 	private void registerDisplay() {
+		pressedAddB = true;
 		
 		JLabel text = new JLabel("Add a new Program:");
 		text.setBounds(0, 120, 450, 50);
@@ -218,15 +228,54 @@ public class staffGUI {
 		JMenuBar mb = new JMenuBar();
 		JMenu x = new JMenu("Programs");
 		JMenuItem p1 = new JMenuItem("Add new Program");
-		JMenuItem p2 = new JMenuItem("Modify existing Program");
-		JMenuItem p3 = new JMenuItem("Delete existing Program");
+		
+		p1.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	m.getContentPane().removeAll();
+            	m.repaint();
+            	pressedviewprogB = false;
+
+            	if(pressedAddB == false) {
+            		registerDisplay();
+            	}
+            }
+        });
+		
+		JMenuItem p2 = new JMenuItem("View existing Programs");
+		p2.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	m.getContentPane().removeAll();
+            	m.repaint();
+            	pressedAddB = false;
+
+            	if(pressedviewprogB == false) {
+            		viewPrograms();
+            	}
+            }
+        });
+		
+		JMenuItem p3 = new JMenuItem("View Enrolled Members/Non-Members");
+		p3.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	m.getContentPane().removeAll();
+            	m.repaint();
+            	pressedAddB = false;
+            	pressedviewprogB = false;
+
+
+            }
+        });
+		
 		x.add(p1);
 		x.add(p2);
 		x.add(p3);
 		mb.add(x);
 		m.setJMenuBar(mb);
 		
-		registerDisplay();
+		//registerDisplay();
 
 	}
 

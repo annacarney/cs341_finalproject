@@ -13,7 +13,7 @@ public class main {
 	public static void main(String[] args) {
     	
     	//test db connection
-    	testdb();
+    	//testdb();
     	
     	//generate welcome screen
     	gui g = new gui();

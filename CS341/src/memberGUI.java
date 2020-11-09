@@ -148,14 +148,68 @@ public class memberGUI {
 		 JLabel title1 = new JLabel();
 
 		 registerButton.addActionListener(new ActionListener() {
-			 @Override
-	            public void actionPerformed(ActionEvent e) {
-	              h.registerM(avail_progs.getSelectedValue(), f, u);
-			 	}
-		 });
+			 public void actionPerformed(ActionEvent e) {
+				 String classId;
+				 String className = avail_progs.getSelectedValue();
+				 String[] classinfo = null;
+					try {
+						classinfo = h.program_details(className, true);
+						classId = classinfo[10];			//keeps track of the classID * 
+					} catch (SQLException eee) {
+						// TODO Auto-generated catch block
+						eee.printStackTrace();
+						return;
+					}
+					JList<String> l = new JList(classinfo);
+					l.setFixedCellHeight(15);
+					l.setFixedCellWidth(100);
+					l.setVisibleRowCount(5);
+					l.setBounds(350, 200, 400, 200);
+					l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+					l.setVisible(true);
+					f.add(l, 0);
+					f.repaint();   
+	            }
+	        });
 		 
 		 f.add(registerButton);
 		 f.repaint();	
-	}
-
+		 
+		 JButton reg = new JButton("Register!");
+		 reg.setBounds(457, 410, 200, 40);
+		 reg.setBackground(new Color(22,65,45));
+	     reg.setForeground(Color.white);
+	     f.add(reg);
+		 f.repaint();
+		 
+		 reg.addActionListener((new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					String classId;
+					String className = avail_progs.getSelectedValue();
+					String[] classinfo = null;
+						try {
+							classinfo = h.program_details(className, true);
+							classId = classinfo[10];			//keeps track of the classID * 
+						} catch (SQLException eee) {
+							// TODO Auto-generated catch block
+							eee.printStackTrace();
+							return;
+						}
+					
+					h.registerM(avail_progs.getSelectedValue(), classId, f, u);
+				}
+			}));
+	
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
