@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -374,21 +373,42 @@ public class helper {
 		
 		return true;
 	}
+	
+	//checks to see if a non member is already added to the databse, returns true if yes, false otherwise
+	private boolean checkNMexist(nonMember nm) {
+		ResultSet rs;
+		try {
+			rs = db.nonMemLookup(nm.getPhoneNumber());
+			
+			if(!rs.next()) {
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			System.out.print("Failed in checkNMexist");
+		}
+		
+		return true;
+	}
 
 	// enters a new non-member person into the database and enrolls them in the
 	// class in which they registered for
 	// returns 1 on successful enrolling non-member, 0 if fails.
 	public int enrollNM(String fname, String lname, String phone, String className, int classID) {
-		// fix me!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 		nonMember newPerson = new nonMember(fname, lname, phone);
 
-		//check first if they are already in the db ************************************ NEED TO DO THIS !!!
+		//check first if nonmember are already in the db 
+		boolean checkNM = checkNMexist(newPerson);
+		
+		if(checkNM == false ) {	//non-member is not already entered in the database
 		
 		try {
 			db.insertNonMember(newPerson);
 		} catch (SQLException e) {
 			System.out.print("Failed to add non mem to db");
+		}
+		
 		}
 		
 		//validate that it is safe for user to enter class
@@ -508,6 +528,56 @@ public class helper {
 		
 		ret[10] = "" + p.getClassID();
 
+		return ret;
+	}
+	
+	//returns a string array of usernames that are enrolled in the class
+	public ArrayList<String> enrolled_details(int classId ) throws SQLException {
+		ArrayList<String> ret = new ArrayList<>();
+//		String[] ret = new String[25];
+//		int ind = 0;
+		
+		ResultSet enresults = db.runQuery("SELECT userName FROM Enrolled WHERE classID = ('" + classId + "')");
+
+		while(enresults.next()) {
+			String userName = enresults.getString("userName");
+			System.out.println(userName);
+			ret.add(userName);
+		}
+	
+		return ret;
+	}
+	
+	//returns the firstname, lastname, and username/phonenumber, in a string from a given username/phonenumber
+	//works for both members and nonmembers
+	public String lookup_tostring(String username, boolean isNM) throws SQLException {
+		String ret = "";
+		
+		if(username.equals("") || username == null) {		//check if empty
+			return "";
+		}
+		
+		if(isNM == true) {		//nonmember
+			ResultSet rs = db.nonMemLookup(username);
+			
+			if(rs.next()) {
+			ret = "Non Member - Name: " + rs.getString("firstName");
+			ret = ret + " " + rs.getString("lastName");
+			ret = ret + " Phone Number: " + rs.getString("phoneNumber");
+			System.out.print("non mem: " + ret);
+			}
+			
+		} else {		//member
+			ResultSet rs = db.personLookup(username);
+			
+			if(rs.next()) {
+			ret = "Member - Name: " + rs.getString("firstName");
+			ret = ret + " " + rs.getString("lastName");
+			ret = ret + " Username: " + rs.getString("userName");
+			System.out.print("mem: " + ret);
+			}
+		}
+		
 		return ret;
 	}
 	

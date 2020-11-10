@@ -4,7 +4,9 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -40,6 +42,36 @@ public class staffGUI {
 		text.setForeground(new Color(128,128,0));
 		m.add(text, 0);
 		
+		String[] programs = null;
+		try {
+			programs = h.getProgramsList();
+		} catch (SQLException e1) {
+			System.out.print("Db query failed.");
+		}
+		
+		DefaultListModel lister = new DefaultListModel();
+		int avail_progsSize = programs.length;
+		for(int i = 0; i < programs.length; i++) {
+			lister.addElement(programs[i]);
+		}
+		JList<String> avail_progs = new JList<>(lister);
+		
+		//lists the available programs
+		JList<String> jListSelect = new JList<>();
+		avail_progs.setFixedCellHeight(15);
+		avail_progs.setFixedCellWidth(100);
+		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		avail_progs.setVisibleRowCount(5);
+		avail_progs.setBounds(100, 200, 200, 200);
+		avail_progs.setVisible(true);
+		
+        JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
+        scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
+        scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
+        scrollableTextArea.setMinimumSize(new Dimension(100,50));
+        scrollableTextArea.setBounds(100,200,220,200);
+        m.add(scrollableTextArea);
+		m.repaint();
 
 	}
 	
@@ -53,7 +85,98 @@ public class staffGUI {
 		text.setForeground(new Color(128,128,0));
 		m.add(text, 0);
 		
+		String[] programs = null;
+		try {
+			programs = h.getProgramsList();
+		} catch (SQLException e1) {
+			System.out.print("Db query failed.");
+		}
 		
+		DefaultListModel lister = new DefaultListModel();
+		int avail_progsSize = programs.length;
+		for(int i = 0; i < programs.length; i++) {
+			lister.addElement(programs[i]);
+		}
+		JList<String> avail_progs = new JList<>(lister);
+		
+		//lists the available programs
+		JList<String> jListSelect = new JList<>();
+		avail_progs.setFixedCellHeight(15);
+		avail_progs.setFixedCellWidth(100);
+		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		avail_progs.setVisibleRowCount(5);
+		avail_progs.setBounds(100, 200, 200, 200);
+		avail_progs.setVisible(true);
+		
+        JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
+        scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
+        scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
+        scrollableTextArea.setMinimumSize(new Dimension(100,50));
+        scrollableTextArea.setBounds(100,200,220,200);
+        m.add(scrollableTextArea);
+		m.repaint();
+		
+		JButton selectB = new JButton("Select");
+		selectB.setBounds(115, 425, 200, 40);
+		selectB.setBackground(new Color(51,102,0));
+		selectB.setForeground(Color.white);
+		m.add(selectB);
+		m.repaint();
+		
+		selectB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	//show enrolled user for selected class
+            	
+            	if(avail_progs.getSelectedValue().equals("")) {
+            		
+            	} else {
+            		
+            		 String progString = avail_progs.getSelectedValue();
+    				 int classId = h.getIDFromUserInput(progString);
+    			
+    				 String[] enrolled = null;
+    				 ArrayList<String> enrolledUserNames;
+    					try {
+    						
+   						enrolledUserNames = h.enrolled_details(classId);
+   						
+   						//for each user name, create a person object (if member) or nonmember object
+   						//have a string array with each object's First Name, Last Name, and username/phonenumber
+   						enrolled = new String[enrolledUserNames.size()+1];
+   						
+   						for(int i = 0; i < enrolledUserNames.size(); i++) {
+   							
+   							String cur_un = enrolledUserNames.get(i);
+   							
+   							if( cur_un.contains("-")) {		//is a non-member
+   								// get nonmember person from db.nonMemLookup, return a string of FirstName, LastName, UserName
+   								String s = h.lookup_tostring(cur_un, true);
+   								enrolled[i] = s;
+   							} else {	//is a member
+   								String s = h.lookup_tostring(cur_un, false);
+   								enrolled[i] = s;
+   							}
+
+   						}
+    						
+    					} catch (SQLException eee) {
+    						// TODO Auto-generated catch block
+    						eee.printStackTrace();
+    						return;
+    					}
+    					JList<String> l = new JList(enrolled);
+    					l.setFixedCellHeight(15);
+    					l.setFixedCellWidth(100);
+    					l.setVisibleRowCount(5);
+    					l.setBounds(350, 200, 400, 200);
+    					l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    					l.setVisible(true);
+    					m.add(l, 0);
+    					m.repaint();   
+            	}
+            }
+        });	
 	}
 	
 	//displays the register for a program portion 
