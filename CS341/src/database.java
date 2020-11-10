@@ -57,7 +57,7 @@ public class database {
 	
 	public ResultSet programLookup(int classid) throws SQLException {
 		
-		String query = "SELECT classID FROM Program WHERE classID = ?";
+		String query = "SELECT * FROM Program WHERE classID = ?";
 		PreparedStatement stmt = connection.prepareStatement(query);
 		stmt.setInt(1, classid);
 		ResultSet results = stmt.executeQuery();
