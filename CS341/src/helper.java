@@ -188,7 +188,16 @@ public class helper {
 		
 		ResultSet enrollResults;
 		
-		//check capacity ? ****************************************
+		//check capacity 
+		try {
+			if(isFull(db, classID) == true) {
+				System.out.println("Program capacity full.");
+				return false;
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		try {
 			enrollResults = db.runQuery("SELECT * FROM Enrolled WHERE userName LIKE ('" + p.getUserName() + "')");
@@ -399,7 +408,7 @@ public class helper {
 			ImageIcon icon = new ImageIcon("ymcalogo.JPG");
 			popup.setIconImage(icon.getImage());
 			
-			JLabel title = new JLabel("Unable to enroll in class due to time conflict.");
+			JLabel title = new JLabel("Error : Unable to enroll in class.");
 			title.setBounds(0, 0, 350, 90);
 			title.setHorizontalAlignment(SwingConstants.CENTER);
 			title.setFont(new Font("SansSerif", Font.BOLD, 15));
@@ -453,7 +462,7 @@ public class helper {
 					ImageIcon icon = new ImageIcon("ymcalogo.JPG");
 					popup.setIconImage(icon.getImage());
 					
-					JLabel title = new JLabel("Unable to enroll in class due to time conflict.");
+					JLabel title = new JLabel("Error : Unable to enroll in class.");
 					title.setBounds(0, 0, 350, 90);
 					title.setHorizontalAlignment(SwingConstants.CENTER);
 					title.setFont(new Font("SansSerif", Font.BOLD, 15));
@@ -503,11 +512,12 @@ public class helper {
 	}
 	
 	private boolean isFull (database db, int classid) throws SQLException {
-		ArrayList<program> programs = program.find(db, "ClassID = " + classid);
+		ArrayList<program> programs = program.find(db, "classID = " + classid);
 		program p = programs.get(0);
 		int size = p.getClassSize();
-		ResultSet res = db.runQuery("Select * FROM Enrolled WHERE ClassID = " + classid);
-		int count = res.getFetchSize();
+		
+		ResultSet res = db.runQuery("SELECT COUNT(*) AS c FROM Enrolled WHERE classID = " + classid);
+		int count = res.getInt("c");
 		
 		if (count >= size) {
 			return true;
