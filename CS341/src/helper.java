@@ -213,7 +213,7 @@ public class helper {
 					}
 				}
 				
-				if(check=true) {
+				if(check==true) {
 					String[] progCheckStart = progCheck.getStartTime().split(":");
 					String[] progCheckEnd = progCheck.getEndTime().split(":");
 					// check the time
