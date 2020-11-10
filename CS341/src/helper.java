@@ -349,13 +349,9 @@ public class helper {
 	public int enrollNM(String fname, String lname, String phone, String className, int classID) {
 		// fix me!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-		// validate here 
+		nonMember newPerson = new nonMember(fname, lname, phone);
 
 		//check first if they are already in the db ************************************ NEED TO DO THIS !!!
-		
-		nonMember newPerson = new nonMember(fname, lname, phone);
-		
-		//boolean b = validation(className, newPerson, classID);
 		
 		try {
 			db.insertNonMember(newPerson);
@@ -363,12 +359,42 @@ public class helper {
 			System.out.print("Failed to add non mem to db");
 		}
 		
-		//add to database
+		//validate that it is safe for user to enter class
+		person nm_pers = new person(fname, lname, phone, phone, null, false, false);
+		boolean b = validation(className, nm_pers, classID);
+		
+		if(b == false) {
+			//not okay to add user to class
+			
+			//add pop up gui
+			JFrame popup = new JFrame();
+			popup.setSize(400,250);
+			popup.setLayout(null);
+			popup.setVisible(true);
+			popup.getContentPane().setBackground(Color.white);
+			popup.setTitle("Uh-Oh");
+			ImageIcon icon = new ImageIcon("ymcalogo.JPG");
+			popup.setIconImage(icon.getImage());
+			
+			JLabel title = new JLabel("Unable to enroll in class due to time conflict.");
+			title.setBounds(0, 0, 350, 90);
+			title.setHorizontalAlignment(SwingConstants.CENTER);
+			title.setFont(new Font("SansSerif", Font.BOLD, 15));
+			title.setForeground(Color.black);
+			popup.add(title, 0);
+			popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
+			
+			System.out.print("Error: Cannot add non-member to this class due to conflicts.");
+		} else {
+			//okay to add user to class
+			
+		//enroll non member in the selected class
 		enrolled en = new enrolled(phone, classID);
 		try {
 			db.insertEnrolled(en);
 		} catch (SQLException e1) {
 			System.out.print("db failed to enroll user in program");
+		}
 		}
 
 		return 1;
@@ -395,7 +421,24 @@ public class helper {
 				//add to database if true, error if false
 				
 				if(b == false) {
-					//fix *********************** add popup here or something
+					//add pop up gui
+					JFrame popup = new JFrame();
+					popup.setSize(400,250);
+					popup.setLayout(null);
+					popup.setVisible(true);
+					popup.getContentPane().setBackground(Color.white);
+					popup.setTitle("Uh-Oh");
+					ImageIcon icon = new ImageIcon("ymcalogo.JPG");
+					popup.setIconImage(icon.getImage());
+					
+					JLabel title = new JLabel("Unable to enroll in class due to time conflict.");
+					title.setBounds(0, 0, 350, 90);
+					title.setHorizontalAlignment(SwingConstants.CENTER);
+					title.setFont(new Font("SansSerif", Font.BOLD, 15));
+					title.setForeground(Color.black);
+					popup.add(title, 0);
+					popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
+					
 					System.out.println("Error in enrolling member in program");
 				} else {
 			
@@ -406,110 +449,6 @@ public class helper {
 					System.out.print("db failed to enroll user in program");
 				}		
 				}					
-	}
-
-	// registers a non member for a program they select
-	public void registerNM(String m, JFrame f) {
-		final String classId;
-		String className = "";
-		JLabel title = null;
-
-		if (m == null || m.equals("")) { // no selection
-
-			return;
-		}
-
-		className = m;
-
-		title = new JLabel("Want to Register?");
-		title.setBounds(460, 410, 200, 40);
-		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setFont(new Font("SansSerif", Font.PLAIN, 25));
-		title.setForeground(new Color(51,102,0));
-		f.add(title, 0);
-		f.repaint();
-
-		// print class details
-		String[] classinfo = null;
-		try {
-			classinfo = program_details(className, false);
-			classId = classinfo[10];
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return;
-		}
-		JList<String> l = new JList(classinfo);
-		l.setFixedCellHeight(15);
-		l.setFixedCellWidth(100);
-		l.setVisibleRowCount(5);
-		l.setBounds(350, 200, 400, 200);
-		l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		l.setVisible(true);
-		f.add(l, 0);
-		f.repaint();
-
-		// get non member credentials - name and phone number
-		JLabel fn = new JLabel("First Name: ");
-		fn.setBounds(400, 390, 100, 150); // (x,y, width, height)
-		fn.setHorizontalAlignment(SwingConstants.CENTER);
-		fn.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		fn.setForeground(Color.black);
-		f.add(fn, 0);
-		f.repaint();
-
-		JLabel un = new JLabel("Last Name: ");
-		un.setBounds(400, 440, 100, 150); // (x,y, width, height)
-		un.setHorizontalAlignment(SwingConstants.CENTER);
-		un.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		un.setForeground(Color.black);
-		f.add(un, 0);
-		f.repaint();
-
-		JLabel pw = new JLabel("Phone Number: ");
-		pw.setBounds(335, 490, 200, 150); // (x,y, width, height)
-		pw.setHorizontalAlignment(SwingConstants.CENTER);
-		pw.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		pw.setForeground(Color.black);
-		f.add(pw, 0);
-		f.repaint();
-
-		JTextField name = new JTextField(50);
-		name.setBounds(560, 450, 150, 40);
-		f.add(name);
-		f.repaint();
-
-		JTextField lname = new JTextField(50);
-		lname.setBounds(560, 498, 150, 40);
-		f.add(lname);
-		f.repaint();
-
-		JTextField phone = new JTextField(30);
-		phone.setBounds(560, 542, 150, 40);
-		f.add(phone);
-		f.repaint();
-
-		// register user for class. add to database
-		JButton reg = new JButton("Register!");
-		reg.setBounds(460, 600, 200, 40);
-		reg.setBackground(new Color(22,65,45));		//(127, 0, 255));
-		reg.setForeground(Color.white);
-		f.add(reg);
-		f.repaint();
-
-		// when button is clicked
-		reg.addActionListener((new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Class ID " + classId + " " + name.getText() + phone.getText() + "Registering for " + m);
-				int classID_int = Integer.parseInt(classId);
-				
-				int s = enrollNM(name.getText(), lname.getText(), phone.getText(), m, classID_int);
-				
-				if (s == 0) { // failed to enroll user
-
-				}
-			}
-		}));
 	}
 
 	// returns the details for a program based on className
