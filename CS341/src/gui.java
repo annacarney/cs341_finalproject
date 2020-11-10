@@ -98,9 +98,6 @@ public class gui {
 		JFrame f = new JFrame();
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		//JScrollPane pane=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        //f.getContentPane().add(pane);
-		
 		//styling for the window
 		f.setSize(800,800);  	
 		f.setLayout(null);
@@ -199,14 +196,14 @@ public class gui {
 			 @Override
 	            public void actionPerformed(ActionEvent e) {
 				 
-				 //fix me -- need to be able to register for more than one prog at a time
-				 
-				 String classId;
-				 String className = avail_progs.getSelectedValue();
+				 String progString = avail_progs.getSelectedValue();
+				 int classId = h.getIDFromUserInput(progString);
+				 //String className = 
+						 
 				 String[] classinfo = null;
 					try {
-						classinfo = h.program_details(className, true);
-						classId = classinfo[10];			//keeps track of the classID * 
+						classinfo = h.program_details(classId, true);
+						//classId = classinfo[10];			//keeps track of the classID * 
 					} catch (SQLException eee) {
 						// TODO Auto-generated catch block
 						eee.printStackTrace();
@@ -289,12 +286,13 @@ public class gui {
 		reg.addActionListener((new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String classId;
-				String className = avail_progs.getSelectedValue();
+				String progString = avail_progs.getSelectedValue();
+				 int classId = h.getIDFromUserInput(progString);
+				 String className = h.getNameFromUserInput(progString);
+				 
 				String[] classinfo = null;
 					try {
-						classinfo = h.program_details(className, true);
-						classId = classinfo[10];			//keeps track of the classID * 
+						classinfo = h.program_details(classId, true);
 					} catch (SQLException eee) {
 						// TODO Auto-generated catch block
 						eee.printStackTrace();
@@ -310,8 +308,8 @@ public class gui {
 				} else if(name.getText().equals("")) {
 					name.setText("Enter Name.");
 				} else {
-					int classId_INT = Integer.parseInt(classId);
-					int s = h.enrollNM(name.getText(), lname.getText(), phone.getText(), className, classId_INT);
+					//int classId_INT = Integer.parseInt(classId);
+					int s = h.enrollNM(name.getText(), lname.getText(), phone.getText(), className, classId);
 				}
 				
 			}

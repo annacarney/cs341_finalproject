@@ -131,6 +131,28 @@ public class helper {
 		}
 		return ret;
 	}
+	
+	public String getNameFromUserInput(String progString) {
+		
+		String[] progs = progString.split("-");	
+		
+		String sName = progs[1];
+		System.out.print("Name: " + sName);
+		
+		return sName;
+	}
+	
+	//returns the class id from the gui display of the program -- needed to query to show program details
+	public int getIDFromUserInput(String programString) {
+		int classId = 0;
+		
+		String[] progs = programString.split("-");	
+		
+		String sId = progs[0];
+		classId = Integer.parseInt(sId);
+		
+		return classId;
+	}
 
 	// returns the available programs (WITHOUT CLASSID) to a list of strings
 	// for printing out for the user to see
@@ -142,10 +164,10 @@ public class helper {
 		String s = "";
 		for (int i = 0; i < programs.size(); i++) {
 			p = programs.get(i);
-			s = p.getClassName();
-			// s = p.getClassName() + ", Start: " + p.getStartTime() + ", End: " +
-			// p.getEndTime() + ", M= $" + p.getMemFee() + ", NM= $" + p.getNonMemFee() + ",
-			// " + p.getClassDesc();
+			
+			s = p.getClassID() + "-";
+			s = s + p.getClassName();
+					
 			ret[i] = s;
 			s = "";
 		}
@@ -401,7 +423,7 @@ public class helper {
 	}
 
 	// registers a member for a program they select
-	public void registerM(String className, String classId, JFrame f, person p) { 
+	public void registerM(String className, int classId, JFrame f, person p) { 
 		
 		if (className == null || className.equals("")) { // no selection
 			return;
@@ -409,13 +431,12 @@ public class helper {
 		
 		// when button is clicked
 		
-				int classID_int = Integer.parseInt(classId);
-				System.out.println("ClassId" + classID_int + " " + p.getFirstName() + " " + p.getLastName() + "Registering for " + className);
+				System.out.println("ClassId" + classId + " " + p.getFirstName() + " " + p.getLastName() + "Registering for " + className);
 				
 				//implement me***********************************************************************************************
 				
 				//validate here
-				boolean b = validation(className, p, classID_int);
+				boolean b = validation(className, p, classId);
 				System.out.println("Validation bool is : " + b);
 				
 				//add to database if true, error if false
@@ -442,7 +463,7 @@ public class helper {
 					System.out.println("Error in enrolling member in program");
 				} else {
 			
-				enrolled en = new enrolled(p.getUserName(), classID_int);
+				enrolled en = new enrolled(p.getUserName(), classId);
 				try {
 					db.insertEnrolled(en);
 				} catch (SQLException e1) {
@@ -452,8 +473,8 @@ public class helper {
 	}
 
 	// returns the details for a program based on className
-	public String[] program_details(String className, Boolean isMember ) throws SQLException {
-		ArrayList<program> programs = program.find(db, "Program.className IN ('" + className + "')");
+	public String[] program_details(int classId, Boolean isMember ) throws SQLException {
+		ArrayList<program> programs = program.find(db, "Program.classId IN ('" + classId + "')");
 		program p = programs.get(0);
 		String[] ret = new String[11];
 

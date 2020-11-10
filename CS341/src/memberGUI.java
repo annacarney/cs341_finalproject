@@ -149,12 +149,12 @@ public class memberGUI {
 
 		 registerButton.addActionListener(new ActionListener() {
 			 public void actionPerformed(ActionEvent e) {
-				 String classId;
-				 String className = avail_progs.getSelectedValue();
+				 String progString = avail_progs.getSelectedValue();
+				 int classId = h.getIDFromUserInput(progString);
+			
 				 String[] classinfo = null;
 					try {
-						classinfo = h.program_details(className, true);
-						classId = classinfo[10];			//keeps track of the classID * 
+						classinfo = h.program_details(classId, true);
 					} catch (SQLException eee) {
 						// TODO Auto-generated catch block
 						eee.printStackTrace();
@@ -185,12 +185,14 @@ public class memberGUI {
 		 reg.addActionListener((new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
-					String classId;
-					String className = avail_progs.getSelectedValue();
+					String progString = avail_progs.getSelectedValue();
+					 int classId = h.getIDFromUserInput(progString);
+					 String className = h.getNameFromUserInput(progString);
+					
 					String[] classinfo = null;
 						try {
-							classinfo = h.program_details(className, true);
-							classId = classinfo[10];			//keeps track of the classID * 
+							classinfo = h.program_details(classId, true);
+						 
 						} catch (SQLException eee) {
 							// TODO Auto-generated catch block
 							eee.printStackTrace();
