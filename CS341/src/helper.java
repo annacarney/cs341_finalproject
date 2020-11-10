@@ -132,6 +132,7 @@ public class helper {
 		return ret;
 	}
 	
+	
 	public String getNameFromUserInput(String progString) {
 		
 		String[] progs = progString.split("-");	

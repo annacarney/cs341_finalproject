@@ -32,7 +32,28 @@ public class staffGUI {
 	
 	//displays all available programs
 	private void viewPrograms() {
+		
+		JLabel text = new JLabel("Existing Programs:");
+		text.setBounds(0, 120, 450, 50);
+		text.setHorizontalAlignment(SwingConstants.CENTER);
+		text.setFont(new Font("SansSerif", Font.BOLD, 20));
+		text.setForeground(new Color(128,128,0));
+		m.add(text, 0);
+		
 
+	}
+	
+	//shows which users are involved in which programs
+	private void viewEnrolled() {
+		
+		JLabel text = new JLabel("Select a Program to View Enrolled Users:");
+		text.setBounds(0, 120, 450, 50);
+		text.setHorizontalAlignment(SwingConstants.CENTER);
+		text.setFont(new Font("SansSerif", Font.BOLD, 20));
+		text.setForeground(new Color(128,128,0));
+		m.add(text, 0);
+		
+		
 	}
 	
 	//displays the register for a program portion 
@@ -264,7 +285,9 @@ public class staffGUI {
             	m.repaint();
             	pressedAddB = false;
             	pressedviewprogB = false;
-
+            	
+            	viewEnrolled();
+            	
 
             }
         });
