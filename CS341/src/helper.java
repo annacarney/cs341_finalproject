@@ -501,5 +501,19 @@ public class helper {
 
 		return ret;
 	}
+	
+	private boolean isFull (database db, int classid) throws SQLException {
+		ArrayList<program> programs = program.find(db, "ClassID = " + classid);
+		program p = programs.get(0);
+		int size = p.getClassSize();
+		ResultSet res = db.runQuery("Select * FROM Enrolled WHERE ClassID = " + classid);
+		int count = res.getFetchSize();
+		
+		if (count >= size) {
+			return true;
+		}
+		
+		return false;
+	}
 
 }
