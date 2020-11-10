@@ -270,18 +270,18 @@ public class helper {
 						String[] progCheckStartDate = progCheck.getStartTime().split("-");
 						String[] progCheckEndDate = progCheck.getEndTime().split("-");
 						// check year
-						if(Integer.parseInt(progStartDate[0]) < Integer.parseInt(progCheckStartDate[0])) {
-							if(Integer.parseInt(progEndDate[0])>Integer.parseInt(progCheckStartDate[0])) {
+						if(Integer.parseInt(progStartDate[2]) < Integer.parseInt(progCheckStartDate[2])) {
+							if(Integer.parseInt(progEndDate[2])>Integer.parseInt(progCheckStartDate[2])) {
 								System.out.println("End date overlap with other start year!");
 								return false;
 							}
-							else if(Integer.parseInt(progEndDate[0])==Integer.parseInt(progCheckStartDate[0])) {
-								if(Integer.parseInt(progEndDate[1])>Integer.parseInt(progCheckStartDate[1])) {
+							else if(Integer.parseInt(progEndDate[2])==Integer.parseInt(progCheckStartDate[2])) {
+								if(Integer.parseInt(progEndDate[0])>Integer.parseInt(progCheckStartDate[0])) {
 									System.out.println("Same year but end date overlap with other start month!");
 									return false;
 								}
-								else if(Integer.parseInt(progEndDate[1])==Integer.parseInt(progCheckStartDate[1])){
-									if(Integer.parseInt(progEndDate[2])>Integer.parseInt(progCheckStartDate[2])) {
+								else if(Integer.parseInt(progEndDate[0])==Integer.parseInt(progCheckStartDate[0])){
+									if(Integer.parseInt(progEndDate[1])>Integer.parseInt(progCheckStartDate[1])) {
 										System.out.println("Same year , same month but end date overlap with other start day!");
 										return false;
 									}
@@ -289,18 +289,18 @@ public class helper {
 							}
 						}
 						// check year
-						else if(Integer.parseInt(progStartDate[0]) > Integer.parseInt(progCheckStartDate[0])) {
-							if(Integer.parseInt(progCheckEndDate[0])>Integer.parseInt(progStartDate[0])) {
+						else if(Integer.parseInt(progStartDate[2]) > Integer.parseInt(progCheckStartDate[2])) {
+							if(Integer.parseInt(progCheckEndDate[2])>Integer.parseInt(progStartDate[2])) {
 								System.out.println("End date overlap with other start year!");
 								return false;
 							}
-							else if(Integer.parseInt(progCheckEndDate[0])==Integer.parseInt(progStartDate[0])) {
-								if(Integer.parseInt(progCheckEndDate[1])>Integer.parseInt(progStartDate[1])) {
+							else if(Integer.parseInt(progCheckEndDate[2])==Integer.parseInt(progStartDate[2])) {
+								if(Integer.parseInt(progCheckEndDate[0])>Integer.parseInt(progStartDate[0])) {
 									System.out.println("Same year but end date overlap with other start month!");
 									return false;
 								}
-								else if(Integer.parseInt(progCheckEndDate[1])==Integer.parseInt(progStartDate[1])){
-									if(Integer.parseInt(progCheckEndDate[2])>Integer.parseInt(progStartDate[2])) {
+								else if(Integer.parseInt(progCheckEndDate[0])==Integer.parseInt(progStartDate[0])){
+									if(Integer.parseInt(progCheckEndDate[1])>Integer.parseInt(progStartDate[1])) {
 										System.out.println("Same year , same month but end date overlap with other start day!");
 										return false;
 									}
@@ -309,39 +309,39 @@ public class helper {
 						}
 						// if the year is the same
 						else {
-							if(Integer.parseInt(progStartDate[1]) < Integer.parseInt(progCheckStartDate[1])) {
-								if(Integer.parseInt(progEndDate[1])> Integer.parseInt(progCheckStartDate[1])) {
+							if(Integer.parseInt(progStartDate[0]) < Integer.parseInt(progCheckStartDate[0])) {
+								if(Integer.parseInt(progEndDate[0])> Integer.parseInt(progCheckStartDate[0])) {
 									System.out.println("same year but end month overlap with other start month!");
 									return false;
 								}
-								else if(Integer.parseInt(progEndDate[1])== Integer.parseInt(progCheckStartDate[1])) {
-									if(Integer.parseInt(progEndDate[2])> Integer.parseInt(progCheckStartDate[2])) {
+								else if(Integer.parseInt(progEndDate[0])== Integer.parseInt(progCheckStartDate[0])) {
+									if(Integer.parseInt(progEndDate[1])> Integer.parseInt(progCheckStartDate[1])) {
 										System.out.println("same year, same month but end date overlap with other start date!");
 										return false;
 									}
 								}
 							}
-							else if(Integer.parseInt(progStartDate[1]) > Integer.parseInt(progCheckStartDate[1])) {
-								if(Integer.parseInt(progCheckEndDate[1])> Integer.parseInt(progStartDate[1])) {
+							else if(Integer.parseInt(progStartDate[0]) > Integer.parseInt(progCheckStartDate[0])) {
+								if(Integer.parseInt(progCheckEndDate[0])> Integer.parseInt(progStartDate[0])) {
 									System.out.println("same year but end month overlap with other start month!");
 									return false;
 								}
-								else if(Integer.parseInt(progCheckEndDate[1])== Integer.parseInt(progStartDate[1])) {
-									if(Integer.parseInt(progCheckEndDate[2])> Integer.parseInt(progStartDate[2])) {
+								else if(Integer.parseInt(progCheckEndDate[0])== Integer.parseInt(progStartDate[0])) {
+									if(Integer.parseInt(progCheckEndDate[1])> Integer.parseInt(progStartDate[1])) {
 										System.out.println("same year, same month but end date overlap with other start date!");
 										return false;
 									}
 								}
 							}
-							else if(Integer.parseInt(progStartDate[1]) == Integer.parseInt(progCheckStartDate[1])){
-								if(Integer.parseInt(progStartDate[2]) < Integer.parseInt(progCheckStartDate[2])) {
-									if(Integer.parseInt(progEndDate[2]) > Integer.parseInt(progCheckStartDate[2])) {
+							else if(Integer.parseInt(progStartDate[0]) == Integer.parseInt(progCheckStartDate[0])){
+								if(Integer.parseInt(progStartDate[1]) < Integer.parseInt(progCheckStartDate[1])) {
+									if(Integer.parseInt(progEndDate[1]) > Integer.parseInt(progCheckStartDate[1])) {
 										System.out.println("same year, same month but day overlap other start date!");
 										return false;
 									}
 								}
-								else if(Integer.parseInt(progStartDate[2]) > Integer.parseInt(progCheckStartDate[2])) {
-									if(Integer.parseInt(progCheckEndDate[2]) > Integer.parseInt(progStartDate[2])) {
+								else if(Integer.parseInt(progStartDate[1]) > Integer.parseInt(progCheckStartDate[1])) {
+									if(Integer.parseInt(progCheckEndDate[1]) > Integer.parseInt(progStartDate[1])) {
 										System.out.println("same year, same month but day overlap other start date!");
 										return false;
 									}
