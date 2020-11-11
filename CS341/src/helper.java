@@ -200,7 +200,6 @@ public class helper {
 		
 		try {
 			enrollResults = db.runQuery("SELECT * FROM Enrolled WHERE userName LIKE ('" + p.getUserName() + "')");
-			//return true if there is nothing in the enroll results set
 			while(enrollResults.next()) {
 				int classEnrollID = enrollResults.getInt("classID");
 				if(progToEnroll.getClassID() == classEnrollID) {
@@ -361,16 +360,12 @@ public class helper {
 						}
 					}
 				}
-				else{
-					return true;
-				}
 			}
 		}
 		catch(SQLException e) {
 			System.out.println("DB Query failed in method validation()");
 			return false;
 		}
-		
 		return true;
 	}
 	
