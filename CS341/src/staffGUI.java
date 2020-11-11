@@ -351,8 +351,9 @@ public class staffGUI {
 		m = new JFrame();
 		m.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		m.setSize(screenSize.width, screenSize.height);
+		//Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		//m.setSize(screenSize.width, screenSize.height);
+		m.setSize(800,800);
 
 		m.setLayout(null);
 		m.setVisible(true);
@@ -363,11 +364,17 @@ public class staffGUI {
 		m.repaint();
 		
 		JLabel title = new JLabel("Welcome to the YMCA Staff Member Page, " + u.getFirstName() + "!");
-		title.setBounds(280, 0, 900, 50);
+		title.setBounds(0, 200, 600, 50);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setFont(new Font("SansSerif", Font.BOLD, 35));
+		title.setFont(new Font("SansSerif", Font.BOLD, 25));
 		title.setForeground(new Color(128,128,0));
 		m.add(title, 0);
+		
+		ImageIcon banner = new ImageIcon("colors.png");
+		JLabel b = new JLabel(banner);
+		b.setBounds(0, 250, 800, 300); //(x,y, width, height)
+		m.add(b);
+		m.repaint();
 		
 		JMenuBar mb = new JMenuBar();
 		JMenu x = new JMenu("Programs");
