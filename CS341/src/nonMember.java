@@ -1,5 +1,8 @@
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class nonMember {
 	
@@ -14,6 +17,28 @@ public class nonMember {
 			this.lastName = lastName;
 			this.phoneNumber = phoneNumber;
 		}
+		
+		//query helper
+				public static ArrayList<nonMember> find(database db, String where) {
+					ResultSet pResults;
+					try {
+						pResults = db.runQuery("SELECT firstName, lastName, phoneNumber FROM NonMember " + (where != null ? "WHERE " + where : ""));
+						ArrayList<nonMember> nonmems = new ArrayList<>();
+						
+						while(pResults.next()) {
+							String firstName = pResults.getString("firstName");
+							String lastName = pResults.getString("lastName");
+							String phoneNumber = pResults.getString("phoneNumber");
+							
+							nonMember nm = new nonMember(firstName, lastName, phoneNumber);
+							nonmems.add(nm);
+						}
+						return nonmems;
+					} catch (SQLException e) {
+						System.out.println("DB Query failed");
+						return new ArrayList<>();
+					}
+				}
 		
 		@Override
 		public String toString() {

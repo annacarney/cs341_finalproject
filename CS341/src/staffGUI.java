@@ -36,9 +36,9 @@ public class staffGUI {
 	private void viewPrograms() {
 		
 		JLabel text = new JLabel("Existing Programs:");
-		text.setBounds(0, 120, 450, 50);
+		text.setBounds(0, 0, 780, 65);
 		text.setHorizontalAlignment(SwingConstants.CENTER);
-		text.setFont(new Font("SansSerif", Font.BOLD, 20));
+		text.setFont(new Font("SansSerif", Font.BOLD, 35));
 		text.setForeground(new Color(128,128,0));
 		m.add(text, 0);
 		
@@ -62,26 +62,93 @@ public class staffGUI {
 		avail_progs.setFixedCellWidth(100);
 		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		avail_progs.setVisibleRowCount(5);
-		avail_progs.setBounds(100, 200, 200, 200);
+		avail_progs.setBounds(250, 150, 300, 300);
 		avail_progs.setVisible(true);
 		
         JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
         scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
         scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
         scrollableTextArea.setMinimumSize(new Dimension(100,50));
-        scrollableTextArea.setBounds(100,200,220,200);
+        scrollableTextArea.setBounds(250,150,300,300);
         m.add(scrollableTextArea);
 		m.repaint();
+		
+		JButton exitB = new JButton("Sign Out");
+		exitB.setBounds(300, 650, 200, 30);
+		exitB.setBackground(Color.gray);
+		exitB.setForeground(Color.white);
+		m.add(exitB);
+		m.repaint();
+		
+		exitB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	//close db connection in helper
+            	h.closeDBConnection();
+ 	
+            	m.dispose();
+            }
+        });
 
+	}
+	
+	//search feature to find all programs in which a user is enrolled in 
+	private void searchEnrolled() {
+		
+		//get all users -- nonmembers and members 
+		String[] users = h.getAllUsers();
+				
+		JComboBox<String> searchUsers = new JComboBox(users);
+		searchUsers.setBounds(100,100,380,30);
+		m.add(searchUsers);
+		
+		JButton searchB = new JButton("Search User");
+		searchB.setBounds(500, 100, 200, 30);
+		searchB.setBackground(new Color(51,102,0));
+		searchB.setForeground(Color.white);
+		m.add(searchB);
+		m.repaint();
+		
+		//find programs at the selected time
+		searchB.addActionListener(new ActionListener() { 
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	            	//display all programs a user is enrolled in
+	            	
+	            	String selected = (String)searchUsers.getSelectedItem();
+	            	
+	            	String[] sp = selected.split(":");
+	            	//System.out.println(sp[0] + " " + sp[1]);
+	            	
+	            	//find classes from the username/phonenumber at sp[0] and display them
+	            	String[] classes = h.getClassesFromUser(sp[0]);
+	            	
+	            	JList<String> l = new JList(classes);
+					l.setFixedCellHeight(15);
+					l.setFixedCellWidth(100);
+					l.setVisibleRowCount(5);
+					l.setBounds(350, 200, 400, 200);
+					l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+					l.setVisible(true);
+					m.add(l, 0);
+					m.repaint();  
+	            	
+	            }
+	        });
+		 
+		
 	}
 	
 	//shows which users are involved in which programs
 	private void viewEnrolled() {
 		
-		JLabel text = new JLabel("Select a Program to View Enrolled Users:");
-		text.setBounds(0, 120, 450, 50);
+		//search
+		searchEnrolled();
+		
+		JLabel text = new JLabel("View Registrations:");
+		text.setBounds(0, 0, 780, 65);
 		text.setHorizontalAlignment(SwingConstants.CENTER);
-		text.setFont(new Font("SansSerif", Font.BOLD, 20));
+		text.setFont(new Font("SansSerif", Font.BOLD,35));
 		text.setForeground(new Color(128,128,0));
 		m.add(text, 0);
 		
@@ -185,10 +252,10 @@ public class staffGUI {
 	private void registerDisplay() {
 		pressedAddB = true;
 		
-		JLabel text = new JLabel("Add a new Program:");
-		text.setBounds(0, 120, 450, 50);
+		JLabel text = new JLabel("Add a New Program:");
+		text.setBounds(0, 0, 780, 65);
 		text.setHorizontalAlignment(SwingConstants.CENTER);
-		text.setFont(new Font("SansSerif", Font.BOLD, 20));
+		text.setFont(new Font("SansSerif", Font.BOLD, 35));
 		text.setForeground(new Color(128,128,0));
 		m.add(text, 0);
 		
@@ -243,7 +310,7 @@ public class staffGUI {
 		addText("End Time: ", 345, 275, 100, 50);
 		JTextField endTime = new JTextField(30);
 		endTime.setBounds(345,310,100,27);
-		endTime.setText("HH:MM am/pm");
+		endTime.setText("HH:MM");
 		m.add(endTime);
 		
 		addText("Days: ", 455, 275, 100, 50);
@@ -427,8 +494,6 @@ public class staffGUI {
 		x.add(p3);
 		mb.add(x);
 		m.setJMenuBar(mb);
-		
-		//registerDisplay();
 
 	}
 

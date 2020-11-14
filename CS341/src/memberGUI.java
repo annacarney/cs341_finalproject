@@ -59,6 +59,23 @@ public class memberGUI {
 		f.add(b);
 		f.repaint();
 		
+		JButton exitB = new JButton("Sign Out");
+		exitB.setBounds(300, 650, 200, 30);
+		exitB.setBackground(Color.gray);
+		exitB.setForeground(Color.white);
+		f.add(exitB);
+		f.repaint();
+		
+		exitB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	//close db connection in helper
+            	h.closeDBConnection();
+ 	
+            	f.dispose();
+            }
+        });
+		
 		displayPrograms(f);
 
 	}

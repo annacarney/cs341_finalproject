@@ -308,7 +308,6 @@ public class gui {
 				} else if(name.getText().equals("")) {
 					name.setText("Enter Name.");
 				} else {
-					//int classId_INT = Integer.parseInt(classId);
 					int s = h.enrollNM(name.getText(), lname.getText(), phone.getText(), className, classId);
 				}
 				
@@ -371,7 +370,6 @@ public class gui {
 			public void actionPerformed(ActionEvent e)
 			{
 				createAccount();
-				System.out.println("Create an Account button clicked");
 				}
 			});
 		
@@ -418,7 +416,7 @@ public class gui {
 		signIn.addActionListener((new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				System.out.println("Sign In button clicked");
+				
 				int ret = signIn(username.getText(), password.getText());		//getPassword() return char[] **
 				if(ret == 0) {	//login failed - credentials not recognized
 					username.setText("Invalid username/password" );
@@ -454,7 +452,7 @@ public class gui {
 			public void actionPerformed(ActionEvent e)
 			{
 				viewPrograms();
-				System.out.println("Available Programs button clicked");
+				
 				}
 			});
 		

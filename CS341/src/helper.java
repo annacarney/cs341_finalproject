@@ -38,6 +38,17 @@ public class helper {
 			e.printStackTrace();
 		}
 	}
+	
+	//closes connection to the database
+	public void closeDBConnection() {
+		try {
+			db.disconnect();
+			System.out.print("Successfully disconnected from db");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	// adds a new program to the database
 	// returns 1 on success, 0 on fail
@@ -194,10 +205,9 @@ public class helper {
 				return false;
 			}
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+	
 		try {
 			enrollResults = db.runQuery("SELECT * FROM Enrolled WHERE userName LIKE ('" + p.getUserName() + "')");
 			while(enrollResults.next()) {
@@ -397,11 +407,11 @@ public class helper {
 		boolean checkNM = checkNMexist(newPerson);
 		
 		if(checkNM == false ) {	//non-member is not already entered in the database
-		
+			
 		try {
 			db.insertNonMember(newPerson);
 		} catch (SQLException e) {
-			System.out.print("Failed to add non mem to db");
+			System.out.print(e);
 		}
 		
 		}
@@ -427,18 +437,40 @@ public class helper {
 			title.setBounds(0, 0, 350, 90);
 			title.setHorizontalAlignment(SwingConstants.CENTER);
 			title.setFont(new Font("SansSerif", Font.BOLD, 15));
-			title.setForeground(Color.black);
+			title.setForeground(Color.red);
 			popup.add(title, 0);
 			popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
 			
 			System.out.print("Error: Cannot add non-member to this class due to conflicts.");
 		} else {
-			//okay to add user to class
-			
+			//okay to add user to class	
 		//enroll non member in the selected class
 		enrolled en = new enrolled(phone, classID);
 		try {
 			db.insertEnrolled(en);
+			
+			JFrame popup = new JFrame();
+			popup.setSize(350,250);
+			popup.setLayout(null);
+			popup.setVisible(true);
+			popup.getContentPane().setBackground(Color.white);
+			popup.setTitle("Success!");
+			ImageIcon icon = new ImageIcon("ymcalogo.JPG");
+			popup.setIconImage(icon.getImage());
+			
+			ImageIcon banner = new ImageIcon("smallsmiley.PNG");
+			JLabel bl = new JLabel(banner);
+			bl.setBounds(120, 20, 300, 200); //(x,y, width, height)
+			popup.add(bl);
+			
+			JLabel title = new JLabel("Succesfully enrolled!");
+			title.setBounds(0, 0, 300, 90);
+			title.setHorizontalAlignment(SwingConstants.CENTER);
+			title.setFont(new Font("SansSerif", Font.BOLD, 15));
+			title.setForeground(Color.black);
+			popup.add(title, 0);
+			popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
+			
 		} catch (SQLException e1) {
 			System.out.print("db failed to enroll user in program");
 		}
@@ -457,8 +489,6 @@ public class helper {
 		// when button is clicked
 		
 				System.out.println("ClassId" + classId + " " + p.getFirstName() + " " + p.getLastName() + "Registering for " + className);
-				
-				//implement me***********************************************************************************************
 				
 				//validate here
 				boolean b = validation(className, p, classId);
@@ -481,16 +511,39 @@ public class helper {
 					title.setBounds(0, 0, 350, 90);
 					title.setHorizontalAlignment(SwingConstants.CENTER);
 					title.setFont(new Font("SansSerif", Font.BOLD, 15));
-					title.setForeground(Color.black);
+					title.setForeground(Color.red);
 					popup.add(title, 0);
 					popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
 					
 					System.out.println("Error in enrolling member in program");
 				} else {
-			
+					
 				enrolled en = new enrolled(p.getUserName(), classId);
 				try {
 					db.insertEnrolled(en);
+					
+					JFrame popup = new JFrame();
+    				popup.setSize(350,250);
+    				popup.setLayout(null);
+    				popup.setVisible(true);
+    				popup.getContentPane().setBackground(Color.white);
+    				popup.setTitle("Success!");
+    				ImageIcon icon = new ImageIcon("ymcalogo.JPG");
+    				popup.setIconImage(icon.getImage());
+    				
+    				ImageIcon banner = new ImageIcon("smallsmiley.PNG");
+    				JLabel bl = new JLabel(banner);
+    				bl.setBounds(120, 20, 300, 200); //(x,y, width, height)
+    				popup.add(bl);
+    				
+    				JLabel title = new JLabel("Succesfully enrolled!");
+    				title.setBounds(0, 0, 200, 90);
+    				title.setHorizontalAlignment(SwingConstants.CENTER);
+    				title.setFont(new Font("SansSerif", Font.BOLD, 15));
+    				title.setForeground(Color.black);
+    				popup.add(title, 0);
+    				popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
 				} catch (SQLException e1) {
 					System.out.print("db failed to enroll user in program");
 				}		
@@ -526,11 +579,91 @@ public class helper {
 		return ret;
 	}
 	
+	//returns a string array of all users usernames/phonenumbers for both members and non members
+	public String[] getAllUsers() {
+		String[] ret = null;
+		
+		ArrayList<person> members = person.find(db, null);
+		ArrayList<nonMember> nonmembers = nonMember.find(db, null);
+		ret = new String[members.size() + nonmembers.size()];
+		
+		//iterate through members 
+		person p = null;
+		String s = "";
+		int index = 0; 
+		for(int i = 0; i < members.size(); i++) {
+			p = members.get(i);
+			
+			s = p.getUserName() + ": ";
+			s = s + p.getFirstName() + " ";
+			s = s + p.getLastName();
+					
+			ret[i] = s;
+			s = "";
+			index++;
+		}
+		
+		//iterate through non members
+		nonMember nm = null;
+		s = "";
+		for(int j = 0; j < nonmembers.size(); j++) {
+			nm = nonmembers.get(j);
+			
+			s = nm.getPhoneNumber() + ": ";
+			s = s + nm.getFirstName() + " ";
+			s = s + nm.getLastName();
+			
+			ret[index] = s;
+			s = "";
+			index++;
+		}
+		
+		return ret;
+	}
+	
+	//returns all classes enrolled in by a user
+	public String[] getClassesFromUser(String username) {
+		String[] ret = null;
+		int index = 0;
+		String where = "Enrolled.username = ('" + username + "')";
+		ArrayList<enrolled> enrolledres = enrolled.find(db, where);
+		
+		System.out.println("username " + username);
+		
+		enrolled e = null;
+		String s = "";
+		ret = new String[enrolledres.size()];
+		
+		for(int i = 0; i < enrolledres.size(); i++) {
+			e = enrolledres.get(i);
+			
+			System.out.println("Got here -- " + e.getClassid());
+			
+			//add to string
+			String temp = "Program.classID = ('" + e.getClassid() + "')";
+			ArrayList<program> progdets = program.find(db, temp);
+			
+			if(!progdets.isEmpty()) {
+				program found = progdets.get(0);
+				
+				s = found.getClassName() + " " + found.getStartDate() + "-" + found.getEndDate() + " " + found.getStartTime() + "-" + found.getEndTime();
+				ret[index] = s;
+				
+				System.out.println(s);
+				
+				index++;
+				s = "";
+			}
+			
+		}
+		
+		
+		return ret; 
+	}
+	
 	//returns a string array of usernames that are enrolled in the class
 	public ArrayList<String> enrolled_details(int classId ) throws SQLException {
 		ArrayList<String> ret = new ArrayList<>();
-//		String[] ret = new String[25];
-//		int ind = 0;
 		
 		ResultSet enresults = db.runQuery("SELECT userName FROM Enrolled WHERE classID = ('" + classId + "')");
 

@@ -1,3 +1,6 @@
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class enrolled {
 	
@@ -9,6 +12,27 @@ public class enrolled {
 		super();
 		this.username = username;
 		this.classid = classid;
+	}
+	
+	public static ArrayList<enrolled> find(database db, String where) {
+		ResultSet pResults;
+		try {
+			pResults = db.runQuery("SELECT username, classID FROM Enrolled " + (where != null ? "WHERE " + where : ""));
+			ArrayList<enrolled> regs = new ArrayList<>();
+			
+			while(pResults.next()) {
+				String username = pResults.getString("username");
+				int classid = pResults.getInt("classID");
+				
+				enrolled e = new enrolled(username, classid);
+				regs.add(e);
+			}
+			
+			return regs;
+		} catch (SQLException e) {
+			System.out.println("DB Query failed");
+			return new ArrayList<>();
+		}
 	}
 
 	public String getUsername() {

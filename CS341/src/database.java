@@ -87,6 +87,7 @@ public class database {
 		stmt.setInt(2, en.getClassid());
 		
 		stmt.execute();
+		
 	}
 	
 	public void insertNonMember(nonMember nm) throws SQLException {
