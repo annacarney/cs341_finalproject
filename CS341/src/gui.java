@@ -59,6 +59,7 @@ public class gui {
 		} else if(p.getIsAdmin() == true ){
 			//user is an admin
 			System.out.print("Sign in worked = is an admin");
+			staffGUI sg = new staffGUI(p);
 			
 		} else {
 			//user is a member
