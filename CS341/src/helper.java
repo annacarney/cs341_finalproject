@@ -92,14 +92,16 @@ public class helper {
 	// verifies the username/password is valid for staffmember/member
 	public person signInUser(String username, String password) {
 
-		// need to write
+		// implemented password hashing
+		String hashed = db.hashing(password);
 		ArrayList<person> p = person.find(db,
-				"Person.userName LIKE ('" + username + "')" + "AND Person.password LIKE ('" + password + "')");
+				"Person.userName LIKE ('" + username + "')" + "AND Person.password LIKE ('" + hashed + "')");
 		person user = null;
 		for (int i = 0; i < p.size(); i++) {
 			user = p.get(i);
 		}
-
+		
+		
 		return user;
 	}
 

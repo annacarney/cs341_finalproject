@@ -16,14 +16,16 @@ public class main {
     	//testdb();
     	
     	//generate welcome screen
+		
     	gui g = new gui();
+    	
     	
     	
     }
 	
     public static void testdb() {
     	database db = new database();
-		
+    	
 		try {
 			db.connect();
 		} catch (SQLException e) {
@@ -48,6 +50,8 @@ public class main {
 			//db.insertProgram(newProgram);
 			
 			//Create a new nonMember object.
+			
+			
 			nonMember newNon = new nonMember("Morty", "Sanchez", "608-790-3666");
 			db.insertNonMember(newNon);
 			

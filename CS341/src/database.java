@@ -4,6 +4,8 @@
  * Created: 10/10/2020
  */
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -72,7 +74,9 @@ public class database {
 		stmt.setString(2, p.getLastName());
 		stmt.setString(3, p.getPhoneNumber());
 		stmt.setString(4, p.getUserName());
-		stmt.setString(5, p.getPassword());
+		// implemented password hashing
+		String hashed = hashing(p.getPassword());
+		stmt.setString(5, hashed);
 		stmt.setBoolean(6, p.getIsStaff());
 		stmt.setBoolean(7, p.getIsAdmin());
 		
@@ -120,5 +124,30 @@ public class database {
 		stmt.execute();
 	}
 	
-	
+	// password hashing implementation
+	public String hashing(String passwordToHash) {
+        String generatedPassword = null;
+		try {
+            // Create MessageDigest instance for MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            //Add password bytes to digest
+            md.update(passwordToHash.getBytes());
+            //Get the hash's bytes 
+            byte[] bytes = md.digest();
+            //This bytes[] has bytes in decimal format;
+            //Convert it to hexadecimal format
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++)
+            {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            //Get complete hashed password in hex format
+            generatedPassword = sb.toString();
+        } 
+        catch (NoSuchAlgorithmException e) 
+        {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+	}
 }
