@@ -92,6 +92,97 @@ public class gui {
 		title.setForeground(new Color(0,76,153));
 		f.add(title, 0);	
 		
+		ImageIcon banner = new ImageIcon("colors.png");
+		JLabel b = new JLabel(banner);
+		b.setBounds(0, 700, 800, 100); //(x,y, width, height)
+		f.add(b);
+		
+		JLabel usNametext = new JLabel("Username:");
+		usNametext.setBounds(75, 165, 100, 50);
+		usNametext.setHorizontalAlignment(SwingConstants.CENTER);
+		usNametext.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		usNametext.setForeground(new Color(128,128,0));
+		f.add(usNametext, 0);
+		
+		JTextField usName = new JTextField(30);
+		usName.setBounds(80,200,100,27);
+		f.add(usName);
+		
+		JLabel pwNametext = new JLabel("Password:");
+		pwNametext.setBounds(175, 165, 100, 50);
+		pwNametext.setHorizontalAlignment(SwingConstants.CENTER);
+		pwNametext.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		pwNametext.setForeground(new Color(128,128,0));
+		f.add(pwNametext, 0);
+		
+		JTextField pwName = new JTextField(30);
+		pwName.setBounds(180,200,100,27);
+		f.add(pwName);
+		
+		JLabel fNametext = new JLabel("First Name:");
+		fNametext.setBounds(275, 165, 100, 50);
+		fNametext.setHorizontalAlignment(SwingConstants.CENTER);
+		fNametext.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		fNametext.setForeground(new Color(128,128,0));
+		f.add(fNametext, 0);
+		
+		JTextField fName = new JTextField(30);
+		fName.setBounds(280,200,100,27);
+		f.add(fName);
+		
+		JLabel lNametext = new JLabel("Last Name:");
+		lNametext.setBounds(375, 165, 100, 50);
+		lNametext.setHorizontalAlignment(SwingConstants.CENTER);
+		lNametext.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lNametext.setForeground(new Color(128,128,0));
+		f.add(lNametext, 0);
+		
+		JTextField lName = new JTextField(30);
+		lName.setBounds(380,200,100,27);
+		f.add(lName);
+		
+		JLabel phonetext = new JLabel("Phone Number:");
+		phonetext.setBounds(460, 165, 150, 50);
+		phonetext.setHorizontalAlignment(SwingConstants.CENTER);
+		phonetext.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		phonetext.setForeground(new Color(128,128,0));
+		f.add(phonetext, 0);
+		
+		JTextField phone = new JTextField(30);
+		phone.setBounds(480,200,100,27);
+		f.add(phone);
+		
+		JLabel usertypetext = new JLabel("Staff Member or Member? (enter SM or M)");
+		usertypetext.setBounds(175, 265, 300, 50);
+		usertypetext.setHorizontalAlignment(SwingConstants.CENTER);
+		usertypetext.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		usertypetext.setForeground(new Color(128,128,0));
+		f.add(usertypetext, 0);
+		
+		JTextField usertype = new JTextField(30);
+		usertype.setBounds(180,300,300,27);
+		f.add(usertype);
+		
+		JButton addB = new JButton("Create Account!");
+		addB.setBounds(250, 400, 200, 30);
+		addB.setBackground(new Color(51,102,0));
+		addB.setForeground(Color.white);
+		f.add(addB);
+		f.repaint();
+		
+		addB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	boolean isStaff = false; 
+            	if(usertype.getText().equals("SM")) {
+            		isStaff = true;
+            	}
+            	h.createUser(fName.getText(), lName.getText(), phone.getText(), usName.getText(), pwName.getText(), isStaff, false);
+
+            }
+        });
+		
+		
 	}
 	
 	public void viewPrograms() {

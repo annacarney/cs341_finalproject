@@ -726,4 +726,20 @@ public class helper {
 		return false;
 	}
 
+	//creates a new user and adds to the database
+	public void createUser(String fname, String lname, String phone, String un, String pw, boolean isStaff,
+			boolean isAdmin) {
+		// TODO Auto-generated method stub
+		
+    	person newPerson = new person(fname, lname, phone, un, pw, isStaff, isAdmin);
+		try {
+			db.insertEmployee(newPerson);
+			System.out.print("Person added!");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
 }

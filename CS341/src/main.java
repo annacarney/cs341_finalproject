@@ -20,7 +20,7 @@ public class main {
     	gui g = new gui();
     	
     	//user logins--
-    	//non member -> us: anna pw: anna
+    	//member -> us: anna pw: anna
     	//staff -> us: jdoe pw: password 
     	//admin -> us: admin pw: admin
     	
