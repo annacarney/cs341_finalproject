@@ -1,4 +1,3 @@
-
 /* CS 341 - Final Project
  * Team 1 - Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney
  * This class helps with database queries and overall functionalities implemented. 
@@ -128,6 +127,23 @@ public class helper {
 		}
 		return ret;
 	}
+	
+	//searches all programs, returns all that match the searched word
+	public ArrayList<program> searchPrograms(String search) {
+		
+		ArrayList<program> p = program.find(db, "Program.className LIKE ('" + search + "%')");
+		
+		return p;
+	}
+	
+		public program searchProgramID(int id) {
+			ArrayList<program> p = program.find(db, "Program.classID LIKE ('" + id + "%')");
+			if(p.isEmpty()) {
+				return null;
+			} else {
+				return p.get(0);
+			}
+		}
 
 	// returns all available program times in a formatted way
 	public String[] getProgramTimes() {

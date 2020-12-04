@@ -1,12 +1,11 @@
+/* CS 341 - Final Project
+ * Team 1 - Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney
+ * Main class for the YMCA registration program.
+ */
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-/* CS 341 - Final Project
- * Team 1 - Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney\
- * Main class for the YMCA registration program.
- */
 
 public class main {
 

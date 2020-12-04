@@ -1,3 +1,7 @@
+/* CS 341 - Final Project
+ * Team 1 - Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney\
+ * This class sets up the graphical user interface for the staff user.
+ */
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,10 +15,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-/* CS 341 - Final Project
- * Team 1 - Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney\
- * This class sets up the graphical user interface for the staff user.
- */
 public class staffGUI {
 
 	private person u;
@@ -35,7 +35,7 @@ public class staffGUI {
 	//displays all available programs
 	private void viewPrograms() {
 		
-		JLabel text = new JLabel("Existing Programs:");
+		JLabel text = new JLabel("Search Programs:");
 		text.setBounds(0, 0, 780, 65);
 		text.setHorizontalAlignment(SwingConstants.CENTER);
 		text.setFont(new Font("SansSerif", Font.BOLD, 35));
@@ -62,16 +62,82 @@ public class staffGUI {
 		avail_progs.setFixedCellWidth(100);
 		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		avail_progs.setVisibleRowCount(5);
-		avail_progs.setBounds(250, 150, 300, 300);
+		avail_progs.setBounds(180, 180, 400, 150);
 		avail_progs.setVisible(true);
 		
         JScrollPane scrollableTextArea = new JScrollPane(avail_progs);  
         scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
         scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  
         scrollableTextArea.setMinimumSize(new Dimension(100,50));
-        scrollableTextArea.setBounds(250,150,300,300);
+        scrollableTextArea.setBounds(180,180,400,150);
         m.add(scrollableTextArea);
 		m.repaint();
+		
+		//search text bar
+		JTextField searchField = new JTextField();
+		searchField.setBounds(120, 80, 300, 45);	//x y width height
+		m.add(searchField);
+		m.repaint();
+		
+		JButton searchB = new JButton("Search");
+		searchB.setBounds(470, 86, 130, 30);
+		searchB.setBackground(new Color(51,102,0));
+		searchB.setForeground(Color.white);
+		m.add(searchB);
+		m.repaint();
+		
+		searchB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	ArrayList<program> searchResults = h.searchPrograms(searchField.getText());
+            	
+            	if(searchResults.isEmpty()) {
+            		lister.clear();
+            		lister.addElement("No results found.");
+            	} else {
+            		lister.clear();
+            		for(int i = 0; i < searchResults.size(); i++) {
+            			program p = searchResults.get(i);
+            			//lister.addElement(p);
+            			String progView = p.getClassID() + "-" + p.getClassName();
+            			lister.addElement(progView);
+            		}
+            	}
+            }
+        });
+		
+		JButton selectB = new JButton("Select");
+		selectB.setBounds(330, 350, 130, 30);
+		selectB.setBackground(new Color(51,102,0));
+		selectB.setForeground(Color.white);
+		m.add(selectB);
+		m.repaint();
+		
+		DefaultListModel lister2 = new DefaultListModel();
+		JList<String> searchResultslist = new JList<>(lister2);	
+		searchResultslist.setFixedCellHeight(15);
+		searchResultslist.setFixedCellWidth(100);
+		searchResultslist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		searchResultslist.setVisibleRowCount(5);
+		searchResultslist.setBounds(135, 400, 500, 100);
+		searchResultslist.setVisible(true);
+		m.add(searchResultslist);
+		
+		selectB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	//display all the details for the selected program 	
+            	String selected = avail_progs.getSelectedValue();
+            	int classId = h.getIDFromUserInput(selected);
+            	program selectedprog = h.searchProgramID(classId);
+            	
+            	if(selectedprog != null) {
+            		lister2.clear();
+            		lister2.addElement(selectedprog);
+            	}
+            }
+        });
 		
 		JButton exitB = new JButton("Sign Out");
 		exitB.setBounds(300, 650, 200, 30);
@@ -145,7 +211,7 @@ public class staffGUI {
 		//search
 		searchEnrolled();
 		
-		JLabel text = new JLabel("View Registrations:");
+		JLabel text = new JLabel("Search Users:");
 		text.setBounds(0, 0, 780, 65);
 		text.setHorizontalAlignment(SwingConstants.CENTER);
 		text.setFont(new Font("SansSerif", Font.BOLD,35));
@@ -460,7 +526,7 @@ public class staffGUI {
             }
         });
 		
-		JMenuItem p2 = new JMenuItem("View existing Programs");
+		JMenuItem p2 = new JMenuItem("Search Programs");
 		p2.addActionListener(new ActionListener() { 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -474,7 +540,7 @@ public class staffGUI {
             }
         });
 		
-		JMenuItem p3 = new JMenuItem("View Enrolled Members/Non-Members");
+		JMenuItem p3 = new JMenuItem("Search Members/Non-Members");
 		p3.addActionListener(new ActionListener() { 
             @Override
             public void actionPerformed(ActionEvent e) {
