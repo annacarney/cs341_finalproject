@@ -109,7 +109,7 @@ public class staffGUI {
 		
 		JButton selectB = new JButton("Select");
 		selectB.setBounds(330, 350, 130, 30);
-		selectB.setBackground(new Color(51,102,0));
+		selectB.setBackground(new Color(1,50,32));
 		selectB.setForeground(Color.white);
 		m.add(selectB);
 		m.repaint();
@@ -120,7 +120,7 @@ public class staffGUI {
 		searchResultslist.setFixedCellWidth(100);
 		searchResultslist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		searchResultslist.setVisibleRowCount(5);
-		searchResultslist.setBounds(135, 400, 500, 100);
+		searchResultslist.setBounds(135, 400, 500, 120);
 		searchResultslist.setVisible(true);
 		m.add(searchResultslist);
 		
@@ -129,18 +129,72 @@ public class staffGUI {
             public void actionPerformed(ActionEvent e) {
             	//display all the details for the selected program 	
             	String selected = avail_progs.getSelectedValue();
+            	
+            	if(selected != null && selected != "") {
             	int classId = h.getIDFromUserInput(selected);
             	program selectedprog = h.searchProgramID(classId);
             	
             	if(selectedprog != null) {
             		lister2.clear();
-            		lister2.addElement(selectedprog);
+            		lister2.addElement(selectedprog.getClassName());
+            		lister2.addElement(selectedprog.getStartDate() + " through " + selectedprog.getEndDate() + " " + selectedprog.getStartTime() + " to " + selectedprog.getEndTime());
+            		lister2.addElement("Day(s): " + selectedprog.getDays());
+            		lister2.addElement("Location: " + selectedprog.getLocation());
+            		lister2.addElement("Size: " + selectedprog.getClassSize());
+            		lister2.addElement("Members: $" + selectedprog.getMemFee() + " Non-Members: $" + selectedprog.getNonMemFee());
+            		lister2.addElement(selectedprog.getClassDesc());
             	}
+            }
+            }
+        });
+		
+		JButton modB = new JButton("Modify");
+		modB.setBounds(210, 550, 100, 30);
+		modB.setBackground(Color.orange);
+		modB.setForeground(Color.white);
+		m.add(modB);
+		m.repaint();
+		
+		modB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	
+            }
+        });
+		
+		JButton deleteB = new JButton("Delete");
+		deleteB.setBounds(325, 550, 100, 30);
+		deleteB.setBackground(Color.red);
+		deleteB.setForeground(Color.white);
+		m.add(deleteB);
+		m.repaint();
+		
+		deleteB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	
+            }
+        });
+		
+		JButton enrolledB = new JButton("Enrolled");
+		enrolledB.setBounds(440, 550, 100, 30);
+		enrolledB.setBackground(Color.blue);
+		enrolledB.setForeground(Color.white);
+		m.add(enrolledB);
+		m.repaint();
+		
+		enrolledB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	
             }
         });
 		
 		JButton exitB = new JButton("Sign Out");
-		exitB.setBounds(300, 650, 200, 30);
+		exitB.setBounds(300, 690, 200, 30);
 		exitB.setBackground(Color.gray);
 		exitB.setForeground(Color.white);
 		m.add(exitB);
