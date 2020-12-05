@@ -79,6 +79,10 @@ public class program {
 				String location = pResults.getString("location");
 				Boolean isActive = pResults.getBoolean("isActive");
 				
+				if (!isActive) {
+					continue;
+				}
+				
 				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location, isActive);
 				programs.add(p);
 			}

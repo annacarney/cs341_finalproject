@@ -47,6 +47,10 @@ public class person {
 					Boolean isAdmin = pResults.getBoolean("isAdmin");
 					Boolean isActive = pResults.getBoolean("isActive");
 					
+					if (!isActive) {
+						continue;
+					}
+					
 					person p = new person(firstName, lastName, phoneNumber, userName, password, isStaff, isAdmin, isActive);
 					persons.add(p);
 				}
