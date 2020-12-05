@@ -45,7 +45,7 @@ public class main {
 			ArrayList<enrolled> enro = new ArrayList<>();
 			
 			//Create a new person object.
-			person newPerson = new person("Anna", "Carney", "111-111-2222", "anna", "anna", false, false);
+			person newPerson = new person("Anna", "Carney", "111-111-2222", "anna", "anna", false, false, true);
 			db.insertEmployee(newPerson);
 			
 			//Create a new program object.
@@ -90,7 +90,7 @@ public class main {
 			enrolled en1 = new enrolled(uname, i);
 			db.insertEnrolled(en1);
 			
-			ResultSet results = db.runQuery("SELECT firstName, lastName, phoneNumber, userName, password, isAdmin, isStaff FROM Person");
+			ResultSet results = db.runQuery("SELECT firstName, lastName, phoneNumber, userName, password, isAdmin, isStaff, isActive FROM Person");
 
 			while(results.next()) {
 				String firstName = results.getString("firstName");
@@ -100,8 +100,9 @@ public class main {
 				String password = results.getString("password");
 				Boolean isAdmin = results.getBoolean("isAdmin");
 				Boolean isStaff = results.getBoolean("isStaff");
-				
-				person e = new person(firstName, lastName, phoneNumber, userName, password, isAdmin, isStaff);
+				Boolean isActive = results.getBoolean("isActive");
+
+				person e = new person(firstName, lastName, phoneNumber, userName, password, isAdmin, isStaff, isActive);
 				people.add(e);
 				
 				
@@ -124,8 +125,9 @@ public class main {
 				String endDate = pResults.getString("endDate");
 				String days = pResults.getString("days");
 				String location = pResults.getString("location");
+				Boolean isActive = pResults.getBoolean("isActive");
 				
-				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location);
+				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location, isActive);
 				programs.add(p);
 				
 				System.out.println(p);

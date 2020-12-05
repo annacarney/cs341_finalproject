@@ -29,9 +29,10 @@ public class program {
 	private String endDate;				//	Format: YYYY-MM-DD
 	private String days;				// Mon, Tues, Wed, Thurs, Fri, Sat, Sun
 	private String location;
+	private Boolean isActive;         //Default = TRUE
 	
 	//Constructor
-	public program(int classID, String className, String classDesc, int classSize, String startTime, String endTime, Double memFee, Double nonMemFee, String startDate, String endDate, String days, String location) {
+	public program(int classID, String className, String classDesc, int classSize, String startTime, String endTime, Double memFee, Double nonMemFee, String startDate, String endDate, String days, String location, Boolean isActive) {
 		super();
 		this.classID = classID;
 		this.className = className;
@@ -52,13 +53,14 @@ public class program {
 		this.endDate = endDate;
 		this.days = days;
 		this.location = location;
+		this.isActive = isActive;   //default = TRUE
 	}
 	
 	//query helper
 	public static ArrayList<program> find(database db, String where) {
 		ResultSet pResults;
 		try {
-			pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location FROM Program " + (where != null ? "WHERE " + where : ""));
+			pResults = db.runQuery("SELECT classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location, isActive FROM Program " + (where != null ? "WHERE " + where : ""));
 			ArrayList<program> programs = new ArrayList<>();
 			
 			while(pResults.next()) {
@@ -75,8 +77,9 @@ public class program {
 				String endDate = pResults.getString("endDate");
 				String days = pResults.getString("days");
 				String location = pResults.getString("location");
+				Boolean isActive = pResults.getBoolean("isActive");
 				
-				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location);
+				program p = new program(classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location, isActive);
 				programs.add(p);
 			}
 			
@@ -114,7 +117,9 @@ public class program {
 	public String toString() {
 		return "Program [classID=" + classID + ", className=" + className + ", classDesc=" + classDesc + ", classSize="
 				+ classSize + ", startTime=" + startTime + ", endTime=" + endTime + ", memFee=" + memFee
-				+ ", nonMemFee=" + nonMemFee + "startTime= " + startTime + "endTime= " + endTime + "startDate" + startDate + "endDate= " + endDate + "days= " + days + "location= " + location + "]";
+				+ ", nonMemFee=" + nonMemFee + "startTime= " + startTime + "endTime= " + endTime 
+				+ "startDate" + startDate + "endDate= " + endDate + "days= " + days + "location= " + location 
+				+ "isActive= " + isActive + "]";
 	}
 
 	public int getClassID() {
@@ -123,6 +128,14 @@ public class program {
 
 	public void setClassID(int classID) {
 		this.classID = classID;
+	}
+	
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public String getClassName() {

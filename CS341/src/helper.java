@@ -73,7 +73,7 @@ public class helper {
 			return 1;
 		}
 
-		program newProgram = new program(id, className, classDesc, size, startTime, endTime, mfee, nmfee, startDate, endDate, days, loc);		
+		program newProgram = new program(id, className, classDesc, size, startTime, endTime, mfee, nmfee, startDate, endDate, days, loc, true);		
 		// program newProgram = new program(1121, "Karate", "Learn the art of karate",
 		// 25, "2020-10-25 08:30:00:000", "2020-10-25 09:30:00:000", 13.00, 23.23);
 		try {
@@ -419,7 +419,7 @@ public class helper {
 		}
 		
 		//validate that it is safe for user to enter class
-		person nm_pers = new person(fname, lname, phone, phone, null, false, false);
+		person nm_pers = new person(fname, lname, phone, phone, null, false, false, true);
 		boolean b = validation(className, nm_pers, classID);
 		
 		if(b == false) {
@@ -728,10 +728,10 @@ public class helper {
 
 	//creates a new user and adds to the database
 	public void createUser(String fname, String lname, String phone, String un, String pw, boolean isStaff,
-			boolean isAdmin) {
+			boolean isAdmin, boolean isActive) {
 		// TODO Auto-generated method stub
 		
-    	person newPerson = new person(fname, lname, phone, un, pw, isStaff, isAdmin);
+    	person newPerson = new person(fname, lname, phone, un, pw, isStaff, isAdmin, isActive);
 		try {
 			db.insertEmployee(newPerson);
 			System.out.print("Person added!");

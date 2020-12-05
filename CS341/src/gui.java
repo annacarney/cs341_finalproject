@@ -177,7 +177,7 @@ public class gui {
             	if(usertype.getText().equals("SM")) {
             		isStaff = true;
             	}
-            	h.createUser(fName.getText(), lName.getText(), phone.getText(), usName.getText(), pwName.getText(), isStaff, false);
+            	h.createUser(fName.getText(), lName.getText(), phone.getText(), usName.getText(), pwName.getText(), isStaff, false, true);
 
             }
         });
