@@ -16,8 +16,9 @@ public class person {
 	private String password;
 	private Boolean isStaff;
 	private Boolean isAdmin;
+	private Boolean isActive;
 	
-	public person(String firstName, String lastName, String phoneNumber, String userName, String password, Boolean isStaff, Boolean isAdmin) {
+	public person(String firstName, String lastName, String phoneNumber, String userName, String password, Boolean isStaff, Boolean isAdmin, Boolean isActive) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -26,13 +27,14 @@ public class person {
 		this.password = password;
 		this.isStaff = isStaff;
 		this.isAdmin = isAdmin;
+		this.isActive = isActive;
 	}
 	
 	//query helper
 		public static ArrayList<person> find(database db, String where) {
 			ResultSet pResults;
 			try {
-				pResults = db.runQuery("SELECT firstName, lastName, phoneNumber, userName, password, isStaff, isAdmin FROM Person " + (where != null ? "WHERE " + where : ""));
+				pResults = db.runQuery("SELECT firstName, lastName, phoneNumber, userName, password, isStaff, isAdmin, isActive FROM Person " + (where != null ? "WHERE " + where : ""));
 				ArrayList<person> persons = new ArrayList<>();
 				
 				while(pResults.next()) {
@@ -43,8 +45,9 @@ public class person {
 					String password = pResults.getString("password");
 					Boolean isStaff = pResults.getBoolean("isStaff");
 					Boolean isAdmin = pResults.getBoolean("isAdmin");
+					Boolean isActive = pResults.getBoolean("isActive");
 					
-					person p = new person(firstName, lastName, phoneNumber, userName, password, isStaff, isAdmin);
+					person p = new person(firstName, lastName, phoneNumber, userName, password, isStaff, isAdmin, isActive);
 					persons.add(p);
 				}
 				return persons;
@@ -110,9 +113,19 @@ public class person {
 		this.isAdmin = isAdmin;
 	}
 	
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+	
 	@Override
 	public String toString() {
-		return "Person [firstName=" + firstName + " " + "lastName=" + lastName + " " + "Phone Number=" + phoneNumber + " " + "Username=" + userName + " " + "Password=" + password + " " + "isAdmin=" + isAdmin + " " + "isStaff=" + isStaff + "]";
+		return "Person [firstName=" + firstName + " " + "lastName=" + lastName + " " + "Phone Number=" + phoneNumber 
+				+ " " + "Username=" + userName + " " + "Password=" + password + " " + "isAdmin=" + isAdmin 
+				+ " " + "isStaff=" + isStaff + " " + "isActive=" + isActive + "]";
 	}
 
 }

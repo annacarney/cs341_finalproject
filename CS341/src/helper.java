@@ -74,8 +74,9 @@ public class helper {
 			return 1;
 		}
 
+		//final parameter(isActive) = true, because we're adding a new program so it will automatically be active [SRW 12/6/2020]
 		program newProgram = new program(id, className, classDesc, size, startTime, endTime, mfee, nmfee, startDate,
-				endDate, days, loc);
+				endDate, days, loc, true);
 		// program newProgram = new program(1121, "Karate", "Learn the art of karate",
 		// 25, "2020-10-25 08:30:00:000", "2020-10-25 09:30:00:000", 13.00, 23.23);
 		try {
@@ -447,7 +448,7 @@ public class helper {
 		}
 
 		// validate that it is safe for user to enter class
-		person nm_pers = new person(fname, lname, phone, phone, null, false, false);
+		person nm_pers = new person(fname, lname, phone, phone, null, false, false, true);
 		boolean b = validation(className, nm_pers, classID);
 
 		if (b == false) {
@@ -762,7 +763,8 @@ public class helper {
 			boolean isAdmin) {
 		// TODO Auto-generated method stub
 
-		person newPerson = new person(fname, lname, phone, un, pw, isStaff, isAdmin);
+		//final parameter (isActive) = true, because we're adding a new program so it will automatically be active [SRW 12/6/2020]
+		person newPerson = new person(fname, lname, phone, un, pw, isStaff, isAdmin, true);
 		try {
 			db.insertEmployee(newPerson);
 			System.out.print("Person added!");
