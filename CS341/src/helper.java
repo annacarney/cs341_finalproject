@@ -103,6 +103,9 @@ public class helper {
 		for (int i = 0; i < p.size(); i++) {
 			user = p.get(i);
 		}
+		if (!user.getIsActive()) {
+			return null;
+		}
 
 		return user;
 	}
