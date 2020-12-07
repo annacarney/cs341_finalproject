@@ -175,6 +175,21 @@ public class staffGUI {
 		deleteB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//Steven to add delete functionality here.
+				//If program selected, set isActive = FALSE
+				String selected = avail_progs.getSelectedValue();
+				if (selected != null && selected != "") {
+					int classId = h.getIDFromUserInput(selected);
+					program selectedprog = h.searchProgramID(classId);
+					try {
+						h.deleteProg(selectedprog);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					lister2.addElement(selectedprog.getClassName() + " successfully deleted");
+					//viewPrograms();
+				}
 
 			}
 		});
@@ -299,7 +314,23 @@ public class staffGUI {
 		deleteB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				//Steven to add delete functionality here.
+				//If program selected, set isActive = FALSE
+				String selected = user_search.getSelectedValue();
+				String [] uName = selected.split(":");
+				System.out.println(uName[0]);
+				if (selected != null && selected != "") {
+					//int classId = h.getIDFromUserInput(selected);
+					ArrayList<person> selectedpers = h.searchPeople(uName[0]);
+					try {
+						h.deletePers(selectedpers.get(0));
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					//lister2.addElement(selectedprog.getClassName() + " successfully deleted");
+					//viewPrograms();
+				}
 			}
 		});
 

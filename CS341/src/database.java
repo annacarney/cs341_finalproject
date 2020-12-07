@@ -105,7 +105,8 @@ public class database {
 	}
 	
 	public void insertProgram(program p) throws SQLException {
-		String sql = "INSERT INTO Program (classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO Program (classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, p.getClassID());
 		stmt.setString(2, p.getClassName());
@@ -149,5 +150,24 @@ public class database {
             e.printStackTrace();
         }
         return generatedPassword;
+	}
+	
+	public int updateProg (program p, String col, Boolean b) throws SQLException {
+		String sql = "UPDATE Program SET " + col + " = " + b + " WHERE ClassID = (?)";
+		//System.out.println(sql);
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setInt(1, p.getClassID());
+		int numRowsAffected = stmt.executeUpdate();
+		return numRowsAffected;
+	}
+	
+	public int updatePers (person p, String col, Boolean b) throws SQLException {
+		String sql = "UPDATE Person SET " + col + " = " + b + " WHERE Username = (?)";
+		//System.out.println(sql);
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setString(1, p.getUserName());
+		int numRowsAffected = stmt.executeUpdate();
+		return numRowsAffected;
+		
 	}
 }

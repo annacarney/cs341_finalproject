@@ -100,6 +100,9 @@ public class memberGUI {
 		DefaultListModel lister = new DefaultListModel();
 		int avail_progsSize = programs.length;
 		for(int i = 0; i < programs.length; i++) {
+			if (programs[i].contains("(Inactive)")) {
+				continue;
+			}
 			lister.addElement(programs[i]);
 		}
 		JList<String> avail_progs = new JList<>(lister);

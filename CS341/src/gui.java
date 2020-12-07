@@ -221,6 +221,10 @@ public class gui {
 		DefaultListModel lister = new DefaultListModel();
 		int avail_progsSize = programs.length;
 		for(int i = 0; i < programs.length; i++) {
+			//Check if program is active, if not, skip for this list.
+			if (programs[i].contains("(Inactive)")) {
+				continue;
+			}
 			lister.addElement(programs[i]);
 		}
 		JList<String> avail_progs = new JList<>(lister);

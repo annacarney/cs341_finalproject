@@ -126,6 +126,9 @@ public class helper {
 		for (int i = 0; i < p.size(); i++) {
 			prog = p.get(i);
 			s = prog.getClassName();
+			if (!prog.getIsActive()) {
+				s = s + " (Inactive)";
+			}
 			System.out.println(s);
 			ret[i] = s;
 			s = "";
@@ -210,6 +213,9 @@ public class helper {
 
 			s = p.getClassID() + "-";
 			s = s + p.getClassName();
+			if (!p.getIsActive()) {
+				s = s + " (Inactive)";
+			}
 
 			ret[i] = s;
 			s = "";
@@ -504,6 +510,7 @@ public class helper {
 
 			} catch (SQLException e1) {
 				System.out.print("db failed to enroll user in program");
+				System.out.print(e1);
 			}
 		}
 
@@ -630,7 +637,10 @@ public class helper {
 			s = p.getUserName() + ": ";
 			s = s + p.getFirstName() + " ";
 			s = s + p.getLastName();
-
+			//if user is inactive, append (Inactive).
+			if (p.getIsActive() == false) {
+				s = s + " (Inactive)";
+			}
 			ret[i] = s;
 			s = "";
 			index++;
@@ -773,6 +783,22 @@ public class helper {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void deleteProg(program p) throws SQLException {
+		int i = db.updateProg(p, "isActive", false);
+		if (i > 1 || i < 1 ) {
+			System.out.println("Something went wrong with deleteProg()");
+		}
+		System.out.println("Delete Successful");
+	}
+	
+	public void deletePers(person p) throws SQLException {
+		int i = db.updatePers(p, "isActive", false);
+		if (i > 1 || i < 1 ) {
+			System.out.println("Something went wrong with deletePers()");
+		}
+		System.out.println("Delete Successful");
 	}
 
 }
