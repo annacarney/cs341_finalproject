@@ -365,6 +365,23 @@ public class staffGUI {
             	}
 			}
 		});
+		
+		JButton exitB = new JButton("Sign Out");
+		exitB.setBounds(300, 690, 200, 30);
+		exitB.setBackground(Color.gray);
+		exitB.setForeground(Color.white);
+		m.add(exitB);
+		m.repaint();
+
+		exitB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// close db connection in helper
+				h.closeDBConnection();
+
+				m.dispose();
+			}
+		});
 
 
 //		JComboBox<String> searchUsers = new JComboBox(users);
@@ -658,6 +675,24 @@ public class staffGUI {
 					}
 				}
 
+			}
+		});
+		
+		
+		JButton exitB = new JButton("Sign Out");
+		exitB.setBounds(300, 690, 200, 30);
+		exitB.setBackground(Color.gray);
+		exitB.setForeground(Color.white);
+		m.add(exitB);
+		m.repaint();
+
+		exitB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// close db connection in helper
+				h.closeDBConnection();
+
+				m.dispose();
 			}
 		});
 	}

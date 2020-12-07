@@ -162,6 +162,23 @@ public class helper {
 		if (p == null || p.isEmpty()) {
 			p = person.find(db, "Person.userName LIKE ('" + search + "%')");
 		}
+		
+		ArrayList<nonMember> nm = nonMember.find(db, "NonMember.firstName LIKE ('" + search + "%')");
+		if(nm != null && !nm.isEmpty()) {
+			for(int i = 0; i < nm.size(); i++) {
+				nonMember cur = nm.get(i);
+				person nonMempers = new person(cur.getFirstName(), cur.getLastName(), cur.getPhoneNumber(), cur.getPhoneNumber(), "", false, false, true);
+				p.add(nonMempers);
+			}
+		} else {
+			nm = nonMember.find(db, "NonMember.lastName LIKE ('" + search + "%')");
+			for(int i = 0; i < nm.size(); i++) {
+				nonMember cur = nm.get(i);
+				person nonMempers = new person(cur.getFirstName(), cur.getLastName(), cur.getPhoneNumber(), cur.getPhoneNumber(), "", false, false, true);
+				p.add(nonMempers);
+			}
+		} 
+		
 		return p;
 	}
 
