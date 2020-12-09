@@ -175,8 +175,8 @@ public class staffGUI {
 		deleteB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Steven to add delete functionality here.
-				//If program selected, set isActive = FALSE
+				// Steven to add delete functionality here.
+				// If program selected, set isActive = FALSE
 				String selected = avail_progs.getSelectedValue();
 				if (selected != null && selected != "") {
 					int classId = h.getIDFromUserInput(selected);
@@ -188,8 +188,30 @@ public class staffGUI {
 						e1.printStackTrace();
 					}
 					lister2.addElement(selectedprog.getClassName() + " successfully deleted");
-					//viewPrograms();
+					// viewPrograms();
 				}
+				
+				JFrame popup = new JFrame();
+				popup.setSize(350, 250);
+				popup.setLayout(null);
+				popup.setVisible(true);
+				popup.getContentPane().setBackground(Color.white);
+				popup.setTitle("Program Deleted!");
+				ImageIcon icon = new ImageIcon("ymcalogo.JPG");
+				popup.setIconImage(icon.getImage());
+
+				ImageIcon banner = new ImageIcon("smallsmiley.PNG");
+				JLabel b = new JLabel(banner);
+				b.setBounds(120, 20, 300, 200); // (x,y, width, height)
+				popup.add(b);
+
+				JLabel title = new JLabel("Program Deleted!");
+				title.setBounds(0, 0, 200, 90);
+				title.setHorizontalAlignment(SwingConstants.CENTER);
+				title.setFont(new Font("SansSerif", Font.BOLD, 15));
+				title.setForeground(Color.black);
+				popup.add(title, 0);
+				popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 			}
 		});
@@ -204,6 +226,66 @@ public class staffGUI {
 		enrolledB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// find all users enrolled in program
+
+				if (avail_progs.getSelectedValue().equals("")) {
+				} else {
+					String progString = avail_progs.getSelectedValue();
+					int classId = h.getIDFromUserInput(progString);
+					String[] enrolled = null;
+					ArrayList<String> enrolledUserNames;
+					try {
+						enrolledUserNames = h.enrolled_details(classId);
+
+						// for each user name, create a person object (if member) or nonmember object
+						// have a string array with each object's First Name, Last Name, and
+						// username/phonenumber
+						enrolled = new String[enrolledUserNames.size() + 1];
+
+						for (int i = 0; i < enrolledUserNames.size(); i++) {
+
+							String cur_un = enrolledUserNames.get(i);
+
+							System.out.print("username" + cur_un);
+							if (cur_un.contains("-")) { // is a non-member
+								// get nonmember person from db.nonMemLookup, return a string of FirstName,
+								// LastName, UserName
+								String s = h.lookup_tostring(cur_un, true);
+								enrolled[i] = s;
+							} else { // is a member
+								String s = h.lookup_tostring(cur_un, false);
+								enrolled[i] = s;
+							}
+
+						}
+
+					} catch (SQLException eee) {
+						// TODO Auto-generated catch block
+						eee.printStackTrace();
+						return;
+					}
+					
+					JFrame popup = new JFrame();
+					popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					JList<String> l = new JList(enrolled);
+					l.setFixedCellHeight(15);
+					l.setFixedCellWidth(100);
+					l.setVisibleRowCount(5);
+					l.setBounds(0, 0, 400, 200);
+					l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+					l.setVisible(true);
+					popup.add(l, 0);
+					popup.repaint();
+					
+					popup.setSize(400,200);  	//800 width, 800 height
+					popup.setLayout(null);
+					popup.setVisible(true);
+					popup.getContentPane().setBackground(Color.white);		//background_color);
+					popup.setTitle("Enrolled Users ");
+					ImageIcon icon = new ImageIcon("ymcalogo.JPG");
+					popup.setIconImage(icon.getImage());
+
+				}
 
 			}
 		});
@@ -232,7 +314,7 @@ public class staffGUI {
 
 		// get all users -- nonmembers and members
 		String[] users = h.getAllUsers();
-		
+
 		DefaultListModel lister = new DefaultListModel();
 		for (int i = 0; i < users.length; i++) {
 			lister.addElement(users[i]);
@@ -271,9 +353,9 @@ public class staffGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				//search user 
+				// search user
 				ArrayList<person> searchResults = h.searchPeople(searchField.getText());
-				
+
 				if (searchResults.isEmpty()) {
 					lister.clear();
 					lister.addElement("No results found.");
@@ -288,7 +370,6 @@ public class staffGUI {
 				}
 			}
 		});
-		
 
 		JButton modB = new JButton("Modify");
 		modB.setBounds(210, 350, 100, 30);
@@ -314,13 +395,13 @@ public class staffGUI {
 		deleteB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Steven to add delete functionality here.
-				//If program selected, set isActive = FALSE
+				// Steven to add delete functionality here.
+				// If program selected, set isActive = FALSE
 				String selected = user_search.getSelectedValue();
-				String [] uName = selected.split(":");
+				String[] uName = selected.split(":");
 				System.out.println(uName[0]);
 				if (selected != null && selected != "") {
-					//int classId = h.getIDFromUserInput(selected);
+					// int classId = h.getIDFromUserInput(selected);
 					ArrayList<person> selectedpers = h.searchPeople(uName[0]);
 					try {
 						h.deletePers(selectedpers.get(0));
@@ -328,8 +409,9 @@ public class staffGUI {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-					//lister2.addElement(selectedprog.getClassName() + " successfully deleted");
-					//viewPrograms();
+					// lister2.addElement(selectedprog.getClassName() + " successfully deleted");
+					// viewPrograms();
+					
 				}
 			}
 		});
@@ -340,7 +422,7 @@ public class staffGUI {
 		enrolledB.setForeground(Color.white);
 		m.add(enrolledB);
 		m.repaint();
-		
+
 		DefaultListModel lister2 = new DefaultListModel();
 		JList<String> searchResultslist = new JList<>(lister2);
 		searchResultslist.setFixedCellHeight(15);
@@ -355,17 +437,22 @@ public class staffGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String selected = user_search.getSelectedValue();
-				
+
 				String[] sp = selected.split(":");
-            	//find classes from the username/phonenumber at sp[0] and display them
-            	String[] classes = h.getClassesFromUser(sp[0]);
-            	lister2.clear();
-            	for(int i = 0; i < classes.length; i++) {
-            		lister2.addElement(classes[i]);
-            	}
+				// find classes from the username/phonenumber at sp[0] and display them
+				String[] classes = h.getClassesFromUser(sp[0]);
+				lister2.clear();
+
+				if (classes.length == 0) {
+					lister2.addElement("User not enrolled in any classes.");
+				}
+
+				for (int i = 0; i < classes.length; i++) {
+					lister2.addElement(classes[i]);
+				}
 			}
 		});
-		
+
 		JButton exitB = new JButton("Sign Out");
 		exitB.setBounds(300, 690, 200, 30);
 		exitB.setBackground(Color.gray);
@@ -383,44 +470,6 @@ public class staffGUI {
 			}
 		});
 
-
-//		JComboBox<String> searchUsers = new JComboBox(users);
-//		searchUsers.setBounds(100,100,380,30);
-//		m.add(searchUsers);
-//		
-//		JButton searchB = new JButton("Search User");
-//		searchB.setBounds(500, 100, 200, 30);
-//		searchB.setBackground(new Color(51,102,0));
-//		searchB.setForeground(Color.white);
-//		m.add(searchB);
-//		m.repaint();
-
-//		searchB.addActionListener(new ActionListener() { 
-//	            @Override
-//	            public void actionPerformed(ActionEvent e) {
-//	            	//display all programs a user is enrolled in
-//	            	
-//	            	String selected = (String)searchUsers.getSelectedItem();
-//	            	
-//	            	String[] sp = selected.split(":");
-//	            	//System.out.println(sp[0] + " " + sp[1]);
-//	            	
-//	            	//find classes from the username/phonenumber at sp[0] and display them
-//	            	String[] classes = h.getClassesFromUser(sp[0]);
-//	            	
-//	            	JList<String> l = new JList(classes);
-//					l.setFixedCellHeight(15);
-//					l.setFixedCellWidth(100);
-//					l.setVisibleRowCount(5);
-//					l.setBounds(350, 200, 400, 200);
-//					l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-//					l.setVisible(true);
-//					m.add(l, 0);
-//					m.repaint();  
-//	            	
-//	            }
-//	        });
-
 	}
 
 	// shows which users are involved in which programs
@@ -436,100 +485,6 @@ public class staffGUI {
 		text.setForeground(new Color(128, 128, 0));
 		m.add(text, 0);
 
-//		String[] programs = null;
-//		try {
-//			programs = h.getProgramsList();
-//		} catch (SQLException e1) {
-//			System.out.print("Db query failed.");
-//		}
-//
-//		DefaultListModel lister = new DefaultListModel();
-//		int avail_progsSize = programs.length;
-//		for (int i = 0; i < programs.length; i++) {
-//			lister.addElement(programs[i]);
-//		}
-//		JList<String> avail_progs = new JList<>(lister);
-//
-//		// lists the available programs
-//		JList<String> jListSelect = new JList<>();
-//		avail_progs.setFixedCellHeight(15);
-//		avail_progs.setFixedCellWidth(100);
-//		avail_progs.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-//		avail_progs.setVisibleRowCount(5);
-//		avail_progs.setBounds(100, 200, 200, 200);
-//		avail_progs.setVisible(true);
-//
-//		JScrollPane scrollableTextArea = new JScrollPane(avail_progs);
-//		scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//		scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//		scrollableTextArea.setMinimumSize(new Dimension(100, 50));
-//		scrollableTextArea.setBounds(100, 200, 220, 200);
-//		m.add(scrollableTextArea);
-//		m.repaint();
-//
-//		JButton selectB = new JButton("Select");
-//		selectB.setBounds(115, 425, 200, 40);
-//		selectB.setBackground(new Color(51, 102, 0));
-//		selectB.setForeground(Color.white);
-//		m.add(selectB);
-//		m.repaint();
-//
-//		selectB.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// show enrolled user for selected class
-//
-//				if (avail_progs.getSelectedValue().equals("")) {
-//
-//				} else {
-//
-//					String progString = avail_progs.getSelectedValue();
-//					int classId = h.getIDFromUserInput(progString);
-//
-//					String[] enrolled = null;
-//					ArrayList<String> enrolledUserNames;
-//					try {
-//
-//						enrolledUserNames = h.enrolled_details(classId);
-//
-//						// for each user name, create a person object (if member) or nonmember object
-//						// have a string array with each object's First Name, Last Name, and
-//						// username/phonenumber
-//						enrolled = new String[enrolledUserNames.size() + 1];
-//
-//						for (int i = 0; i < enrolledUserNames.size(); i++) {
-//
-//							String cur_un = enrolledUserNames.get(i);
-//
-//							if (cur_un.contains("-")) { // is a non-member
-//								// get nonmember person from db.nonMemLookup, return a string of FirstName,
-//								// LastName, UserName
-//								String s = h.lookup_tostring(cur_un, true);
-//								enrolled[i] = s;
-//							} else { // is a member
-//								String s = h.lookup_tostring(cur_un, false);
-//								enrolled[i] = s;
-//							}
-//
-//						}
-//
-//					} catch (SQLException eee) {
-//						// TODO Auto-generated catch block
-//						eee.printStackTrace();
-//						return;
-//					}
-//					JList<String> l = new JList(enrolled);
-//					l.setFixedCellHeight(15);
-//					l.setFixedCellWidth(100);
-//					l.setVisibleRowCount(5);
-//					l.setBounds(350, 200, 400, 200);
-//					l.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-//					l.setVisible(true);
-//					m.add(l, 0);
-//					m.repaint();
-//				}
-//			}
-//		});
 	}
 
 	// displays the register for a program portion
@@ -677,8 +632,7 @@ public class staffGUI {
 
 			}
 		});
-		
-		
+
 		JButton exitB = new JButton("Sign Out");
 		exitB.setBounds(300, 690, 200, 30);
 		exitB.setBackground(Color.gray);
