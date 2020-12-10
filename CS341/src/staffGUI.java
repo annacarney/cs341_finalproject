@@ -412,6 +412,28 @@ public class staffGUI {
 					// lister2.addElement(selectedprog.getClassName() + " successfully deleted");
 					// viewPrograms();
 					
+					JFrame popup = new JFrame();
+					popup.setSize(350, 250);
+					popup.setLayout(null);
+					popup.setVisible(true);
+					popup.getContentPane().setBackground(Color.white);
+					popup.setTitle("User Deleted!");
+					ImageIcon icon = new ImageIcon("ymcalogo.JPG");
+					popup.setIconImage(icon.getImage());
+
+					ImageIcon banner = new ImageIcon("smallsmiley.PNG");
+					JLabel b = new JLabel(banner);
+					b.setBounds(120, 20, 300, 200); // (x,y, width, height)
+					popup.add(b);
+
+					JLabel title = new JLabel("User Deleted!");
+					title.setBounds(0, 0, 200, 90);
+					title.setHorizontalAlignment(SwingConstants.CENTER);
+					title.setFont(new Font("SansSerif", Font.BOLD, 15));
+					title.setForeground(Color.black);
+					popup.add(title, 0);
+					popup.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
 				}
 			}
 		});

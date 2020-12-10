@@ -6,15 +6,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Label;
+import java.awt.Panel;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -245,40 +248,6 @@ public class gui {
         scrollableTextArea.setBounds(100,200,220,200);
         f.add(scrollableTextArea);
 		f.repaint();
-		
-//		//get all available program times
-//		String[] progTimes = h.getProgramTimes();
-//		
-//		//need to search for programs at a time ** add here
-//		JComboBox<String> searchTimes = new JComboBox(progTimes);
-//		searchTimes.setBounds(100,100,380,30);
-//		f.add(searchTimes);
-//		
-//		JButton searchB = new JButton("Search Programs from Time");
-//		searchB.setBounds(500, 100, 200, 30);
-//		searchB.setBackground(new Color(51,102,0));
-//		searchB.setForeground(Color.white);
-//		f.add(searchB);
-//		f.repaint();
-//		
-//		//find programs at the selected time
-//		searchB.addActionListener(new ActionListener() { 
-//	            @Override
-//	            public void actionPerformed(ActionEvent e) {
-//	            	
-//	            	String selected = (String)searchTimes.getSelectedItem();
-//	            	String [] p = h.getProgramsFromTime(selected);
-//	            	
-//	            	//delete current programs from JList
-//	            	lister.clear();
-//	            	
-//	            	//add selected programs
-//	            	for(int i = 0; i < p.length; i++) {
-//	            		lister.add(i, p[i]);
-//	            	}
-//	            
-//	            }
-//	        });
 		
 		JButton exitB = new JButton("Exit");
 		exitB.setBounds(680, 10, 100, 30);
@@ -570,6 +539,22 @@ public class gui {
 			});
 		
 		f.add(viewProg);
+		
+		//help button
+		JButton helpB = new JButton("We are here to help!");
+		helpB.setBounds(315, 710, 200, 30);
+		helpB.setBackground(Color.gray);
+		helpB.setForeground(Color.white);
+		f.add(helpB);
+		f.repaint();
+		
+		helpB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		
+        		
+            }
+        });
 		
 		//styling for the window
 		f.setSize(800,800);  	//800 width, 800 height

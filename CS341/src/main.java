@@ -11,15 +11,12 @@ public class main {
 
 	public static void main(String[] args) {
     	
-    	//test db connection
-    	//testdb();
-    	
     	//generate welcome screen
-		
     	gui g = new gui();
     	
     	//user logins--
     	//member -> us: anna pw: anna
+    	//member -> us: aini pw: aini
     	//staff -> us: jdoe pw: password 
     	//admin -> us: admin pw: admin
     	
