@@ -814,6 +814,10 @@ public class helper {
 	}
 	
 	public void deletePers(person p) throws SQLException {
+		//remove person if enrolled
+		int numRemoved = db.removeEnrolled(p);
+		System.out.println("Removed " + numRemoved + " instances from enrolled");
+		
 		int i = db.updatePers(p, "isActive", false);
 		if (i > 1 || i < 1 ) {
 			System.out.println("Something went wrong with deletePers()");

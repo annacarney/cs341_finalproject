@@ -94,6 +94,16 @@ public class database {
 		
 	}
 	
+	public int removeEnrolled(person p) throws SQLException {
+		String sql = "DELETE FROM Enrolled WHERE userName = ?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setString(1, p.getUserName());
+		
+		int numRowsAffected = stmt.executeUpdate();
+		return numRowsAffected;
+		
+	}
+	
 	public void insertNonMember(nonMember nm) throws SQLException {
 		String sql = "INSERT INTO NonMember (firstName, lastName, phoneNumber) VALUES (?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -168,6 +178,5 @@ public class database {
 		stmt.setString(1, p.getUserName());
 		int numRowsAffected = stmt.executeUpdate();
 		return numRowsAffected;
-		
 	}
 }
