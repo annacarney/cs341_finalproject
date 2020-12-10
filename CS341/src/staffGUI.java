@@ -4,11 +4,14 @@
  * This class sets up the graphical user interface for the staff user.
  */
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -151,22 +154,8 @@ public class staffGUI {
 			}
 		});
 
-		JButton modB = new JButton("Modify");
-		modB.setBounds(210, 550, 100, 30);
-		modB.setBackground(Color.orange);
-		modB.setForeground(Color.white);
-		m.add(modB);
-		m.repaint();
-
-		modB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
-
 		JButton deleteB = new JButton("Delete");
-		deleteB.setBounds(325, 550, 100, 30);
+		deleteB.setBounds(280, 550, 100, 30);
 		deleteB.setBackground(Color.red);
 		deleteB.setForeground(Color.white);
 		m.add(deleteB);
@@ -217,7 +206,7 @@ public class staffGUI {
 		});
 
 		JButton enrolledB = new JButton("Enrolled");
-		enrolledB.setBounds(440, 550, 100, 30);
+		enrolledB.setBounds(400, 550, 100, 30);
 		enrolledB.setBackground(Color.blue);
 		enrolledB.setForeground(Color.white);
 		m.add(enrolledB);
@@ -291,7 +280,7 @@ public class staffGUI {
 		});
 
 		JButton exitB = new JButton("Sign Out");
-		exitB.setBounds(300, 690, 200, 30);
+		exitB.setBounds(400, 690, 100, 30);
 		exitB.setBackground(Color.gray);
 		exitB.setForeground(Color.white);
 		m.add(exitB);
@@ -306,6 +295,24 @@ public class staffGUI {
 				m.dispose();
 			}
 		});
+		
+		JButton helpB = new JButton("Help");
+		helpB.setBounds(280, 690, 100, 30);
+		helpB.setBackground(Color.gray);
+		helpB.setForeground(Color.white);
+		m.add(helpB);
+		m.repaint();
+		
+		helpB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	try {
+            		File htmlFile = new File("staffFAQ.html");
+            		Desktop.getDesktop().browse(htmlFile.toURI());
+            	
+            	} catch (Exception ee) {}
+            }
+        });
 
 	}
 
@@ -371,22 +378,8 @@ public class staffGUI {
 			}
 		});
 
-		JButton modB = new JButton("Modify");
-		modB.setBounds(210, 350, 100, 30);
-		modB.setBackground(Color.orange);
-		modB.setForeground(Color.white);
-		m.add(modB);
-		m.repaint();
-
-		modB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
-
 		JButton deleteB = new JButton("Delete");
-		deleteB.setBounds(325, 350, 100, 30);
+		deleteB.setBounds(285, 350, 100, 30);
 		deleteB.setBackground(Color.red);
 		deleteB.setForeground(Color.white);
 		m.add(deleteB);
@@ -439,7 +432,7 @@ public class staffGUI {
 		});
 
 		JButton enrolledB = new JButton("Enrolled In");
-		enrolledB.setBounds(440, 350, 100, 30);
+		enrolledB.setBounds(400, 350, 100, 30);
 		enrolledB.setBackground(Color.blue);
 		enrolledB.setForeground(Color.white);
 		m.add(enrolledB);
@@ -476,7 +469,7 @@ public class staffGUI {
 		});
 
 		JButton exitB = new JButton("Sign Out");
-		exitB.setBounds(300, 690, 200, 30);
+		exitB.setBounds(400, 690, 100, 30);
 		exitB.setBackground(Color.gray);
 		exitB.setForeground(Color.white);
 		m.add(exitB);
@@ -491,6 +484,23 @@ public class staffGUI {
 				m.dispose();
 			}
 		});
+		
+		JButton helpB = new JButton("Help");
+		helpB.setBounds(280, 690, 100, 30);
+		helpB.setBackground(Color.gray);
+		helpB.setForeground(Color.white);
+		m.add(helpB);
+		m.repaint();
+		
+		helpB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	try {
+            		File htmlFile = new File("staffFAQ.html");
+            		Desktop.getDesktop().browse(htmlFile.toURI());
+            	} catch (Exception ee) {}
+            }
+        });
 
 	}
 

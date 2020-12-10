@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.net.URL;
 import java.sql.SQLException;
 
 import javax.swing.*;
@@ -73,6 +75,24 @@ public class memberGUI {
             	h.closeDBConnection();
  	
             	f.dispose();
+            }
+        });
+		
+		//help button
+		JButton helpB = new JButton("We are here to help!");
+		helpB.setBounds(300, 90, 200, 30);
+		helpB.setBackground(Color.gray);
+		helpB.setForeground(Color.white);
+		f.add(helpB);
+		f.repaint();
+		
+		helpB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	try {
+            		File htmlFile = new File("generalFAQ.html");
+            		Desktop.getDesktop().browse(htmlFile.toURI());
+            	} catch (Exception ee) {}
             }
         });
 		

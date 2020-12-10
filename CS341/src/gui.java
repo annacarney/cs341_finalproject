@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
@@ -251,7 +252,7 @@ public class gui {
 		
 		JButton exitB = new JButton("Exit");
 		exitB.setBounds(680, 10, 100, 30);
-		exitB.setBackground(Color.gray);
+		exitB.setBackground(new Color(255,178,102));
 		exitB.setForeground(Color.white);
 		f.add(exitB);
 		f.repaint();
@@ -263,6 +264,27 @@ public class gui {
             	//h.closeDBConnection();
  	
             	f.dispose();
+            }
+        });
+		
+		//help button
+		JButton helpB = new JButton("We are here to help!");
+		helpB.setBounds(300, 90, 200, 30);
+		helpB.setBackground(Color.gray);
+		helpB.setForeground(Color.white);
+		f.add(helpB);
+		f.repaint();
+		
+		helpB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	try {
+            		
+            		File htmlFile = new File("generalFAQ.html");
+            		Desktop.getDesktop().browse(htmlFile.toURI());
+            		
+            	  //  Desktop.getDesktop().browse(new URL("https://github.com/annacarney/cs341_finalproject/blob/master/CS341/generalFAQ.pdf").toURI());
+            	} catch (Exception ee) {}
             }
         });
 		 
@@ -551,8 +573,10 @@ public class gui {
 		helpB.addActionListener(new ActionListener() { 
             @Override
             public void actionPerformed(ActionEvent e) {
-        		
-        		
+            	try {
+            		File htmlFile = new File("generalFAQ.html");
+            		Desktop.getDesktop().browse(htmlFile.toURI());
+            	} catch (Exception ee) {}
             }
         });
 		
