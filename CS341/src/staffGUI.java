@@ -321,6 +321,12 @@ public class staffGUI {
 
 		// get all users -- nonmembers and members
 		String[] users = h.getAllUsers();
+		
+		if(u.getIsAdmin()) {
+			users = h.getAllUsers();
+		}else {
+			users = h.getAllMemNonMem();
+		}
 
 		DefaultListModel lister = new DefaultListModel();
 		for (int i = 0; i < users.length; i++) {
@@ -721,6 +727,23 @@ public class staffGUI {
 		ImageIcon icon = new ImageIcon("ymcalogo.JPG");
 		m.setIconImage(icon.getImage());
 		m.repaint();
+		
+		JButton helpB = new JButton("Help");
+		helpB.setBounds(280, 690, 200, 30);
+		helpB.setBackground(Color.gray);
+		helpB.setForeground(Color.white);
+		m.add(helpB);
+		m.repaint();
+		
+		helpB.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	try {
+            		File htmlFile = new File("staffFAQ.html");
+            		Desktop.getDesktop().browse(htmlFile.toURI());
+            	} catch (Exception ee) {}
+            }
+        });
 
 		JLabel title = new JLabel("Welcome to the YMCA Staff Member Page, " + u.getFirstName() + "!");
 		title.setBounds(0, 200, 600, 50);

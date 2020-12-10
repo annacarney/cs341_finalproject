@@ -15,9 +15,9 @@ public class main {
     	gui g = new gui();
     	
     	//user logins--
-    	//member -> us: anna pw: anna
+    	//member -> us: jdoe pw: jdoe
     	//member -> us: aini pw: aini
-    	//staff -> us: jdoe pw: password 
+    	//staff -> us: staff pw: staff
     	//admin -> us: admin pw: admin
     	
     }
@@ -32,7 +32,6 @@ public class main {
 			e.printStackTrace();
 		}
 	
-		//System.out.println("Connected!\n");
 		
 		try {
 			

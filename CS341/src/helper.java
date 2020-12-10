@@ -637,6 +637,53 @@ public class helper {
 
 		return ret;
 	}
+	
+	//returns string array of only members and non members
+	public String[] getAllMemNonMem() {
+		String[] ret = null;
+		
+		int val = 0;
+		ArrayList<person> members = person.find(db, "Person.isStaff IN ('" + val + "') AND Person.isAdmin IN ('"+ val + "')");
+		ArrayList<nonMember> nonmembers = nonMember.find(db, null);
+		ret = new String[members.size() + nonmembers.size()];
+
+		// iterate through members
+		person p = null;
+		String s = "";
+		int index = 0;
+		for (int i = 0; i < members.size(); i++) {
+			p = members.get(i);
+
+			s = p.getUserName() + ": ";
+			s = s + p.getFirstName() + " ";
+			s = s + p.getLastName();
+			//if user is inactive, append (Inactive).
+			if (p.getIsActive() == false) {
+				s = s + " (Inactive)";
+			}
+			ret[i] = s;
+			s = "";
+			index++;
+		}
+
+		// iterate through non members
+		nonMember nm = null;
+		s = "";
+		for (int j = 0; j < nonmembers.size(); j++) {
+			nm = nonmembers.get(j);
+
+			s = nm.getPhoneNumber() + ": ";
+			s = s + nm.getFirstName() + " ";
+			s = s + nm.getLastName();
+
+			ret[index] = s;
+			s = "";
+			index++;
+		}
+
+		return ret;
+		
+	}
 
 	// returns a string array of all users usernames/phonenumbers for both members
 	// and non members
