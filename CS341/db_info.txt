@@ -4,7 +4,7 @@ The database is structured as follows:
 
 Person
 
-	//This is a structure to hold person information
+	//This is a structure to hold person information (Entity)
 	
 	Name							DataType
 	
@@ -15,10 +15,11 @@ Person
 	Password						String
 	IsStaff							Boolean
 	IsAdmin							Boolean
+	IsActive						Boolean
 
 NonMember
 	
-	//This is an Entity to store non-member information
+	//This is an structure to hold non-member information (Entity)
 
 	Name							DataType
 	
@@ -28,22 +29,27 @@ NonMember
 	
 Program
 
-	//This is a structure to hold program information
+	//This is a structure to hold program information (Entity)
 	
 	Name							DataType
 	
 	ClassID (primary key)			Integer
+	ClassSize						Integer
 	ClassName						String
 	ClassDesc						String
-	ClassSize						Integer
-	StartTime						Text
-	EndTime							Text
+	StartTime						String
+	EndTime							String
 	MemFee							Double
 	NonMemFee						Double
+	StartDate						String
+	EndDate							String
+	days							String
+	location						String
+	isActive						Boolean
 
 Enrolled
 
-	//This is a relational database that stores which person is enrolled in which program.
+	//This is a structure that holds which person is enrolled in which program. (Relational Database)
 	
 	Name							DataType
 	
