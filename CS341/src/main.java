@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 public class main {
 
+	/*
+	 * main
+	 */
 	public static void main(String[] args) {
     	
     	//generate welcome screen
@@ -22,6 +25,7 @@ public class main {
     	
     }
 	
+	//testing function - for debugging purposes only. 
     public static void testdb() {
     	database db = new database();
     	

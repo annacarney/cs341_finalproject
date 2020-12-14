@@ -1,4 +1,3 @@
-
 /* CS 341 - Final Project
  * Team 1 - Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney\
  * This class sets up the graphical user interface for the staff user.
@@ -27,7 +26,10 @@ public class staffGUI {
 	private boolean pressedAddB;
 	private boolean pressedviewprogB;
 
-	// constructor
+	/*
+	 constructor
+	 * 
+	 */
 	public staffGUI(person p) {
 		u = p;
 		pressedAddB = false;
@@ -36,7 +38,10 @@ public class staffGUI {
 		start();
 	}
 
-	// displays all available programs
+	/*
+	displays all available programs
+	 * 
+	 */
 	private void viewPrograms() {
 
 		JLabel text = new JLabel("Search Programs:");
@@ -316,7 +321,10 @@ public class staffGUI {
 
 	}
 
-	// search feature to find all programs in which a user is enrolled in
+	/*
+	 search feature to find all programs in which a user is enrolled in
+	 * 
+	 */
 	private void searchEnrolled() {
 
 		// get all users -- nonmembers and members
@@ -510,7 +518,10 @@ public class staffGUI {
 
 	}
 
-	// shows which users are involved in which programs
+	/*
+	shows which users are involved in which programs
+	 * 
+	 */
 	private void viewEnrolled() {
 
 		// search
@@ -525,10 +536,13 @@ public class staffGUI {
 
 	}
 
-	// displays the register for a program portion
-	// program format is classID, className, classDesc, classSize, startTime,
-	// endTime, memFee, nonMemFee
-	// time is in the format YYYY-MM-DD HH:MM:SS:SSS
+	/*
+	 displays the register for a program portion
+	 program format is classID, className, classDesc, classSize, startTime,
+	 endTime, memFee, nonMemFee
+	time is in the format YYYY-MM-DD HH:MM:SS:SSS
+	 * 
+	 */
 	private void registerDisplay() {
 		pressedAddB = true;
 
@@ -689,7 +703,10 @@ public class staffGUI {
 		});
 	}
 
-	// helper method to add text to the window
+	/*
+	helper method to add text to the window
+	 * 
+	 */
 	private void addText(String t, int x, int y, int w, int h) {
 		JLabel text = new JLabel(t);
 		text.setBounds(x, y, w, h);
@@ -699,7 +716,10 @@ public class staffGUI {
 		m.add(text, 0);
 	}
 
-	// sets up page on initial sign in
+	/*
+	sets up page on initial sign in
+	 * 
+	 */
 	private void start() {
 		// set LookAndFeel
 		try {

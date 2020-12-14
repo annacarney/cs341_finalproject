@@ -1,6 +1,6 @@
 /* CS 341 - Final Project
- * Team 1 - Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney\
- * This class sets up the graphical user interface.
+ * Authors: Shyue Shi Leong, Ze Jia Lim, Steven Welter, and Anna Carney 
+ * This class sets up the graphical user interface's main page.
  */
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -32,14 +32,18 @@ public class gui {
 	
 	private helper h;
 	
-	//constructor for gui class
+	/*
+	 * constructor for gui class
+	 */
 	public gui() {
 		start();
 		h = new helper();
 	}
 	
-	//signs a user in with login credentials (username, password)
-	//returns 1 on succesful login, 0 otherwise
+	/*
+	 * signs a user in with login credentials (username, password)
+	 * returns 1 on succesful login, 0 otherwise
+	 */
 	public int signIn(String username, String password) {
 		
 		System.out.println(username);
@@ -74,7 +78,9 @@ public class gui {
 		return 1;
 	}
 	
-	// creates an account for a user (staff-member/member/non-member)
+	/*
+	 * creates an account for a user (staff-member/member/non-member)
+	 */
 	public void createAccount() {
 		
 		JFrame f = new JFrame();
@@ -189,6 +195,9 @@ public class gui {
 		
 	}
 	
+	/*
+	 * creates the non-member window
+	 */
 	public void viewPrograms() {
 		
 		JFrame f = new JFrame();
@@ -420,7 +429,9 @@ public class gui {
 		 
 	}
 
-	//creates the start/welcome window for the YMCA program
+	/*
+	 * creates the start/welcome window for the YMCA program
+	 */
 	public void start() {
 		
 		//set LookAndFeel

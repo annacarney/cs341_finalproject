@@ -27,7 +27,9 @@ public class helper {
 
 	private database db;
 
-	// constructor for the helper class
+	/*
+	 * constructor for the helper class
+	 */
 	public helper() {
 		db = new database();
 
@@ -39,7 +41,9 @@ public class helper {
 		}
 	}
 
-	// closes connection to the database
+	/*
+	 * closes connection to the database
+	 */
 	public void closeDBConnection() {
 		try {
 			db.disconnect();
@@ -50,8 +54,10 @@ public class helper {
 		}
 	}
 
-	// adds a new program to the database
-	// returns 1 on success, 0 on fail
+	/*
+	 * adds a new program to the database
+	 *  returns 1 on success, 0 on fail
+	 */
 	public int addProgram(String classID, String className, String classDesc, String classSize, String startTime,
 			String endTime, String memFee, String nonMemFee, String startDate, String endDate, String days,
 			String loc) {
@@ -91,8 +97,10 @@ public class helper {
 		return 1;
 	}
 
-	// "signs in" a user from the database
-	// verifies the username/password is valid for staffmember/member
+	/*
+	 * "signs in" a user from the database
+	 * verifies the username/password is valid for staffmember/member
+	 */
 	public person signInUser(String username, String password) {
 
 		// implemented password hashing
@@ -110,16 +118,10 @@ public class helper {
 		return user;
 	}
 
-	// returns the program names for all programs whose start time is time
+	/*
+	 * returns the program names for all programs whose start time is time
+	 */
 	public String[] getProgramsFromTime(String time) {
-		// DateTimeFormatter sqlForm = DateTimeFormatter.ofPattern("yyyy-MM-dd[ ][]HH");
-		// // want it in this form to query
-
-		// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM y hh:mm a");
-		// // currently in this form
-		// LocalDateTime sqlTime = LocalDateTime.parse(time, formatter);
-		// String t = sqlTime.format(sqlForm);
-		// System.out.println(t);
 
 		ArrayList<program> p = program.find(db, "Program.startTime LIKE ('" + time + "%')");
 
@@ -139,7 +141,9 @@ public class helper {
 		return ret;
 	}
 
-	// searches all programs, returns all that match the searched word
+	/*
+	 * searches all programs, returns all that match the searched word
+	 */
 	public ArrayList<program> searchPrograms(String search) {
 
 		ArrayList<program> p = program.find(db, "Program.className LIKE ('" + search + "%')");
@@ -147,6 +151,9 @@ public class helper {
 		return p;
 	}
 
+	/*
+	 * searches all programs with a classId equalling id
+	 */
 	public program searchProgramID(int id) {
 		ArrayList<program> p = program.find(db, "Program.classID LIKE ('" + id + "%')");
 		if (p.isEmpty()) {
@@ -156,6 +163,9 @@ public class helper {
 		}
 	}
 
+	/*
+	 * searches a person
+	 */
 	public ArrayList<person> searchPeople(String search) {
 		ArrayList<person> p = person.find(db, "Person.firstName LIKE ('" + search + "%')");
 
@@ -182,7 +192,9 @@ public class helper {
 		return p;
 	}
 
-	// returns all available program times in a formatted way
+	/*
+	 * returns all available program times in a formatted way
+	 */
 	public String[] getProgramTimes() {
 
 		ArrayList<String> programs = program.findDistinctTimes(db);
@@ -197,6 +209,9 @@ public class helper {
 		return ret;
 	}
 
+	/*
+	 * returns a class name from a given user input string
+	 */
 	public String getNameFromUserInput(String progString) {
 
 		String[] progs = progString.split("-");
@@ -207,8 +222,10 @@ public class helper {
 		return sName;
 	}
 
-	// returns the class id from the gui display of the program -- needed to query
-	// to show program details
+	/*
+	 * returns the class id from the gui display of the program -- needed to query
+	 *  to show program details
+	 */
 	public int getIDFromUserInput(String programString) {
 		int classId = 0;
 
@@ -220,8 +237,11 @@ public class helper {
 		return classId;
 	}
 
-	// returns the available programs (WITHOUT CLASSID) to a list of strings
-	// for printing out for the user to see
+	/*
+	returns the available programs (WITHOUT CLASSID) to a list of strings
+ for printing out for the user to see
+	 * 
+	 */
 	public String[] getProgramsList() throws SQLException {
 		ArrayList<program> programs = program.findAll(db);
 
@@ -243,7 +263,11 @@ public class helper {
 		return ret;
 	}
 
-	// shyue shi's validation method
+	/*
+	 shyue shi's validation method 
+	 does not register a user for a class if there are any time conflicts or full capacity
+	 * 
+	 */
 	public boolean validation(String m, person p, int classID) {
 		ArrayList<program> tempProg = program.find(db, "Program.classID LIKE ('" + classID + "')");
 		program progToEnroll = tempProg.get(0);
@@ -435,8 +459,11 @@ public class helper {
 		return true;
 	}
 
-	// checks to see if a non member is already added to the databse, returns true
-	// if yes, false otherwise
+	/*
+	 checks to see if a non member is already added to the databse, returns true
+	 if yes, false otherwise
+	 * 
+	 */
 	private boolean checkNMexist(nonMember nm) {
 		ResultSet rs;
 		try {
@@ -453,9 +480,12 @@ public class helper {
 		return true;
 	}
 
-	// enters a new non-member person into the database and enrolls them in the
-	// class in which they registered for
-	// returns 1 on successful enrolling non-member, 0 if fails.
+	/*
+	 enters a new non-member person into the database and enrolls them in the
+	 class in which they registered for
+	returns 1 on successful enrolling non-member, 0 if fails.
+	 * 
+	 */
 	public int enrollNM(String fname, String lname, String phone, String className, int classID) {
 
 		nonMember newPerson = new nonMember(fname, lname, phone);
@@ -473,7 +503,10 @@ public class helper {
 
 		}
 
-		// validate that it is safe for user to enter class
+		/*
+		validate that it is safe for user to enter class
+		 * 
+		 */
 		person nm_pers = new person(fname, lname, phone, phone, null, false, false, true);
 		boolean b = validation(className, nm_pers, classID);
 
@@ -537,7 +570,10 @@ public class helper {
 		return 1;
 	}
 
-	// registers a member for a program they select
+	/*
+	 registers a member for a program they select
+	 * 
+	 */
 	public void registerM(String className, int classId, JFrame f, person p) {
 
 		if (className == null || className.equals("")) { // no selection
@@ -609,7 +645,10 @@ public class helper {
 		}
 	}
 
-	// returns the details for a program based on className
+	/*
+	returns the details for a program based on className
+	 * 
+	 */
 	public String[] program_details(int classId, Boolean isMember) throws SQLException {
 		ArrayList<program> programs = program.find(db, "Program.classId IN ('" + classId + "')");
 		program p = programs.get(0);
@@ -638,7 +677,10 @@ public class helper {
 		return ret;
 	}
 	
-	//returns string array of only members and non members
+	/*
+	returns string array of only members and non members
+	 * 
+	 */
 	public String[] getAllMemNonMem() {
 		String[] ret = null;
 		
@@ -685,8 +727,11 @@ public class helper {
 		
 	}
 
-	// returns a string array of all users usernames/phonenumbers for both members
-	// and non members
+	/*
+	 returns a string array of all users usernames/phonenumbers for both members
+	 and non members
+	 * 
+	 */
 	public String[] getAllUsers() {
 		String[] ret = null;
 
@@ -731,7 +776,10 @@ public class helper {
 		return ret;
 	}
 
-	// returns all classes enrolled in by a user
+	/*
+	 returns all classes enrolled in by a user
+	 * 
+	 */
 	public String[] getClassesFromUser(String username) {
 		String[] ret = null;
 		int index = 0;
@@ -771,7 +819,10 @@ public class helper {
 		return ret;
 	}
 
-	// returns a string array of usernames that are enrolled in the class
+	/*
+	 returns a string array of usernames that are enrolled in the class
+	 * 
+	 */
 	public ArrayList<String> enrolled_details(int classId) throws SQLException {
 		ArrayList<String> ret = new ArrayList<>();
 
@@ -786,9 +837,12 @@ public class helper {
 		return ret;
 	}
 
-	// returns the firstname, lastname, and username/phonenumber, in a string from a
-	// given username/phonenumber
-	// works for both members and nonmembers
+	/*
+	 returns the firstname, lastname, and username/phonenumber, in a string from a
+	 given username/phonenumber
+	 works for both members and nonmembers
+	 * 
+	 */
 	public String lookup_tostring(String username, boolean isNM) throws SQLException {
 		String ret = "";
 
@@ -820,6 +874,10 @@ public class helper {
 		return ret;
 	}
 
+	/*
+	checks if a class is full or not
+	 * 
+	 */
 	private boolean isFull(database db, int classid) throws SQLException {
 		ArrayList<program> programs = program.find(db, "classID = " + classid);
 		program p = programs.get(0);
@@ -835,7 +893,10 @@ public class helper {
 		return false;
 	}
 
-	// creates a new user and adds to the database
+	/*
+	 creates a new user and adds to the database
+	 * 
+	 */
 	public void createUser(String fname, String lname, String phone, String un, String pw, boolean isStaff,
 			boolean isAdmin) {
 		// TODO Auto-generated method stub
@@ -852,6 +913,10 @@ public class helper {
 
 	}
 	
+	/*
+	soft deletes a program from the database
+	 * 
+	 */
 	public void deleteProg(program p) throws SQLException {
 		int i = db.updateProg(p, "isActive", false);
 		if (i > 1 || i < 1 ) {
@@ -860,6 +925,10 @@ public class helper {
 		System.out.println("Delete Successful");
 	}
 	
+	/*
+	soft deletes a person from the database
+	 * 
+	 */
 	public void deletePers(person p) throws SQLException {
 		//remove person if enrolled
 		int numRemoved = db.removeEnrolled(p);

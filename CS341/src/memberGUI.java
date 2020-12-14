@@ -19,14 +19,20 @@ public class memberGUI {
 	private person u;
 	private helper h;
 
-	// constructor
+	/*
+	 constructor
+	 * 
+	 */
 	public memberGUI(person p) {
 		u = p;
 		h = new helper();
 		start();
 	}
 
-	// sets up page on intital sign in
+	/*
+	 sets up page on intital sign in
+	 * 
+	 */
 	private void start() {
 		// set LookAndFeel
 		try {
@@ -100,7 +106,10 @@ public class memberGUI {
 
 	}
 
-	//lets a member view/register for available programs 
+	/*
+	lets a member view/register for available programs 
+	 * 
+	 */
 	private void displayPrograms(JFrame f) {
 		
 		JLabel title = new JLabel("Welcome back, " + u.getFirstName() + "!");
@@ -144,40 +153,6 @@ public class memberGUI {
         scrollableTextArea.setBounds(100,200,220,200);
         f.add(scrollableTextArea);
 		f.repaint();
-		
-//		//get all available program times
-//		String[] progTimes = h.getProgramTimes();
-//		
-//		//need to search for programs at a time *
-//		JComboBox<String> searchTimes = new JComboBox(progTimes);
-//		searchTimes.setBounds(100,100,380,30);
-//		f.add(searchTimes);
-//		
-//		JButton searchB = new JButton("Search Programs from Time");
-//		searchB.setBounds(500, 100, 200, 30);
-//		searchB.setBackground(new Color(51,102,0));
-//		searchB.setForeground(Color.white);
-//		f.add(searchB);
-//		f.repaint();
-//		
-//		//find programs at the selected time
-//		searchB.addActionListener(new ActionListener() { 
-//	            @Override
-//	            public void actionPerformed(ActionEvent e) {
-//	            	
-//	            	String selected = (String)searchTimes.getSelectedItem();
-//	            	String [] p = h.getProgramsFromTime(selected);
-//	            	
-//	            	//delete current programs from JList
-//	            	lister.clear();
-//	            	
-//	            	//add selected programs
-//	            	for(int i = 0; i < p.length; i++) {
-//	            		lister.add(i, p[i]);
-//	            	}
-//	            
-//	            }
-//	        });
 		 
 		 //button to register for selected programs
 		 JButton registerButton = new JButton("Show Program Details");

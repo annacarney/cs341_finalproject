@@ -23,20 +23,32 @@ public class database {
 		
 	}
 	
+	/*
+	 * connects the database
+	 */
 	public void connect() throws SQLException {
 		connection = DriverManager.getConnection(url);
 	}
 	
+	/*
+	 * disconnects the database
+	 */
 	public void disconnect() throws SQLException {
 		connection.close();
 	}
 	
+	/*
+	 * runs a query
+	 */
 	public ResultSet runQuery(String query) throws SQLException {
 		PreparedStatement stmt = connection.prepareStatement(query);
 		ResultSet results = stmt.executeQuery();
 		return results;
 	}
 	
+	/*
+	 * for looking up a person
+	 */
 	public ResultSet personLookup(String username) throws SQLException {
 		
 		String query = "SELECT FirstName, LastName, Username FROM Person WHERE userName = ?";
@@ -47,6 +59,9 @@ public class database {
 		
 	}
 	
+	/*
+	 * for looking up a non member
+	 */
 	public ResultSet nonMemLookup(String phoneNumber) throws SQLException {
 		
 		String query = "SELECT FirstName, LastName, PhoneNumber FROM NonMember WHERE phoneNumber = ?";
@@ -57,6 +72,9 @@ public class database {
 		
 	}
 	
+	/*
+	 * for looking up a program
+	 */
 	public ResultSet programLookup(int classid) throws SQLException {
 		
 		String query = "SELECT classID FROM Program WHERE classID = ?";
@@ -67,6 +85,9 @@ public class database {
 		
 	}
 	
+	/*
+	 * inserts an employee
+	 */
 	public void insertEmployee(person p) throws SQLException {
 		String sql = "INSERT INTO Person (firstName, lastName, phoneNumber, userName, password, isStaff, isAdmin) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -83,7 +104,9 @@ public class database {
 		stmt.execute();
 	}
 	
-	//members will use username for p, nonMembers will use phone number.
+	/*
+	 * members will use username for p, nonMembers will use phone number.
+	 */
 	public void insertEnrolled(enrolled en) throws SQLException {
 		String sql = "INSERT INTO Enrolled (userName, classID) VALUES (?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -94,6 +117,9 @@ public class database {
 		
 	}
 	
+	/*
+	 * removes a person from a class
+	 */
 	public int removeEnrolled(person p) throws SQLException {
 		String sql = "DELETE FROM Enrolled WHERE userName = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -104,6 +130,9 @@ public class database {
 		
 	}
 	
+	/*
+	 * inserts a non member
+	 */
 	public void insertNonMember(nonMember nm) throws SQLException {
 		String sql = "INSERT INTO NonMember (firstName, lastName, phoneNumber) VALUES (?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -114,6 +143,10 @@ public class database {
 		stmt.execute();
 	}
 	
+	/*
+	 * inserts a program into the database
+	 * parameter: program p 
+	 */
 	public void insertProgram(program p) throws SQLException {
 		String sql = "INSERT INTO Program (classID, className, classDesc, classSize, startTime, endTime, memFee, nonMemFee, startDate, endDate, days, location) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -135,7 +168,10 @@ public class database {
 		stmt.execute();
 	}
 	
-	// password hashing implementation
+	/*
+	 * password hashing implementation
+	 * parameter: string 
+	 */
 	public String hashing(String passwordToHash) {
         String generatedPassword = null;
 		try {
@@ -162,6 +198,9 @@ public class database {
         return generatedPassword;
 	}
 	
+	/*
+	 * updates a program
+	 */
 	public int updateProg (program p, String col, Boolean b) throws SQLException {
 		String sql = "UPDATE Program SET " + col + " = " + b + " WHERE ClassID = (?)";
 		//System.out.println(sql);
@@ -171,6 +210,9 @@ public class database {
 		return numRowsAffected;
 	}
 	
+	/*
+	 * updates a person
+	 */
 	public int updatePers (person p, String col, Boolean b) throws SQLException {
 		String sql = "UPDATE Person SET " + col + " = " + b + " WHERE Username = (?)";
 		//System.out.println(sql);

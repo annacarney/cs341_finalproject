@@ -1,3 +1,8 @@
+/*
+ * nonMember.java
+ * non member object class
+ * Created: 10/10/2020
+ */
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -10,7 +15,10 @@ public class nonMember {
 		private String lastName;
 		private String phoneNumber;
 		
-		//Constructor
+		/*
+		Constructor
+		 * 
+		 */
 		public nonMember(String firstName, String lastName, String phoneNumber) {
 			super();
 			this.firstName = firstName;
@@ -18,7 +26,10 @@ public class nonMember {
 			this.phoneNumber = phoneNumber;
 		}
 		
-		//query helper
+		/*
+		query helper
+		 * 
+		 */
 				public static ArrayList<nonMember> find(database db, String where) {
 					ResultSet pResults;
 					try {

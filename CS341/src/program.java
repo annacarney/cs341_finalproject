@@ -11,15 +11,10 @@ import java.util.ArrayList;
  * Created: 10/10/2020
  */
 public class program {
-//	private final DateTimeFormatter SQL_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd[-][ ]HH:mm:ss:SSS");
 	private int classID;
 	private String className;
 	private String classDesc;
-	private int classSize;
-//	private LocalDateTime startTime;			//Format: YYYY-MM-DD HH:MM:SS:SSS
-//	private LocalDateTime endTime;				//Format: YYYY-MM-DD HH:MM:SS:SSS
-//	private String startTime_inDB;			
-//	private String endTime_inDB;			
+	private int classSize;			
 	private String startTime;					//Format: HH:MM
 	private String endTime;					//Format: HH:MM
 	private Double memFee;
@@ -31,7 +26,10 @@ public class program {
 	private String location;
 	private Boolean isActive;
 	
-	//Constructor
+	/*
+	Constructor
+	 * 
+	 */
 	public program(int classID, String className, String classDesc, int classSize, String startTime, String endTime, Double memFee, 
 			Double nonMemFee, String startDate, String endDate, String days, String location, Boolean isActive) {
 		super();
@@ -57,7 +55,10 @@ public class program {
 		this.isActive = isActive;
 	}
 	
-	//query helper
+	/*
+	query helper
+	 * 
+	 */
 	public static ArrayList<program> find(database db, String where) {
 		ResultSet pResults;
 		try {
@@ -91,6 +92,10 @@ public class program {
 		}
 	}
 	
+	/*
+	another query helper to find unique program times
+	 * 
+	 */
 	public static ArrayList<String> findDistinctTimes(database db) {
 		ResultSet pResults;
 		try {
@@ -162,10 +167,6 @@ public class program {
 		return startTime;
 		//return startTime.format(SQL_FORMAT);
 	}
-	
-//	public LocalDateTime getStartTimeAsDateTime() {
-//		return startTime;
-//	}
 
 	public void setStartTime(String startTime) {
 		this.startTime = startTime;
@@ -175,10 +176,6 @@ public class program {
 		return endTime;
 		//return endTime.format(SQL_FORMAT);
 	}
-	
-//	public LocalDateTime getEndTimeAsDateTime() {
-//		return endTime;
-//	}
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;

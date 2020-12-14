@@ -30,7 +30,10 @@ public class person {
 		this.isActive = isActive;
 	}
 	
-	//query helper
+	/*
+	query helper
+	 * 
+	 */
 		public static ArrayList<person> find(database db, String where) {
 			ResultSet pResults;
 			try {
